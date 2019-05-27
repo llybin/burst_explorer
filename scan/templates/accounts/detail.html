@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% load burst_tags %}
+
+{% block content %}
+
+  <div>
+    <h5>Account #{{ address.id }}</h5>
+
+    <table class="table table-bordered">
+      <tbody>
+      <tr>
+        <th>Name</th>
+        <td>{{ address.name }}</td>
+      </tr>
+      <tr>
+        <th>Address</th>
+        <td>{{ address.id|num2rs }}</td>
+      </tr>
+      <tr>
+        <th>Public Key</th>
+        <td>{{ address.public_key|bin2hex }}</td>
+      </tr>
+      <tr>
+        <th>Balance</th>
+        <td>{{ address.balance|burst_amount|floatformat:2 }} Burst</td>
+      </tr>
+      <tr>
+        <th>Description</th>
+        <td>{{ address.description }}</td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+{% endblock %}

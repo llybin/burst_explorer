@@ -1,0 +1,50 @@
+{% load static %}
+<!doctype html>
+<html lang="en" class="h-100">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="/static/favicon.ico" rel="icon">
+    <title>Burst Blockchain Explorer</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  </head>
+
+  <body class="d-flex flex-column h-100">
+
+    <header>
+      <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+        <a href="/"><img alt="BURST" src="/static/img/burst-logo.svg" height="32px"></a>
+        <h5 class="my-0 mr-md-auto font-weight-normal">Explorer</h5>
+        <nav class="my-2 my-md-0 mr-md-3">
+          <a class="p-2 text-dark" href="/">Home</a>
+          <a class="p-2 text-dark" href="/blocks">Blocks</a>
+          <a class="p-2 text-dark" href="/txs">Transactions</a>
+          <a class="p-2 text-dark" href="#">Assets</a>
+          <a class="p-2 text-dark" href="#">Marketplace</a>
+          <a class="p-2 text-dark" href="#">ATs</a>
+          <a class="p-2 text-dark" href="#">Network</a>
+          <a class="p-2 text-dark" href="#">More</a>
+        </nav>
+        <form class="form-inline mt-2 mt-md-0">
+          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </div>
+    </header>
+
+    <main role="main" class="flex-shrink-0">
+      <div class="container">
+        {% block content %}
+        {% endblock %}
+      </div>
+    </main>
+
+    <footer class="footer mt-auto py-3">
+      <div class="container">
+        <span class="text-muted">Place sticky footer content here.</span>
+      </div>
+    </footer>
+  </body>
+
+</html>

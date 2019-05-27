@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% load burst_tags %}
+
+{% block content %}
+
+  <h5>Tx #{{ tx.id }}</h5>
+
+  <table class="table table-bordered">
+    <tbody>
+    <tr>
+      <th>Height</th>
+      <td><a href="{% url 'block-detail' tx.block.height %}">{{ tx.block.height }}</a></td>
+    </tr>
+    <tr>
+      <th>Type</th>
+      <td>{{ tx|tx_type }}</td>
+    </tr>
+    <tr>
+      <th>From</th>
+      <td><a href="{% url 'address-detail' tx.sender_id %}">{{ tx.sender_id|num2rs }}</a></td>
+    </tr>
+    <tr>
+      <th>To</th>
+      <td><a href="{% url 'address-detail' tx.recipient_id %}">{{ tx.recipient_id|num2rs }}</a></td>
+    </tr>
+    <tr>
+      <th>Value</th>
+      <td>{{ tx.amount|burst_amount }} Burst</td>
+    </tr>
+    <tr>
+      <th>Fee</th>
+      <td>{{ tx.fee|burst_amount }} Burst</td>
+    </tr>
+    <tr>
+      <th>Timestamp</th>
+      <td>{{ tx.timestamp|date:'Y-m-d H:i:s' }}</td>
+    </tr>
+    <tr>
+      <th>Signature</th>
+      <td>{{ tx.signature|bin2hex }}</td>
+    </tr>
+    <tr>
+      <th>Full Hash</th>
+      <td>{{ tx.full_hash|bin2hex }}</td>
+    </tr>
+    <tr>
+      <th>Attachment</th>
+      <td>{{ tx.attachment_bytes }}</td>
+    </tr>
+    </tbody>
+  </table>
+
+{% endblock %}

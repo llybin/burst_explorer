@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% load burst_tags %}
+
+{% block content %}
+
+  <h5>Transactions</h5>
+
+{#  <h3>For block #{% with txs|first as tx %}{{ tx.block.height }}{% endwith %}</h3>#}
+
+  {% include "paginator.html" %}
+
+  <div>
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th>Txn id</th>
+        <th>Block</th>
+        <th>Timestamp</th>
+        <th>Type</th>
+        <th>Sender</th>
+        <th>Recipient</th>
+        <th>Value</th>
+        <th>[Txn Fee]</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for tx in txs %}
+        <tr>
+          <td><a href="{% url 'tx-detail' tx.id %}">{{ tx.id }}</a></td>
+          <td><a href="{% url 'block-detail' tx.block.height %}">{{ tx.block.height }}</a></td>
+          <td>{{ tx.timestamp|date:'Y-m-d H:i:s' }}</td>
+          <td>{{ tx|tx_type }}</td>
+          <td>
+            {% if tx.sender_id %}
+              <a href="{% url 'address-detail' tx.sender_id %}">{{ tx.sender_id|num2rs }}</a>
+            {% endif %}
+          </td>
+          <td>
+            {% if tx.recipient_id %}
+              <a href="{% url 'address-detail' tx.recipient_id %}">{{ tx.recipient_id|num2rs }}</a>
+            {% elif tx.sender_id %}
+              <a href="#">? recipients, see transaction details</a>
+            {% endif %}
+          </td>
+          <td>{{ tx.amount|burst_amount|floatformat:2 }} Burst</td>
+          <td>{{ tx.fee|burst_amount|floatformat:2 }} Burst</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% include "paginator.html" %}
+
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% load burst_tags %}
+
+{% block content %}
+
+  <h5>Blocks</h5>
+
+  {% include "paginator.html" %}
+
+  <div>
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th>Height</th>
+        <th>Timestamp</th>
+        <th>Txn</th>
+        <th>Sent</th>
+        <th>Reward</th>
+        <th>Size</th>
+        <th>Pool</th>
+        <th>Forger</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for block in blocks %}
+        <tr>
+          <td><a href="{% url 'block-detail' block.height %}">{{ block.height }}</a></td>
+          <td>{{ block.timestamp|date:'Y-m-d H:i:s' }}</td>
+          <td><a href="{% url 'txs' %}?block={{ block.height }}">{{ block.txs_cnt }}</a></td>
+          <td>{{ block.total_amount|burst_amount|floatformat:2 }} Burst</td>
+          <td>{% block_reward block %} + {{ block.total_fee|burst_amount|floatformat:2 }} Burst</td>
+          <td>{{ block.payload_length|filesizeformat }}</td>
+          <td></td>
+          <td></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% include "paginator.html" %}
+
+{% endblock %}
