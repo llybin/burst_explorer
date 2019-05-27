@@ -1,4 +1,7 @@
+import logging
+
 from django.utils.translation import ugettext as _
+
 
 TX_TYPES = {
     (0, 0): _("Ordinary Payment"),
@@ -34,3 +37,7 @@ TX_TYPES = {
 def get_desc_tx_type(tx_type, tx_subtype):
     if (tx_type, tx_subtype) in TX_TYPES:
         return TX_TYPES[(tx_type, tx_subtype)]
+
+    else:
+        logging.warning("Unknown transaction type: %d-%d", tx_type, tx_subtype)
+        return _("Unknown type")
