@@ -32,6 +32,8 @@ urlpatterns = [
     path('asset/<str:id>', views.AssetDetailView.as_view(), name='asset-detail'),
     path('mps/', views.MarketPlaceListView.as_view(), name='mps'),
     path('mp/<str:id>', views.MarketPlaceDetailView.as_view(), name='mp-detail'),
+    path('ats/', views.AtListView.as_view(), name='ats'),
+    path('at/<str:id>', views.AtDetailView.as_view(), name='at-detail'),
     path('admin/', admin.site.urls),
 ]
 

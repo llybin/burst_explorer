@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% load humanize %}
+{% load burst_tags %}
+
+{% block content %}
+
+  <h5>ATs</h5>
+
+  <div class="d-flex flex-column flex-md-row align-items-center">
+    <small class="my-0 mr-md-auto text-muted">{{ paginator.count|intcomma }} ATs found</small>
+    {% include "paginator.html" %}
+  </div>
+
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <th scope="col">AT Id</th>
+      <th scope="col">Name</th>
+      <th scope="col">Creator</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for at in ats %}
+      <tr>
+        <td><a href="{% url 'at-detail' at.id %}">{{ at.id }}</a></td>
+        <td>{{ at.name }}</td>
+        <td><a href="{% url 'address-detail' at.creator_id %}">{{ at.creator_id|num2rs }}<small><span class="text-danger">(?empty name?)</span></small></a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  {% include "paginator.html" %}
+
+{% endblock %}

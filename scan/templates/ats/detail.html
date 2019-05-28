@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% load humanize %}
+{% load burst_tags %}
+
+{% block content %}
+
+  <h5>AT #{{ at.id }} details</h5>
+
+  <table class="table">
+    <tbody>
+    <tr>
+      <th>ID</th>
+      <td>{{ at.id }}</td>
+    </tr>
+    <tr>
+      <th>Name</th>
+      <td>{{ at.name }}</td>
+    </tr>
+    <tr>
+      <th>Description</th>
+      <td>{{ at.description }}</td>
+    </tr>
+    <tr>
+      <th>Creator</th>
+      <td><a href="{% url 'address-detail' at.creator_id %}">{{ at.creator_id|num2rs }}<small><span class="text-danger">(?empty name?)</span></small></a></td>
+    </tr>
+    <tr><td colspan="2"><br><br></td></tr>
+    <tr>
+      <th>Block</th>
+      <td><a href="{% url 'block-detail' at.height %}">{{ at.height }}</a></td>
+    </tr>
+    <tr>
+      <th>Creation Block</th>
+      <td><a href="{% url 'block-detail' at.creation_height %}">{{ at.creation_height }}</a></td>
+    </tr>
+    <tr>
+      <th>Version</th>
+      <td>{{ at.version }}</td>
+    </tr>
+    <tr>
+      <th>CSize</th>
+      <td>{{ at.csize }}</td>
+    </tr>
+    <tr>
+      <th>DSize</th>
+      <td>{{ at.dsize }}</td>
+    </tr>
+    <tr>
+      <th>CUser Stack Bytes</th>
+      <td>{{ at.c_user_stack_bytes }}</td>
+    </tr>
+    <tr>
+      <th>CCall Stack Bytes</th>
+      <td>{{ at.c_call_stack_bytes }}</td>
+    </tr>
+    <tr>
+      <th>Ap Code</th>
+      <td>{{ at.ap_code|bin2hex }}</td>
+    </tr>
+    </tbody>
+  </table>
+{% endblock %}

@@ -42,3 +42,4 @@ class TimestampField(models.DateTimeField):
 # TODO:
 #  CREATE INDEX height ON transaction(height);
 #  CREATE INDEX timestamp ON transaction(timestamp);
+#  CREATE INDEX height ON asset(height);
