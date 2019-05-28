@@ -10,4 +10,4 @@ script:
   - touch .env
   - docker-compose build
   - docker-compose up -d db_java_wallet
-  - docker-compose run service ./manage.py test
+  - docker-compose run service ./manage.py test -v2
