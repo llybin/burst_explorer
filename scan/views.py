@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 
-from java_wallet.models import Block, Transaction, Account, Asset
+from java_wallet.models import Block, Transaction, Account, Asset, Goods
 
 
 def index(request):
@@ -100,7 +100,7 @@ class AssetListView(ListView):
     template_name = 'assets/list.html'
     context_object_name = 'assets'
     paginate_by = 15
-    ordering = '-id'
+    ordering = '-height'
 
 
 class AssetDetailView(DetailView):
@@ -108,5 +108,23 @@ class AssetDetailView(DetailView):
     queryset = Asset.objects.using('java-wallet').all()
     template_name = 'assets/detail.html'
     context_object_name = 'asset'
+    slug_field = 'id'
+    slug_url_kwarg = 'id'
+
+
+class MarketPlaceListView(ListView):
+    model = Goods
+    queryset = Goods.objects.using('java-wallet').filter(latest=True).all()
+    template_name = 'goods/list.html'
+    context_object_name = 'goods'
+    paginate_by = 15
+    ordering = '-height'
+
+
+class MarketPlaceDetailView(DetailView):
+    model = Goods
+    queryset = Goods.objects.using('java-wallet').filter(latest=True).all()
+    template_name = 'goods/detail.html'
+    context_object_name = 'good'
     slug_field = 'id'
     slug_url_kwarg = 'id'

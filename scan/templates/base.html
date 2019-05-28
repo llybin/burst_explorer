@@ -18,10 +18,10 @@
         <h5 class="my-0 mr-md-auto font-weight-normal">Explorer</h5>
         <nav class="my-2 my-md-0 mr-md-3">
           <a class="p-2 text-dark" href="/">Home</a>
-          <a class="p-2 text-dark" href="/blocks">Blocks</a>
-          <a class="p-2 text-dark" href="/txs">Transactions</a>
-          <a class="p-2 text-dark" href="/assets">Assets</a>
-          <a class="p-2 text-dark" href="#">Marketplace</a>
+          <a class="p-2 text-dark" href="{% url 'blocks' %}">Blocks</a>
+          <a class="p-2 text-dark" href="{% url 'txs' %}">Transactions</a>
+          <a class="p-2 text-dark" href="{% url 'assets' %}">Assets</a>
+          <a class="p-2 text-dark" href="{% url 'mps' %}">Marketplace</a>
           <a class="p-2 text-dark" href="#">ATs</a>
           <a class="p-2 text-dark" href="#">Network</a>
           <a class="p-2 text-dark dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

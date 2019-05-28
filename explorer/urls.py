@@ -30,6 +30,8 @@ urlpatterns = [
     path('address/<str:id>', views.AddressDetailView.as_view(), name='address-detail'),
     path('assets/', views.AssetListView.as_view(), name='assets'),
     path('asset/<str:id>', views.AssetDetailView.as_view(), name='asset-detail'),
+    path('mps/', views.MarketPlaceListView.as_view(), name='mps'),
+    path('mp/<str:id>', views.MarketPlaceDetailView.as_view(), name='mp-detail'),
     path('admin/', admin.site.urls),
 ]
 
