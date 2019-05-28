@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% load humanize %}
+{% load burst_tags %}
+
+{% block content %}
+
+  <h5>Asset #{{ asset.id }} details</h5>
+
+  <table class="table">
+    <tbody>
+    <tr>
+      <th>Name</th>
+      <td>{{ asset.name }}</td>
+    </tr>
+    <tr>
+      <th>Description</th>
+      <td>{{ asset.description }}</td>
+    </tr>
+    <tr>
+      <th>Quantity</th>
+      <td>{{ asset.quantity|intcomma }}</td>
+    </tr>
+    <tr>
+      <th>Issuer</th>
+      <td><a href="{% url 'address-detail' asset.account_id %}">{{ asset.account_id|num2rs }}<small><span class="text-danger">(?empty name?)</span></small></a></td>
+    </tr>
+    <tr>
+      <th>Block</th>
+      <td><a href="{% url 'block-detail' asset.height %}">{{ asset.height }}</a></td>
+    </tr>
+    </tbody>
+  </table>
+{% endblock %}

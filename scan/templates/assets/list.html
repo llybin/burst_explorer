@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% load humanize %}
+{% load burst_tags %}
+
+{% block content %}
+
+  <h5>Assets</h5>
+
+  <div class="d-flex flex-column flex-md-row align-items-center">
+    <small class="my-0 mr-md-auto text-muted">{{ paginator.count|intcomma }} assets found</small>
+    {% include "paginator.html" %}
+  </div>
+
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <th scope="col">Asset Id</th>
+      <th scope="col">Name</th>
+      <th scope="col">Issuer</th>
+      <th scope="col">Quantity</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for asset in assets %}
+      <tr>
+        <td><a href="{% url 'asset-detail' asset.id %}">{{ asset.id }}</a></td>
+        <td>{{ asset.name }}</td>
+        <td><a href="{% url 'address-detail' asset.account_id %}">{{ asset.account_id|num2rs }}<small><span class="text-danger">(?empty name?)</span></small></a></td>
+        <td>{{ asset.quantity|intcomma }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  {% include "paginator.html" %}
+
+{% endblock %}

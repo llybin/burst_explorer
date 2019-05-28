@@ -45,7 +45,7 @@
     </nav>
     <div class="tab-content" id="nav-tabContent">
       <div class="tab-pane fade show active" id="nav-transactions" role="tabpanel" aria-labelledby="nav-transactions-tab">
-        <p><a href="{% url 'txs' %}?a={{ address.id }}">See all transactions</a></p>
+        <p>Latest {{ txs.count }} from a total of <a href="{% url 'txs' %}?a={{ address.id }}">{{ txs_cnt|intcomma }}</a> transactions</p>
 
         <table class="table table-hover">
           <thead>

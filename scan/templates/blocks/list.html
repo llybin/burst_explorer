@@ -27,7 +27,7 @@
     <tbody>
     {% for block in blocks %}
       <tr>
-        <td><a href="{% url 'block-detail' block.height %}">{{ block.height }}</a></th>
+        <td><a href="{% url 'block-detail' block.height %}">{{ block.height }}</a></td>
         <td>{{ block.timestamp|date:'Y-m-d H:i:s' }}</td>
         <td><a href="{% url 'txs' %}?block={{ block.height }}">{{ block.txs_cnt|intcomma }}</a></td>
         <td>{{ block.total_amount|burst_amount|intcomma }} Burst</td>
