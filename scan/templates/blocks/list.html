@@ -1,38 +1,39 @@
 {% extends 'base.html' %}
 
+{% load humanize %}
 {% load burst_tags %}
 
 {% block content %}
 
   <h5>Blocks</h5>
 
-  {% include "paginator.html" %}
-
+  <div class="d-flex flex-column flex-md-row align-items-center">
+    <small class="my-0 mr-md-auto text-muted">Block #{% with blocks|first as blk %}{{ blk.height }} to #{{ blk.height|sub:blocks.count|add:1 }}{% endwith %} (Total of {{ paginator.count|intcomma }} blocks)</small>
+    {% include "paginator.html" %}
+  </div>
   <div>
-    <table class="table table-bordered">
+    <table class="table table-hover">
       <thead>
       <tr>
-        <th>Height</th>
-        <th>Timestamp</th>
-        <th>Txn</th>
-        <th>Sent</th>
-        <th>Reward</th>
-        <th>Size</th>
-        <th>Pool</th>
-        <th>Forger</th>
+        <th scope="col">Height</th>
+        <th scope="col">Timestamp</th>
+        <th scope="col">Txn</th>
+        <th scope="col">Sent</th>
+        <th scope="col">Reward</th>
+        <th scope="col">Size</th>
+        <th scope="col">Miner (Pool)</th>
       </tr>
       </thead>
       <tbody>
       {% for block in blocks %}
         <tr>
-          <td><a href="{% url 'block-detail' block.height %}">{{ block.height }}</a></td>
+          <td><a href="{% url 'block-detail' block.height %}">{{ block.height }}</a></th>
           <td>{{ block.timestamp|date:'Y-m-d H:i:s' }}</td>
-          <td><a href="{% url 'txs' %}?block={{ block.height }}">{{ block.txs_cnt }}</a></td>
-          <td>{{ block.total_amount|burst_amount|floatformat:2 }} Burst</td>
-          <td>{% block_reward block %} + {{ block.total_fee|burst_amount|floatformat:2 }} Burst</td>
+          <td><a href="{% url 'txs' %}?block={{ block.height }}">{{ block.txs_cnt|intcomma }}</a></td>
+          <td>{{ block.total_amount|burst_amount|intcomma }} Burst</td>
+          <td>{{ block|block_reward_fee|intcomma }} Burst</td>
           <td>{{ block.payload_length|filesizeformat }}</td>
-          <td></td>
-          <td></td>
+          <td>{{ block.generator_id|num2rs }} (?Pool?)</td>
         </tr>
       {% endfor %}
       </tbody>

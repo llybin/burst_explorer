@@ -1,26 +1,27 @@
 {% extends 'base.html' %}
 
+{% load humanize %}
 {% load burst_tags %}
 
 {% block content %}
 
-  <h5>Block #{{ the_block.height }}</h5>
+  <h5>Block #{{ blk.height }} details</h5>
 
-  <table class="table table-bordered">
+  <table class="table">
     <tbody>
     <tr>
-      <th>Height</th>
+      <th>Block Height</th>
       <td>
         <nav aria-label="Page navigation">
           <ul class="pagination">
-              <li class="page-item" style="padding:0.5rem 0.75rem">{{ the_block.height }}</li>
-            {% if the_block.previous_block %}
-              <li class="page-item"><a class="page-link" href="{% url 'block-detail' the_block.previous_block.height %}">Previous</a></li>
+              <li class="page-item" style="padding:0.5rem 0.75rem">{{ blk.height }}</li>
+            {% if blk.previous_block %}
+              <li class="page-item"><a class="page-link" href="{% url 'block-detail' blk.previous_block.height %}">Previous</a></li>
             {% else %}
               <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
             {% endif %}
-            {% if the_block.next_block %}
-              <li class="page-item"><a class="page-link" href="{% url 'block-detail' the_block.next_block.height %}">Next</a></li>
+            {% if blk.next_block %}
+              <li class="page-item"><a class="page-link" href="{% url 'block-detail' blk.next_block.height %}">Next</a></li>
             {% else %}
               <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
             {% endif %}
@@ -29,66 +30,64 @@
       </td>
     </tr>
     <tr>
-      <th>Number Of Transactions</th>
-      <td><a href="{% url 'txs' %}?block={{ the_block.height }}">{{ txs_cnt }} transaction</a></td>
+      <th>Timestamp</th>
+      <td>{{ blk.timestamp|date:'Y-m-d H:i:s' }}</td>
+    </tr>
+    <tr>
+      <th>Transactions</th>
+      <td><a href="{% url 'txs' %}?block={{ blk.height }}">{{ txs_cnt|intcomma }} transactions</a> and ... in this block</td>
     </tr>
     <tr>
       <th>Total Amount</th>
-      <td>{{ the_block.total_amount|burst_amount|floatformat:2 }} Burst</td>
+      <td>{{ blk.total_amount|burst_amount|intcomma }} Burst</td>
     </tr>
     <tr>
-      <th>Transaction Fees</th>
-      <td>{{ the_block.total_fee|burst_amount|floatformat:2 }} Burst</td>
-    </tr>
-    <tr>
-      <th>Timestamp</th>
-      <td>{{ the_block.timestamp|date:'Y-m-d H:i:s' }}</td>
-    </tr>
-    <tr>
-      <th>Generator</th>
-      <td><a href="{% url 'address-detail' the_block.generator_id %}">{{ the_block.generator_id }}</a></td>
-    </tr>
-    <tr>
-      <th>Generator RS</th>
-      <td><a href="{% url 'address-detail' the_block.generator_id %}">{{ the_block.generator_id|num2rs }}</a></td>
-    </tr>
-    <tr>
-      <th>Generator Public Key</th>
-      <td>{{ the_block.generator_public_key|bin2hex }}</td>
-    </tr>
-    <tr>
-      <th>Pool</th>
-      <td></td>
-    </tr>
-    <tr>
-      <th>Block Generation Time</th>
-      <td>{% block_generation_time the_block %}</td>
-    </tr>
-    <tr>
-      <th>Base Target</th>
-      <td>{{ the_block.base_target }}</td>
-    </tr>
-    <tr>
-      <th>Size</th>
-      <td>{{ the_block.payload_length|filesizeformat }}</td>
-    </tr>
-    <tr>
-      <th>Version</th>
-      <td>{{ the_block.version }}</td>
-    </tr>
-    <tr>
-      <th>Nonce</th>
-      <td>{{ the_block.nonce }}</td>
+      <th>Mined by</th>
+      <td>
+        <a href="{% url 'address-detail' blk.generator_id %}">{{ blk.generator_id|num2rs }}</a> (?Pool?) in {% block_generation_time blk %}
+      </td>
     </tr>
     <tr>
       <th>Block Reward</th>
-      <td>{% block_reward the_block %} Burst</td>
+      <td>{{ blk|block_reward_fee|intcomma }} Burst ({{ blk|block_reward }} + {{ blk.total_fee|burst_amount|intcomma }})</td>
+    </tr>
+    <tr>
+      <th>Size</th>
+      <td>{{ blk.payload_length|filesizeformat }}</td>
+    </tr>
+    <tr><td colspan="2"><br><br></td></tr>
+    <tr>
+      <th>Base Target</th>
+      <td>{{ blk.base_target }}</td>
+    </tr>
+    <tr>
+      <th>Version</th>
+      <td>{{ blk.version }}</td>
+    </tr>
+    <tr>
+      <th>Nonce</th>
+      <td>{{ blk.nonce }}</td>
+    </tr>
+    <tr>
+      <th>ATs</th>
+      <td>{{ blk.ats|bin2hex }}</td>
+    </tr>
+    <tr>
+      <th>Cumulative Difficulty</th>
+      <td>{{ blk.cumulative_difficulty|bin2hex }}</td>
+    </tr>
+    <tr>
+      <th>Generator Public Key</th>
+      <td>{{ blk.generator_public_key|bin2hex }}</td>
+    </tr>
+    <tr>
+      <th>Generation Signature</th>
+      <td>{{ blk.generation_signature|bin2hex }}</td>
     </tr>
     <tr>
       <th>Block Signature</th>
-      <td>{{ the_block.block_signature|bin2hex }}</td>
+      <td>{{ blk.block_signature|bin2hex }}</td>
     </tr>
     </tbody>
   </table>
-
 {% endblock %}

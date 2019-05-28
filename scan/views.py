@@ -18,10 +18,15 @@ class BlockListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
         for b in context[self.context_object_name]:
             b.txs_cnt = Transaction.objects.using('java-wallet').filter(
                 block_id=b.id).count()
+
+            # _tar = Transaction.objects.using('java-wallet').filter(
+            #     type=20,
+            #     height__lte=b.height,
+            #     sender_id=b.generator_id
+            # ).order_by('-height')
 
         return context
 
@@ -30,7 +35,7 @@ class BlockDetailView(DetailView):
     model = Block
     queryset = Block.objects.using('java-wallet').all()
     template_name = 'blocks/detail.html'
-    context_object_name = 'the_block'
+    context_object_name = 'blk'
     slug_field = 'height'
     slug_url_kwarg = 'height'
 

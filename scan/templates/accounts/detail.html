@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+{% load humanize %}
 {% load burst_tags %}
 
 {% block content %}
@@ -23,7 +24,7 @@
       </tr>
       <tr>
         <th>Balance</th>
-        <td>{{ address.balance|burst_amount|floatformat:2 }} Burst</td>
+        <td>{{ address.balance|burst_amount|intcomma }} Burst</td>
       </tr>
       <tr>
         <th>Description</th>

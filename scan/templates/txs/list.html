@@ -1,27 +1,33 @@
 {% extends 'base.html' %}
 
+{% load humanize %}
 {% load burst_tags %}
 
 {% block content %}
 
-  <h5>Transactions</h5>
+  <h5>Transactions
+    {% if 'block' in request.GET %}
+      <small class="text-muted">For block #{% with txs|first as tx %}{{ tx.block.height }}{% endwith %}</small>
+    {% endif %}
+  </h5>
 
-{#  <h3>For block #{% with txs|first as tx %}{{ tx.block.height }}{% endwith %}</h3>#}
-
-  {% include "paginator.html" %}
+  <div class="d-flex flex-column flex-md-row align-items-center">
+    <small class="my-0 mr-md-auto text-muted">{{ paginator.count|intcomma }} transactions found</small>
+    {% include "paginator.html" %}
+  </div>
 
   <div>
-    <table class="table table-bordered">
+    <table class="table table-hover">
       <thead>
       <tr>
-        <th>Txn id</th>
-        <th>Block</th>
-        <th>Timestamp</th>
-        <th>Type</th>
-        <th>Sender</th>
-        <th>Recipient</th>
-        <th>Value</th>
-        <th>[Txn Fee]</th>
+        <th scope="col">Txn id</th>
+        <th scope="col">Block</th>
+        <th scope="col">Timestamp</th>
+        <th scope="col">Type</th>
+        <th scope="col">From</th>
+        <th scope="col">To</th>
+        <th scope="col">Value</th>
+        <th scope="col">Txn Fee</th>
       </tr>
       </thead>
       <tbody>
@@ -31,11 +37,7 @@
           <td><a href="{% url 'block-detail' tx.block.height %}">{{ tx.block.height }}</a></td>
           <td>{{ tx.timestamp|date:'Y-m-d H:i:s' }}</td>
           <td>{{ tx|tx_type }}</td>
-          <td>
-            {% if tx.sender_id %}
-              <a href="{% url 'address-detail' tx.sender_id %}">{{ tx.sender_id|num2rs }}</a>
-            {% endif %}
-          </td>
+          <td><a href="{% url 'address-detail' tx.sender_id %}">{{ tx.sender_id|num2rs }}</a></td>
           <td>
             {% if tx.recipient_id %}
               <a href="{% url 'address-detail' tx.recipient_id %}">{{ tx.recipient_id|num2rs }}</a>
@@ -43,8 +45,8 @@
               <a href="#">? recipients, see transaction details</a>
             {% endif %}
           </td>
-          <td>{{ tx.amount|burst_amount|floatformat:2 }} Burst</td>
-          <td>{{ tx.fee|burst_amount|floatformat:2 }} Burst</td>
+          <td>{{ tx.amount|burst_amount|intcomma }} Burst</td>
+          <td>{{ tx.fee|burst_amount|intcomma }} Burst</td>
         </tr>
       {% endfor %}
       </tbody>
