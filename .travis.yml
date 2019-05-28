@@ -7,6 +7,7 @@ env:
   - COMPOSE_FILE=docker-compose.yml
 
 script:
+  - touch .env
   - docker-compose build
   - docker-compose up -d db_java_wallet
   - docker-compose run service ./manage.py test
