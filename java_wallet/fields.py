@@ -37,9 +37,3 @@ class TimestampField(models.DateTimeField):
 
     def get_prep_value(self, value):
         return datetime.timestamp(value) - 1407722400
-
-
-# TODO:
-#  CREATE INDEX height ON transaction(height);
-#  CREATE INDEX timestamp ON transaction(timestamp);
-#  CREATE INDEX height ON asset(height);

@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
+import dj_database_url
+
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -20,12 +23,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'l42wty32hl$*6=lsy33%0%)cps87@@!vfns!ucu-#*%$x_@min'
+SECRET_KEY = os.getenv('SECRET_KEY', 'l42wty32hl$*6=lsy33%0%)cps87@@!vfns!ucu-#*%$x_@min')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', True)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -83,18 +86,26 @@ DATABASES = {
     },
     'java-wallet': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'brs_master',
-        'USER': 'brs_user',
-        'PASSWORD': 'MyBurstPassword15',
-        'HOST': '127.0.0.1',
+        'NAME': 'data',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': 'db_java_wallet',
         'PORT': '3306',
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-            'charset': 'utf8mb4',
-        }
     },
 }
 
+DB_DEFAULT_URL = os.getenv('DB_DEFAULT_URL')
+if DB_DEFAULT_URL:
+    DATABASES['default'] = dj_database_url.parse(DB_DEFAULT_URL)
+
+DB_JAVA_WALLET_URL = os.getenv('DB_JAVA_WALLET_URL')
+if DB_JAVA_WALLET_URL:
+    DATABASES['java-wallet'] = dj_database_url.parse(DB_JAVA_WALLET_URL)
+
+DATABASES['java-wallet']['OPTIONS'] = {
+    'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+    'charset': 'utf8mb4',
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
