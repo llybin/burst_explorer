@@ -26,11 +26,11 @@
     </tr>
     <tr>
       <th>From</th>
-      <td><a href="{% url 'address-detail' tx.sender_id %}">{{ tx.sender_id|num2rs }}</a></td>
+      <td><a href="{% url 'address-detail' tx.sender_id %}">{{ tx.sender_id|num2rs }}<small><span class="text-danger">(?empty name?)</span></small></a></td>
     </tr>
     <tr>
       <th>To</th>
-      <td><a href="{% url 'address-detail' tx.recipient_id %}">{{ tx.recipient_id|num2rs }}</a></td>
+      <td><a href="{% url 'address-detail' tx.recipient_id %}">{{ tx.recipient_id|num2rs }}<small><span class="text-danger">(?empty name?)</span></small></a></td>
     </tr>
     <tr>
       <th>Value</th>

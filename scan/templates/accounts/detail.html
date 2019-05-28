@@ -8,7 +8,7 @@
   <div>
     <h5>Account #{{ address.id }}</h5>
 
-    <table class="table table-bordered">
+    <table class="table">
       <tbody>
       <tr>
         <th>Name</th>
@@ -32,6 +32,62 @@
       </tr>
       </tbody>
     </table>
+
+    <nav>
+      <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <a class="nav-item nav-link active" id="nav-transactions-tab" data-toggle="tab" href="#nav-transactions" role="tab" aria-controls="nav-transactions" aria-selected="true">{{ txs_cnt|intcomma }} Transactions</a>
+        <a class="nav-item nav-link" id="nav-blocks-tab" data-toggle="tab" href="#nav-blocks" role="tab" aria-controls="nav-blocks" aria-selected="false">? Blocks</a>
+        <a class="nav-item nav-link" id="nav-multiout-tab" data-toggle="tab" href="#nav-multiout" role="tab" aria-controls="nav-multiout" aria-selected="false">? MultiOut</a>
+        <a class="nav-item nav-link" id="nav-asset-hold-tab" data-toggle="tab" href="#nav-asset-hold" role="tab" aria-controls="nav-asset-hold" aria-selected="false">? Asset holdings</a>
+        <a class="nav-item nav-link" id="nav-asset-txs-tab" data-toggle="tab" href="#nav-asset-txs" role="tab" aria-controls="nav-asset-txs" aria-selected="false">? Asset transactions</a>
+        <a class="nav-item nav-link" id="nav-pool-tab" data-toggle="tab" href="#nav-pool" role="tab" aria-controls="nav-pool" aria-selected="false">? Pool members</a>
+      </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+      <div class="tab-pane fade show active" id="nav-transactions" role="tabpanel" aria-labelledby="nav-transactions-tab">
+        <p><a href="{% url 'txs' %}?a={{ address.id }}">See all transactions</a></p>
+
+        <table class="table table-hover">
+          <thead>
+          <tr>
+            <th scope="col">Txn id</th>
+            <th scope="col">Block</th>
+            <th scope="col">Timestamp</th>
+            <th scope="col">Type</th>
+            <th scope="col">From</th>
+            <th scope="col">To</th>
+            <th scope="col">Value</th>
+            <th scope="col">Txn Fee</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for tx in txs %}
+            <tr>
+              <td><a href="{% url 'tx-detail' tx.id %}">{{ tx.id }}</a></td>
+              <td><a href="{% url 'block-detail' tx.block.height %}">{{ tx.block.height }}</a></td>
+              <td>{{ tx.timestamp|date:'Y-m-d H:i:s' }}</td>
+              <td>{{ tx|tx_type }}</td>
+              <td><a href="{% url 'address-detail' tx.sender_id %}">{{ tx.sender_id|num2rs }}</a></td>
+              <td>
+                {% if tx.recipient_id %}
+                  <a href="{% url 'address-detail' tx.recipient_id %}">{{ tx.recipient_id|num2rs }}</a>
+                {% elif tx.sender_id %}
+                  <a href="#">? recipients, see transaction details</a>
+                {% endif %}
+              </td>
+              <td>{{ tx.amount|burst_amount|intcomma }} Burst</td>
+              <td>{{ tx.fee|burst_amount|intcomma }} Burst</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="tab-pane fade" id="nav-blocks" role="tabpanel" aria-labelledby="nav-blocks-tab">...</div>
+      <div class="tab-pane fade" id="nav-multiout" role="tabpanel" aria-labelledby="nav-multiout-tab">...</div>
+      <div class="tab-pane fade" id="nav-asset-hold" role="tabpanel" aria-labelledby="nav-asset-hold-tab">...</div>
+      <div class="tab-pane fade" id="nav-asset-txs" role="tabpanel" aria-labelledby="nav-asset-txs`-tab">...</div>
+      <div class="tab-pane fade" id="nav-pool" role="tabpanel" aria-labelledby="nav-pool`-tab">...</div>
+    </div>
 
   </div>
 

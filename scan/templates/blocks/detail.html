@@ -44,7 +44,7 @@
     <tr>
       <th>Mined by</th>
       <td>
-        <a href="{% url 'address-detail' blk.generator_id %}">{{ blk.generator_id|num2rs }}</a> (?Pool?) in {% block_generation_time blk %}
+        <a href="{% url 'address-detail' blk.generator_id %}">{{ blk.generator_id|num2rs }}<small><span class="text-danger">(?empty name?)</span></small></a> (?Pool?) in {% block_generation_time blk %}
       </td>
     </tr>
     <tr>

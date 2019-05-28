@@ -60,6 +60,9 @@ class TxListView(ListView):
         if self.request.GET.get('block'):
             qs = qs.filter(block__height=self.request.GET.get('block'))
 
+        elif self.request.GET.get('a'):
+            qs = qs.filter(sender_id=self.request.GET.get('a'))
+
         return qs
 
 
@@ -79,3 +82,13 @@ class AddressDetailView(DetailView):
     context_object_name = 'address'
     slug_field = 'id'
     slug_url_kwarg = 'id'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['txs'] = Transaction.objects.using('java-wallet').filter(
+            sender_id=context[self.context_object_name].id).order_by('-timestamp')[:15]
+
+        context['txs_cnt'] = Transaction.objects.using('java-wallet').filter(
+            sender_id=context[self.context_object_name].id).count()
+        return context

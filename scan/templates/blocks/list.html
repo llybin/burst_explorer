@@ -11,34 +11,33 @@
     <small class="my-0 mr-md-auto text-muted">Block #{% with blocks|first as blk %}{{ blk.height }} to #{{ blk.height|sub:blocks.count|add:1 }}{% endwith %} (Total of {{ paginator.count|intcomma }} blocks)</small>
     {% include "paginator.html" %}
   </div>
-  <div>
-    <table class="table table-hover">
-      <thead>
+
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <th scope="col">Height</th>
+      <th scope="col">Timestamp</th>
+      <th scope="col">Txn</th>
+      <th scope="col">Sent</th>
+      <th scope="col">Reward</th>
+      <th scope="col">Size</th>
+      <th scope="col">Miner (Pool)</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for block in blocks %}
       <tr>
-        <th scope="col">Height</th>
-        <th scope="col">Timestamp</th>
-        <th scope="col">Txn</th>
-        <th scope="col">Sent</th>
-        <th scope="col">Reward</th>
-        <th scope="col">Size</th>
-        <th scope="col">Miner (Pool)</th>
+        <td><a href="{% url 'block-detail' block.height %}">{{ block.height }}</a></th>
+        <td>{{ block.timestamp|date:'Y-m-d H:i:s' }}</td>
+        <td><a href="{% url 'txs' %}?block={{ block.height }}">{{ block.txs_cnt|intcomma }}</a></td>
+        <td>{{ block.total_amount|burst_amount|intcomma }} Burst</td>
+        <td>{{ block|block_reward_fee|intcomma }} Burst</td>
+        <td>{{ block.payload_length|filesizeformat }}</td>
+        <td>{{ block.generator_id|num2rs }}<small><span class="text-danger">(?empty name?)</span></small> (?Pool?)</td>
       </tr>
-      </thead>
-      <tbody>
-      {% for block in blocks %}
-        <tr>
-          <td><a href="{% url 'block-detail' block.height %}">{{ block.height }}</a></th>
-          <td>{{ block.timestamp|date:'Y-m-d H:i:s' }}</td>
-          <td><a href="{% url 'txs' %}?block={{ block.height }}">{{ block.txs_cnt|intcomma }}</a></td>
-          <td>{{ block.total_amount|burst_amount|intcomma }} Burst</td>
-          <td>{{ block|block_reward_fee|intcomma }} Burst</td>
-          <td>{{ block.payload_length|filesizeformat }}</td>
-          <td>{{ block.generator_id|num2rs }} (?Pool?)</td>
-        </tr>
-      {% endfor %}
-      </tbody>
-    </table>
-  </div>
+    {% endfor %}
+    </tbody>
+  </table>
 
   {% include "paginator.html" %}
 

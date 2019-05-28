@@ -85,7 +85,7 @@ class ReedSolomon(object):
             if (x & 3) == 3 and x < 13:
                 cypher_string_builder += "-"
 
-        return "BURST-" + cypher_string_builder
+        return cypher_string_builder
 
     def decode(self, cypher_string: str) -> str:
         """

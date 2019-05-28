@@ -7,7 +7,9 @@
 
   <h5>Transactions
     {% if 'block' in request.GET %}
-      <small class="text-muted">For block #{% with txs|first as tx %}{{ tx.block.height }}{% endwith %}</small>
+      <small class="text-muted">For block #{% with txs|first as tx %}<a href="{% url 'block-detail' tx.block.height %}">{{ tx.block.height }}</a>{% endwith %}</small>
+    {% elif 'a' in request.GET %}
+      <small class="text-muted">For address #{% with txs|first as tx %}<a href="{% url 'address-detail' tx.sender_id %}">{{ tx.sender_id }}</a>{% endwith %}</small>
     {% endif %}
   </h5>
 
@@ -16,42 +18,40 @@
     {% include "paginator.html" %}
   </div>
 
-  <div>
-    <table class="table table-hover">
-      <thead>
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <th scope="col">Txn id</th>
+      <th scope="col">Block</th>
+      <th scope="col">Timestamp</th>
+      <th scope="col">Type</th>
+      <th scope="col">From</th>
+      <th scope="col">To</th>
+      <th scope="col">Value</th>
+      <th scope="col">Txn Fee</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for tx in txs %}
       <tr>
-        <th scope="col">Txn id</th>
-        <th scope="col">Block</th>
-        <th scope="col">Timestamp</th>
-        <th scope="col">Type</th>
-        <th scope="col">From</th>
-        <th scope="col">To</th>
-        <th scope="col">Value</th>
-        <th scope="col">Txn Fee</th>
+        <td><a href="{% url 'tx-detail' tx.id %}">{{ tx.id }}</a></td>
+        <td><a href="{% url 'block-detail' tx.block.height %}">{{ tx.block.height }}</a></td>
+        <td>{{ tx.timestamp|date:'Y-m-d H:i:s' }}</td>
+        <td>{{ tx|tx_type }}</td>
+        <td><a href="{% url 'address-detail' tx.sender_id %}">{{ tx.sender_id|num2rs }}</a><small><span class="text-danger">(?empty name?)</span></small></td>
+        <td>
+          {% if tx.recipient_id %}
+            <a href="{% url 'address-detail' tx.recipient_id %}">{{ tx.recipient_id|num2rs }}</a><small><span class="text-danger">(?empty name?)</span></small>
+          {% elif tx.sender_id %}
+            <a href="#">? recipients, see transaction details</a>
+          {% endif %}
+        </td>
+        <td>{{ tx.amount|burst_amount|intcomma }} Burst</td>
+        <td>{{ tx.fee|burst_amount|intcomma }} Burst</td>
       </tr>
-      </thead>
-      <tbody>
-      {% for tx in txs %}
-        <tr>
-          <td><a href="{% url 'tx-detail' tx.id %}">{{ tx.id }}</a></td>
-          <td><a href="{% url 'block-detail' tx.block.height %}">{{ tx.block.height }}</a></td>
-          <td>{{ tx.timestamp|date:'Y-m-d H:i:s' }}</td>
-          <td>{{ tx|tx_type }}</td>
-          <td><a href="{% url 'address-detail' tx.sender_id %}">{{ tx.sender_id|num2rs }}</a></td>
-          <td>
-            {% if tx.recipient_id %}
-              <a href="{% url 'address-detail' tx.recipient_id %}">{{ tx.recipient_id|num2rs }}</a>
-            {% elif tx.sender_id %}
-              <a href="#">? recipients, see transaction details</a>
-            {% endif %}
-          </td>
-          <td>{{ tx.amount|burst_amount|intcomma }} Burst</td>
-          <td>{{ tx.fee|burst_amount|intcomma }} Burst</td>
-        </tr>
-      {% endfor %}
-      </tbody>
-    </table>
-  </div>
+    {% endfor %}
+    </tbody>
+  </table>
 
   {% include "paginator.html" %}
 
