@@ -44,7 +44,7 @@
           {% include "account_link.html" with account_id=block.generator_id account_name=block.generator_name %}
         </td>
         <td class="text-nowrap">
-          {% include "account_link.html" with account_id=block.pool_id account_name=block.pool_name %}
+        {% if block.pool_id %}{% include "account_link.html" with account_id=block.pool_id account_name=block.pool_name %}{% else %}solo{% endif %}
         </td>
       </tr>
     {% endfor %}

@@ -40,8 +40,9 @@ class BlockListView(ListView):
             b.generator_name = get_account_name(b.generator_id)
 
             pool_id = get_pool_id_for_block(b)
-            b.pool_id = pool_id
-            b.pool_name = get_account_name(pool_id)
+            if pool_id:
+                b.pool_id = pool_id
+                b.pool_name = get_account_name(pool_id)
 
         return context
 
@@ -63,8 +64,9 @@ class BlockDetailView(DetailView):
         context['generator_name'] = get_account_name(obj.generator_id)
 
         pool_id = get_pool_id_for_block(obj)
-        context['pool_id'] = pool_id
-        context['pool_name'] = get_account_name(pool_id)
+        if pool_id:
+            context['pool_id'] = pool_id
+            context['pool_name'] = get_account_name(pool_id)
 
         return context
 
