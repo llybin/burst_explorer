@@ -2,8 +2,19 @@ from django.db.models import Q
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 
-from java_wallet.models import Block, Transaction, Account, Asset, Goods, At
-from scan.helpers import get_account_name, get_txs_count_in_block
+from java_wallet.models import (
+    Account,
+    At,
+    Asset,
+    Block,
+    Goods,
+    Transaction,
+)
+from scan.helpers import (
+    get_account_name,
+    get_txs_count_in_block,
+    get_pool_id_for_block,
+)
 
 
 def index(request):
@@ -28,11 +39,9 @@ class BlockListView(ListView):
 
             b.generator_name = get_account_name(b.generator_id)
 
-            # _tar = Transaction.objects.using('java-wallet').filter(
-            #     type=20,
-            #     height__lte=b.height,
-            #     sender_id=b.generator_id
-            # ).order_by('-height')
+            pool_id = get_pool_id_for_block(b)
+            b.pool_id = pool_id
+            b.pool_name = get_account_name(pool_id)
 
         return context
 
@@ -52,6 +61,10 @@ class BlockDetailView(DetailView):
 
         context['txs_cnt'] = get_txs_count_in_block(obj.id)
         context['generator_name'] = get_account_name(obj.generator_id)
+
+        pool_id = get_pool_id_for_block(obj)
+        context['pool_id'] = pool_id
+        context['pool_name'] = get_account_name(pool_id)
 
         return context
 
