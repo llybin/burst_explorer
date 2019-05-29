@@ -44,15 +44,20 @@
             <a class="dropdown-item" href="https://wallet.burst.devtrue.net" target="_blank">Online Wallet</a>
           </div>
         </nav>
-{#        <form class="form-inline mt-2 mt-md-0">#}
-{#          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">#}
-{#          <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>#}
-{#        </form>#}
+        <form class="form-inline mt-2 mt-md-0 col-xs-4" action="{% url 'search' %}">
+          <input class="form-control mr-sm-2" type="text" name="q" placeholder="block / account / transaction" aria-label="Search">
+          <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" name="submit" value="Search">Search</button>
+        </form>
       </div>
     </header>
 
     <main role="main" class="flex-shrink-0">
       <div class="container">
+        {% if submit == 'Search' %}
+          <div class="alert alert-danger" role="alert">
+            Nothing found.
+          </div>
+        {% endif %}
         {% block content %}
         {% endblock %}
       </div>

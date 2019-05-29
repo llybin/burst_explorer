@@ -18,7 +18,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
 
-from scan import views
+from scan import views, search
 
 
 urlpatterns = [
@@ -35,6 +35,7 @@ urlpatterns = [
     path('mp/<str:id>', views.MarketPlaceDetailView.as_view(), name='mp-detail'),
     path('ats/', views.AtListView.as_view(), name='ats'),
     path('at/<str:id>', views.AtDetailView.as_view(), name='at-detail'),
+    path('search/', search.search_view, name='search'),
     path('admin/', admin.site.urls),
 ]
 
