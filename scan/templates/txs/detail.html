@@ -48,60 +48,59 @@
       <th>Transaction Fee</th>
       <td>{{ tx.fee|burst_amount }} Burst</td>
     </tr>
-    <tr><td colspan="2"><br><br></td></tr>
-    <tr>
+    <tr class="collapse show_more_info">
       <th>Version</th>
       <td>{{ tx.version }}</td>
     </tr>
-    <tr>
+    <tr class="collapse show_more_info">
       <th>Deadline</th>
       <td>{{ tx.deadline }}</td>
     </tr>
-    <tr>
+    <tr class="collapse show_more_info">
       <th>Block Timestamp</th>
       <td>{{ tx.block_timestamp|naturaltime }} ({{ tx.block_timestamp|date:'Y-m-d H:i:s' }} UTC)</td>
     </tr>
-    <tr>
+    <tr class="collapse show_more_info">
       <th>EC Block ID</th>
       <td>{{ tx.ec_block_id }}</td>
     </tr>
-    <tr>
+    <tr class="collapse show_more_info">
       <th>EC Block Height</th>
       <td>{{ tx.ec_block_height }}</td>
     </tr>
-    <tr>
+    <tr class="collapse show_more_info">
       <th>Has message</th>
       <td>{{ tx.has_message|boolean }}</td>
     </tr>
-    <tr>
+    <tr class="collapse show_more_info">
       <th>Has encrypted message</th>
       <td>{{ tx.has_encrypted_message|boolean }}</td>
     </tr>
-    <tr>
+    <tr class="collapse show_more_info">
       <th>Has Public Key Announcement</th>
       <td>{{ tx.has_public_key_announcement|boolean }}</td>
     </tr>
-    <tr>
+    <tr class="collapse show_more_info">
       <th>Has Encrypttoself Message</th>
       <td>{{ tx.has_encrypttoself_message|boolean }}</td>
     </tr>
-    <tr>
+    <tr class="collapse show_more_info">
       <th>Sender Public Key</th>
       <td class="text-monospace">{{ tx.sender_public_key|bin2hex }}</td>
     </tr>
-    <tr>
+    <tr class="collapse show_more_info">
       <th>Signature</th>
       <td class="text-monospace">{{ tx.signature|bin2hex }}</td>
     </tr>
-    <tr>
+    <tr class="collapse show_more_info">
       <th class="text-nowrap">Referenced Transaction Fullhash</th>
       <td class="text-monospace">{{ tx.referenced_transaction_fullhash|bin2hex }}</td>
     </tr>
-    <tr>
+    <tr class="collapse show_more_info">
       <th>Full Hash</th>
       <td class="text-monospace">{{ tx.full_hash|bin2hex }}</td>
     </tr>
-    <tr>
+    <tr class="collapse show_more_info">
       <th>Attachment</th>
       <td class="text-monospace">
         <textarea id="attachment" class="form-control" spellcheck="false" rows="5" disabled>{{ tx.attachment_bytes|bin2hex }}</textarea>
@@ -110,5 +109,6 @@
     </tr>
     </tbody>
   </table>
+  <a data-toggle="collapse" data-target=".show_more_info" href="#">Show more details</a>
 
 {% endblock %}
