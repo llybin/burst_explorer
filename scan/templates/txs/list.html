@@ -36,7 +36,7 @@
       <tr>
         <td><a href="{% url 'tx-detail' tx.id %}">{{ tx.id|truncatechars:10 }}</a></td>
         <td><a href="{% url 'block-detail' tx.block.height %}">{{ tx.block.height }}</a></td>
-        <td>{{ tx.timestamp|naturaltime }}</td>
+        <td>{{ tx.block_timestamp|naturaltime }}</td>
         <td>{{ tx|tx_type }}</td>
         <td class="text-nowrap">
           {% include "account_link.html" with account_id=tx.sender_id account_name=tx.sender_name %}
