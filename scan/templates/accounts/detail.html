@@ -53,44 +53,13 @@
         <a class="nav-item nav-link" id="nav-pool-tab" data-toggle="tab" href="#nav-pool" role="tab" aria-controls="nav-pool" aria-selected="false">? Pool members</a>
       </div>
     </nav>
-    <div class="tab-content small" id="nav-tabContent">
+    <div class="tab-content" id="nav-tabContent">
       <div class="tab-pane fade show active" id="nav-transactions" role="tabpanel" aria-labelledby="nav-transactions-tab">
-        <p>Latest {{ txs.count }} from a total of <a href="{% url 'txs' %}?a={{ address.id }}">{{ txs_cnt|intcomma }}</a> transactions</p>
-
-        <table class="table table-hover">
-          <thead>
-          <tr>
-            <th scope="col">Txn id</th>
-            <th scope="col">Block</th>
-            <th scope="col">Timestamp</th>
-            <th scope="col">Type</th>
-            <th scope="col">From</th>
-            <th scope="col">To</th>
-            <th scope="col">Value</th>
-            <th scope="col">Txn Fee</th>
-          </tr>
-          </thead>
-          <tbody>
-          {% for tx in txs %}
-            <tr>
-              <td><a href="{% url 'tx-detail' tx.id %}">{{ tx.id|truncatechars:10 }}</a></td>
-              <td><a href="{% url 'block-detail' tx.block.height %}">{{ tx.block.height }}</a></td>
-              <td class="text-nowrap">{{ tx.block_timestamp|naturaltime }}</td>
-              <td>{{ tx|tx_type }}</td>
-              <td class="text-nowrap">
-                {% include "account_link.html" with account_id=tx.sender_id account_name=tx.sender_name %}
-              </td>
-              <td class="text-nowrap">
-                {% include "recipient_link.html" with account_id=tx.recipient_id account_name=tx.recipient_name %}
-              </td>
-              <td class="text-nowrap">{{ tx.amount|burst_amount|rounding:4|intcomma }} Burst</td>
-              <td class="text-nowrap">{{ tx.fee|burst_amount|rounding:4|intcomma }} Burst</td>
-            </tr>
-          {% endfor %}
-          </tbody>
-        </table>
-
+        <br>
+        <p class="small">Latest {{ txs.count }} from a total of <a href="{% url 'txs' %}?a={{ address.id }}">{{ txs_cnt|intcomma }}</a> transactions</p>
+        {% include "txs/list_table.html" %}
       </div>
+
       <div class="tab-pane fade" id="nav-blocks" role="tabpanel" aria-labelledby="nav-blocks-tab">...</div>
       <div class="tab-pane fade" id="nav-multiout" role="tabpanel" aria-labelledby="nav-multiout-tab">...</div>
       <div class="tab-pane fade" id="nav-asset-hold" role="tabpanel" aria-labelledby="nav-asset-hold-tab">...</div>
