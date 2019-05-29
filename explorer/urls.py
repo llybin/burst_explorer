@@ -27,6 +27,7 @@ urlpatterns = [
     path('block/<str:height>', views.BlockDetailView.as_view(), name='block-detail'),
     path('txs/', views.TxListView.as_view(), name='txs'),
     path('tx/<str:id>', views.TxDetailView.as_view(), name='tx-detail'),
+    path('accounts', views.AccountsListView.as_view(), name='accounts'),
     path('address/<str:id>', views.AddressDetailView.as_view(), name='address-detail'),
     path('assets/', views.AssetListView.as_view(), name='assets'),
     path('asset/<str:id>', views.AssetDetailView.as_view(), name='asset-detail'),

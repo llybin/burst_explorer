@@ -32,6 +32,7 @@ def burst_amount(value):
 def rounding(value, accuracy):
     return round(value, accuracy)
 
+
 @register.filter
 def is_not_active(value):
     return "no" if value else "yes"
@@ -51,8 +52,9 @@ def tx_type(tx):
 
 @register.filter
 def num2rs(value):
-    if not value:
+    if value is None:
         return value
+
     return ReedSolomon().encode(str(value))
 
 
@@ -64,3 +66,12 @@ def block_generation_time(block):
 @register.filter
 def sub(value, arg):
     return value - arg
+
+
+@register.simple_tag(takes_context=True)
+def rank_row(context, number):
+    start = 0
+    if context['page_obj'].number > 0:
+        start = context['paginator'].per_page * (context['page_obj'].number - 1)
+
+    return number + start

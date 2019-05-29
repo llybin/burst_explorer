@@ -108,6 +108,15 @@ class TxDetailView(DetailView):
         return context
 
 
+class AccountsListView(ListView):
+    model = Account
+    queryset = Account.objects.using('java-wallet').filter(latest=True).all()
+    template_name = 'accounts/list.html'
+    context_object_name = 'accounts'
+    paginate_by = 25
+    ordering = '-balance'
+
+
 class AddressDetailView(DetailView):
     model = Account
     queryset = Account.objects.using('java-wallet').filter(latest=True).all()
