@@ -68,6 +68,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'scan.context_processors.settings_context_processor',
             ],
         },
     },
@@ -144,3 +145,9 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+ACCOUNTS_NAME_FORCE = [
+    3011184961392690771,
+    1606939141091290673,
+    3463450404564580757,
+]

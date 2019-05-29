@@ -8,7 +8,7 @@
   <div>
     <h5>Account #{{ address.id }}</h5>
 
-    <table class="table">
+    <table class="table small table-sm">
       <tbody>
       <tr>
         <th>Name</th>
@@ -34,7 +34,7 @@
     </table>
 
     <nav>
-      <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <div class="nav nav-tabs small" id="nav-tab" role="tablist">
         <a class="nav-item nav-link active" id="nav-transactions-tab" data-toggle="tab" href="#nav-transactions" role="tab" aria-controls="nav-transactions" aria-selected="true">{{ txs_cnt|intcomma }} Transactions</a>
         <a class="nav-item nav-link" id="nav-blocks-tab" data-toggle="tab" href="#nav-blocks" role="tab" aria-controls="nav-blocks" aria-selected="false">? Blocks</a>
         <a class="nav-item nav-link" id="nav-multiout-tab" data-toggle="tab" href="#nav-multiout" role="tab" aria-controls="nav-multiout" aria-selected="false">? MultiOut</a>
@@ -43,7 +43,7 @@
         <a class="nav-item nav-link" id="nav-pool-tab" data-toggle="tab" href="#nav-pool" role="tab" aria-controls="nav-pool" aria-selected="false">? Pool members</a>
       </div>
     </nav>
-    <div class="tab-content" id="nav-tabContent">
+    <div class="tab-content small" id="nav-tabContent">
       <div class="tab-pane fade show active" id="nav-transactions" role="tabpanel" aria-labelledby="nav-transactions-tab">
         <p>Latest {{ txs.count }} from a total of <a href="{% url 'txs' %}?a={{ address.id }}">{{ txs_cnt|intcomma }}</a> transactions</p>
 
@@ -63,24 +63,23 @@
           <tbody>
           {% for tx in txs %}
             <tr>
-              <td><a href="{% url 'tx-detail' tx.id %}">{{ tx.id }}</a></td>
+              <td><a href="{% url 'tx-detail' tx.id %}">{{ tx.id|truncatechars:10 }}</a></td>
               <td><a href="{% url 'block-detail' tx.block.height %}">{{ tx.block.height }}</a></td>
-              <td>{{ tx.timestamp|date:'Y-m-d H:i:s' }}</td>
+              <td>{{ tx.timestamp|naturaltime }}</td>
               <td>{{ tx|tx_type }}</td>
-              <td><a href="{% url 'address-detail' tx.sender_id %}">{{ tx.sender_id|num2rs }}</a></td>
-              <td>
-                {% if tx.recipient_id %}
-                  <a href="{% url 'address-detail' tx.recipient_id %}">{{ tx.recipient_id|num2rs }}</a>
-                {% elif tx.sender_id %}
-                  <a href="#">? recipients, see transaction details</a>
-                {% endif %}
+              <td class="text-nowrap">
+                {% include "account_link.html" with account=tx.sender %}
               </td>
-              <td>{{ tx.amount|burst_amount|intcomma }} Burst</td>
-              <td>{{ tx.fee|burst_amount|intcomma }} Burst</td>
+              <td class="text-nowrap">
+                {% include "recipient_link.html" with recipient=tx.recipient %}
+              </td>
+              <td>{{ tx.amount|burst_amount|rounding:4|intcomma }} Burst</td>
+              <td>{{ tx.fee|burst_amount|rounding:4|intcomma }} Burst</td>
             </tr>
           {% endfor %}
           </tbody>
         </table>
+
       </div>
       <div class="tab-pane fade" id="nav-blocks" role="tabpanel" aria-labelledby="nav-blocks-tab">...</div>
       <div class="tab-pane fade" id="nav-multiout" role="tabpanel" aria-labelledby="nav-multiout-tab">...</div>

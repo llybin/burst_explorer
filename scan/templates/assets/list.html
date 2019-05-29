@@ -24,13 +24,10 @@
     <tbody>
     {% for asset in assets %}
       <tr>
-        <td><a href="{% url 'asset-detail' asset.id %}">{{ asset.id|trunc_id }}</a></td>
+        <td><a href="{% url 'asset-detail' asset.id %}">{{ asset.id|truncatechars:10 }}</a></td>
         <td>{{ asset.name }}</td>
         <td class="text-nowrap">
-          <a href="{% url 'address-detail' asset.account_id %}">
-            {{ asset.account_id|num2rs }}<br>
-            <small><span class="text-black-50">(?empty name?)</span></small>
-          </a>
+            {% include "account_link.html" with account=asset.account %}
         </td>
         <td>{{ asset.quantity|intcomma }}</td>
       </tr>

@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 
@@ -18,9 +19,13 @@ class BlockListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        for b in context[self.context_object_name]:
-            b.txs_cnt = Transaction.objects.using('java-wallet').filter(
-                block_id=b.id).count()
+
+        obj = context[self.context_object_name]
+
+        for b in obj:
+            b.txs_cnt = Transaction.objects.using('java-wallet').filter(block_id=b.id).count()
+
+            b.generator = Account.objects.using('java-wallet').filter(id=b.generator_id, latest=True).first()
 
             # _tar = Transaction.objects.using('java-wallet').filter(
             #     type=20,
@@ -41,8 +46,12 @@ class BlockDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['txs_cnt'] = Transaction.objects.using('java-wallet').filter(
-            block_id=context[self.context_object_name].id).count()
+
+        obj = context[self.context_object_name]
+
+        context['txs_cnt'] = Transaction.objects.using('java-wallet').filter(block_id=obj.id).count()
+        context['generator'] = Account.objects.using('java-wallet').filter(id=obj.generator_id, latest=True).first()
+
         return context
 
 
@@ -65,6 +74,18 @@ class TxListView(ListView):
 
         return qs
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        obj = context[self.context_object_name]
+
+        for t in obj:
+            t.sender = Account.objects.using('java-wallet').filter(id=t.sender_id, latest=True).first()
+            if t.recipient_id:
+                t.recipient = Account.objects.using('java-wallet').filter(id=t.recipient_id, latest=True).first()
+
+        return context
+
 
 class TxDetailView(DetailView):
     model = Transaction
@@ -73,6 +94,17 @@ class TxDetailView(DetailView):
     context_object_name = 'tx'
     slug_field = 'id'
     slug_url_kwarg = 'id'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        obj = context[self.context_object_name]
+
+        context['sender'] = Account.objects.using('java-wallet').filter(id=obj.sender_id, latest=True).first()
+        if context[self.context_object_name].recipient_id:
+            context['recipient'] = Account.objects.using('java-wallet').filter(id=obj.recipient_id, latest=True).first()
+
+        return context
 
 
 class AddressDetailView(DetailView):
@@ -86,11 +118,21 @@ class AddressDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
+        obj = context[self.context_object_name]
+
         context['txs'] = Transaction.objects.using('java-wallet').filter(
-            sender_id=context[self.context_object_name].id).order_by('-timestamp')[:15]
+            Q(sender_id=obj.id) | Q(recipient_id=obj.id)
+        ).order_by('-height')[:15]
+
+        for t in context['txs']:
+            t.sender = Account.objects.using('java-wallet').filter(id=t.sender_id, latest=True).first()
+            if t.recipient_id:
+                t.recipient = Account.objects.using('java-wallet').filter(id=t.recipient_id, latest=True).first()
 
         context['txs_cnt'] = Transaction.objects.using('java-wallet').filter(
-            sender_id=context[self.context_object_name].id).count()
+            Q(sender_id=obj.id) | Q(recipient_id=obj.id)
+        ).count()
+
         return context
 
 
@@ -102,6 +144,16 @@ class AssetListView(ListView):
     paginate_by = 25
     ordering = '-height'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        obj = context[self.context_object_name]
+
+        for t in obj:
+            t.account = Account.objects.using('java-wallet').filter(id=t.account_id, latest=True).first()
+
+        return context
+
 
 class AssetDetailView(DetailView):
     model = Asset
@@ -111,23 +163,51 @@ class AssetDetailView(DetailView):
     slug_field = 'id'
     slug_url_kwarg = 'id'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        obj = context[self.context_object_name]
+
+        context['account'] = Account.objects.using('java-wallet').filter(id=obj.account_id, latest=True).first()
+
+        return context
+
 
 class MarketPlaceListView(ListView):
     model = Goods
     queryset = Goods.objects.using('java-wallet').filter(latest=True).all()
-    template_name = 'goods/list.html'
+    template_name = 'marketplace/list.html'
     context_object_name = 'goods'
     paginate_by = 25
     ordering = '-height'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        obj = context[self.context_object_name]
+
+        for t in obj:
+            t.seller = Account.objects.using('java-wallet').filter(id=t.seller_id, latest=True).first()
+
+        return context
 
 
 class MarketPlaceDetailView(DetailView):
     model = Goods
     queryset = Goods.objects.using('java-wallet').filter(latest=True).all()
-    template_name = 'goods/detail.html'
+    template_name = 'marketplace/detail.html'
     context_object_name = 'good'
     slug_field = 'id'
     slug_url_kwarg = 'id'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        obj = context[self.context_object_name]
+
+        context['seller'] = Account.objects.using('java-wallet').filter(id=obj.seller_id, latest=True).first()
+
+        return context
 
 
 class AtListView(ListView):
@@ -138,6 +218,16 @@ class AtListView(ListView):
     paginate_by = 15
     ordering = '-height'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        obj = context[self.context_object_name]
+
+        for t in obj:
+            t.creator = Account.objects.using('java-wallet').filter(id=t.creator_id, latest=True).first()
+
+        return context
+
 
 class AtDetailView(DetailView):
     model = At
@@ -146,3 +236,13 @@ class AtDetailView(DetailView):
     context_object_name = 'at'
     slug_field = 'id'
     slug_url_kwarg = 'id'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        obj = context[self.context_object_name]
+
+        context['creator'] = Account.objects.using('java-wallet').filter(
+            id=obj.creator_id, latest=True).first()
+
+        return context

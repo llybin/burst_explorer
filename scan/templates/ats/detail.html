@@ -24,9 +24,8 @@
     <tr>
       <th>Creator</th>
       <td>
-        <a href="{% url 'address-detail' at.creator_id %}">
-          {{ at.creator_id|num2rs }} <small><span class="text-black-50">(?empty name?)</span></small>
-        </a>
+        {% include "account_link.html" with account=creator oneline=True %}
+      </td>
     </tr>
     <tr><td colspan="2"><br><br></td></tr>
     <tr>

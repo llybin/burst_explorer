@@ -28,9 +28,8 @@
     <tr>
       <th>Issuer</th>
       <td>
-        <a href="{% url 'address-detail' asset.account_id %}">
-          {{ asset.account_id|num2rs }} <small><span class="text-black-50">(?empty name?)</span></small>
-        </a>
+        {% include "account_link.html" with account=account oneline=True %}
+      </td>
     </tr>
     <tr>
       <th>Block</th>

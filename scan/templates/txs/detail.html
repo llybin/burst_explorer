@@ -28,16 +28,14 @@
     <tr>
       <th>From</th>
       <td>
-        <a href="{% url 'address-detail' tx.sender_id %}">
-          {{ tx.sender_id|num2rs }} <small><span class="text-black-50">(?empty name?)</span></small>
-        </a>
+        {% include "account_link.html" with account=sender oneline=True %}
+      </td>
     </tr>
     <tr>
       <th>To</th>
       <td>
-        <a href="{% url 'address-detail' tx.recipient_id %}">
-          {{ tx.recipient_id|num2rs }} <small><span class="text-black-50">(?empty name?)</span></small>
-        </a>
+        {% include "recipient_link.html" with recipient=recipient oneline=True %}
+      </td>
     </tr>
     <tr>
       <th>Value</th>

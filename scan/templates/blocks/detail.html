@@ -46,17 +46,13 @@
     <tr>
       <th>Mined by</th>
       <td>
-        <a href="{% url 'address-detail' blk.generator_id %}">
-          {{ blk.generator_id|num2rs }} <small><span class="text-black-50">(?empty name?)</span></small>
-        </a>
+        {% include "account_link.html" with account=generator oneline=True %}
       </td>
     </tr>
     <tr>
       <th>Pool</th>
       <td>
-        <a href="{% url 'address-detail' blk.generator_id %}">
-          {{ blk.generator_id|num2rs }} <small><span class="text-black-50">(?empty name?)</span></small>
-        </a>
+        {% include "account_link.html" with account=generator oneline=True %}
       </td>
     </tr>
     <tr>

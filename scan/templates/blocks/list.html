@@ -41,16 +41,10 @@
         <td>{{ block|block_reward_fee|rounding:4|intcomma }} Burst</td>
         <td>{{ block.payload_length|filesizeformat }}</td>
         <td class="text-nowrap">
-          <a href="{% url 'address-detail' block.generator_id %}">
-            {{ block.generator_id|num2rs }}<br>
-            <small><span class="text-black-50">(?empty name?)</span></small>
-          </a>
+          {% include "account_link.html" with account=block.generator %}
         </td>
         <td class="text-nowrap">
-          <a href="{% url 'address-detail' block.generator_id %}">
-            {{ block.generator_id|num2rs }}<br>
-            <small><span class="text-black-50">(?empty name?)</span></small>
-          </a>
+          {% include "account_link.html" with account=block.generator %}
         </td>
       </tr>
     {% endfor %}

@@ -23,13 +23,10 @@
     <tbody>
     {% for at in ats %}
       <tr>
-        <td><a href="{% url 'at-detail' at.id %}">{{ at.id|trunc_id }}</a></td>
+        <td><a href="{% url 'at-detail' at.id %}">{{ at.id|truncatechars:10 }}</a></td>
         <td>{{ at.name }}</td>
         <td class="text-nowrap">
-          <a href="{% url 'address-detail' at.creator_id %}">
-            {{ at.creator_id|num2rs }}<br>
-            <small><span class="text-black-50">(?empty name?)</span></small>
-          </a>
+          {% include "account_link.html" with account=at.creator %}
         </td>
       </tr>
     {% endfor %}

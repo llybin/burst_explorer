@@ -26,13 +26,10 @@
     <tbody>
     {% for good in goods %}
       <tr>
-        <td><a href="{% url 'mp-detail' good.id %}">{{ good.id|trunc_id }}</a></td>
+        <td><a href="{% url 'mp-detail' good.id %}">{{ good.id|truncatechars:10 }}</a></td>
         <td>{{ good.name }}</td>
         <td class="text-nowrap">
-          <a href="{% url 'address-detail' good.seller_id %}">
-            {{ good.seller_id|num2rs }}<br>
-            <small><span class="text-black-50">(?empty name?)</span></small>
-          </a>
+          {% include "account_link.html" with account=good.seller %}
         </td>
         <td class="text-nowrap">{{ good.quantity|intcomma }}</td>
         <td class="text-nowrap">{{ good.price|burst_amount|rounding:4|intcomma }} Burst</td>

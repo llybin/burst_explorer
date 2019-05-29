@@ -1,0 +1,11 @@
+{% load burst_tags %}
+
+{% if recipient %}
+  {% include "account_link.html" with account=recipient oneline=oneline %}
+{% elif tx.subtype == 1 or tx.subtype == 2 %}
+  <a href="#" class="text-info">
+    ? recipients
+    {% if not oneline %}<br>{% endif %}
+    <small><span class="text-black-50">see transaction details</span></small>
+  </a>
+{% endif %}
