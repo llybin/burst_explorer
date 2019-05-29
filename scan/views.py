@@ -16,6 +16,7 @@ from scan.helpers import (
     get_pool_id_for_block,
     get_pool_id_for_account,
 )
+from scan.caching_paginator import CachingPaginator
 
 
 def index(request):
@@ -27,6 +28,7 @@ class BlockListView(ListView):
     queryset = Block.objects.using('java-wallet').all()
     template_name = 'blocks/list.html'
     context_object_name = 'blocks'
+    paginator_class = CachingPaginator
     paginate_by = 25
     ordering = '-height'
 
@@ -85,6 +87,7 @@ class TxListView(ListView):
     queryset = Transaction.objects.using('java-wallet').all()
     template_name = 'txs/list.html'
     context_object_name = 'txs'
+    paginator_class = CachingPaginator
     paginate_by = 25
     ordering = '-height'
 
@@ -145,6 +148,7 @@ class AccountsListView(ListView):
     queryset = Account.objects.using('java-wallet').filter(latest=True).all()
     template_name = 'accounts/list.html'
     context_object_name = 'accounts'
+    paginator_class = CachingPaginator
     paginate_by = 25
     ordering = '-balance'
 
@@ -213,6 +217,7 @@ class AssetListView(ListView):
     queryset = Asset.objects.using('java-wallet').all()
     template_name = 'assets/list.html'
     context_object_name = 'assets'
+    paginator_class = CachingPaginator
     paginate_by = 25
     ordering = '-height'
 
@@ -250,6 +255,7 @@ class MarketPlaceListView(ListView):
     queryset = Goods.objects.using('java-wallet').filter(latest=True).all()
     template_name = 'marketplace/list.html'
     context_object_name = 'goods'
+    paginator_class = CachingPaginator
     paginate_by = 25
     ordering = '-height'
 
@@ -287,7 +293,8 @@ class AtListView(ListView):
     queryset = At.objects.using('java-wallet').filter(latest=True).all()
     template_name = 'ats/list.html'
     context_object_name = 'ats'
-    paginate_by = 15
+    paginator_class = CachingPaginator
+    paginate_by = 25
     ordering = '-height'
 
     def get_context_data(self, **kwargs):

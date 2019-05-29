@@ -4,27 +4,27 @@ from java_wallet.models import Account, Transaction, RewardRecipAssign
 
 
 def get_account_name(account_id):
-    key = "account_name_{}".format(account_id)
+    key = "account_name:{}".format(account_id)
 
     account_name = cache.get(key)
 
-    if not account_name:
+    if account_name is None:
         account_name = Account.objects.using('java-wallet').filter(
             id=account_id, latest=True
         ).values_list(
             'name', flat=True
         ).first()
-        cache.set(key, account_name)
+        cache.set(key, account_name or '')
 
     return account_name
 
 
 def get_txs_count_in_block(block_id):
-    key = "block_txs_count_{}".format(block_id)
+    key = "block_txs_count:{}".format(block_id)
 
     cnt = cache.get(key)
 
-    if not cnt:
+    if cnt is None:
         cnt = Transaction.objects.using('java-wallet').filter(block_id=block_id).count()
         cache.set(key, cnt)
 
@@ -32,11 +32,11 @@ def get_txs_count_in_block(block_id):
 
 
 def get_pool_id_for_block(block):
-    key = "block_pool_{}".format(block.id)
+    key = "block_pool:{}".format(block.id)
 
-    recipient_id = cache.get(key)
+    recipient_id = cache.get(key, -1)
 
-    if not recipient_id:
+    if recipient_id == -1:
         recipient_id = Transaction.objects.using('java-wallet').filter(
             type=20,
             height__lte=block.height,
@@ -51,11 +51,11 @@ def get_pool_id_for_block(block):
 
 
 def get_pool_id_for_account(address_id):
-    key = "block_pool_{}".format(address_id)
+    key = "block_pool:{}".format(address_id)
 
-    pool_id = cache.get(key)
+    pool_id = cache.get(key, -1)
 
-    if not pool_id:
+    if pool_id == -1:
         pool_id = RewardRecipAssign.objects.using('java-wallet').filter(
             account_id=address_id
         ).values_list(
