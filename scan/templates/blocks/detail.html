@@ -90,19 +90,19 @@
     </tr>
     <tr>
       <th>Cumulative Difficulty</th>
-      <td>{{ blk.cumulative_difficulty|bin2hex }}</td>
+      <td class="text-monospace">{{ blk.cumulative_difficulty|bin2hex }}</td>
     </tr>
     <tr>
       <th class="text-nowrap">Generator Public Key</th>
-      <td>{{ blk.generator_public_key|bin2hex }}</td>
+      <td class="text-monospace">{{ blk.generator_public_key|bin2hex }}</td>
     </tr>
     <tr>
-      <th>Generation Signature</th>
-      <td>{{ blk.generation_signature|bin2hex }}</td>
+      <th class="text-nowrap">Generation Signature</th>
+      <td class="text-monospace">{{ blk.generation_signature|bin2hex }}</td>
     </tr>
     <tr>
       <th>Block Signature</th>
-      <td>{{ blk.block_signature|bin2hex }}</td>
+      <td class="text-monospace">{{ blk.block_signature|bin2hex }}</td>
     </tr>
     </tbody>
   </table>

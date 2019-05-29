@@ -68,6 +68,11 @@ def sub(value, arg):
     return value - arg
 
 
+@register.filter
+def boolean(value):
+    return "yes" if value else "no"
+
+
 @register.simple_tag(takes_context=True)
 def rank_row(context, number):
     start = 0
