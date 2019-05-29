@@ -12,7 +12,7 @@
       <tbody>
       <tr>
         <th>Name</th>
-        <td>{{ address.name }}</td>
+        <td>{% if address.name %}{{ address.name }}{% endif %}</td>
       </tr>
       <tr>
         <th>Address</th>

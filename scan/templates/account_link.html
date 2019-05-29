@@ -6,8 +6,8 @@
 {% if not oneline %}<br>{% endif %}
 <small>
   {% if account_name and account_id not in ACCOUNTS_NAME_FORCE %}
-    <span class="text-secondary" title="{{ account_name }}">{{ account_name|truncatechars:30 }}</span>
+    <span class="text-success" title="{{ account_name }}">{{ account_name|truncatechars:30 }}</span>
   {% else %}
-    <span class="text-success">empty name</span>
+    <span class="text-secondary">empty name</span>
   {% endif %}
 </small>
