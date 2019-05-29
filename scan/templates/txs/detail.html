@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 
+{% load humanize %}
 {% load burst_tags %}
 
 {% block content %}
 
   <h5>Transaction #{{ tx.id }} details</h5>
 
-  <table class="table">
+  <table class="table small table-sm">
     <tbody>
     <tr>
       <th>ID</th>
@@ -22,15 +23,21 @@
     </tr>
     <tr>
       <th>Timestamp</th>
-      <td>{{ tx.timestamp|date:'Y-m-d H:i:s' }}</td>
+      <td>{{ tx.timestamp|naturaltime }} ({{ tx.timestamp|date:'Y-m-d H:i:s' }} UTC)</td>
     </tr>
     <tr>
       <th>From</th>
-      <td><a href="{% url 'address-detail' tx.sender_id %}">{{ tx.sender_id|num2rs }}<small><span class="text-danger">(?empty name?)</span></small></a></td>
+      <td>
+        <a href="{% url 'address-detail' tx.sender_id %}">
+          {{ tx.sender_id|num2rs }} <small><span class="text-black-50">(?empty name?)</span></small>
+        </a>
     </tr>
     <tr>
       <th>To</th>
-      <td><a href="{% url 'address-detail' tx.recipient_id %}">{{ tx.recipient_id|num2rs }}<small><span class="text-danger">(?empty name?)</span></small></a></td>
+      <td>
+        <a href="{% url 'address-detail' tx.recipient_id %}">
+          {{ tx.recipient_id|num2rs }} <small><span class="text-black-50">(?empty name?)</span></small>
+        </a>
     </tr>
     <tr>
       <th>Value</th>
@@ -51,7 +58,7 @@
     </tr>
     <tr>
       <th>Block Timestamp</th>
-      <td>{{ tx.block_timestamp|date:'Y-m-d H:i:s' }}</td>
+      <td>{{ tx.block_timestamp|naturaltime }} ({{ tx.block_timestamp|date:'Y-m-d H:i:s' }} UTC)</td>
     </tr>
     <tr>
       <th>EC Block ID</th>

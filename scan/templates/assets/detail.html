@@ -7,7 +7,7 @@
 
   <h5>Asset #{{ asset.id }} details</h5>
 
-  <table class="table">
+  <table class="table small table-sm">
     <tbody>
     <tr>
       <th>ID</th>
@@ -27,7 +27,10 @@
     </tr>
     <tr>
       <th>Issuer</th>
-      <td><a href="{% url 'address-detail' asset.account_id %}">{{ asset.account_id|num2rs }}<small><span class="text-danger">(?empty name?)</span></small></a></td>
+      <td>
+        <a href="{% url 'address-detail' asset.account_id %}">
+          {{ asset.account_id|num2rs }} <small><span class="text-black-50">(?empty name?)</span></small>
+        </a>
     </tr>
     <tr>
       <th>Block</th>

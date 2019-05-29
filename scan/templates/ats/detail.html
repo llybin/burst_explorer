@@ -7,7 +7,7 @@
 
   <h5>AT #{{ at.id }} details</h5>
 
-  <table class="table">
+  <table class="table small table-sm">
     <tbody>
     <tr>
       <th>ID</th>
@@ -23,7 +23,10 @@
     </tr>
     <tr>
       <th>Creator</th>
-      <td><a href="{% url 'address-detail' at.creator_id %}">{{ at.creator_id|num2rs }}<small><span class="text-danger">(?empty name?)</span></small></a></td>
+      <td>
+        <a href="{% url 'address-detail' at.creator_id %}">
+          {{ at.creator_id|num2rs }} <small><span class="text-black-50">(?empty name?)</span></small>
+        </a>
     </tr>
     <tr><td colspan="2"><br><br></td></tr>
     <tr>
@@ -32,7 +35,8 @@
     </tr>
     <tr>
       <th>Creation Block</th>
-      <td><a href="{% url 'block-detail' at.creation_height %}">{{ at.creation_height }}</a></td>
+      <td>
+        <a href="{% url 'block-detail' at.creation_height %}">{{ at.creation_height }}</a></td>
     </tr>
     <tr>
       <th>Version</th>
@@ -56,7 +60,10 @@
     </tr>
     <tr>
       <th>Ap Code</th>
-      <td>{{ at.ap_code|bin2hex }}</td>
+      <td>
+        <textarea id="ap_code" class="form-control" spellcheck="false" rows="5">{{ at.ap_code|bin2hex }}</textarea>
+        <label for="ap_code"></label>
+      </td>
     </tr>
     </tbody>
   </table>
