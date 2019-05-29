@@ -13,7 +13,7 @@ class BlockListView(ListView):
     queryset = Block.objects.using('java-wallet').all()
     template_name = 'blocks/list.html'
     context_object_name = 'blocks'
-    paginate_by = 15
+    paginate_by = 25
     ordering = '-height'
 
     def get_context_data(self, **kwargs):
@@ -51,8 +51,8 @@ class TxListView(ListView):
     queryset = Transaction.objects.using('java-wallet').all()
     template_name = 'txs/list.html'
     context_object_name = 'txs'
-    paginate_by = 15
-    ordering = '-timestamp'
+    paginate_by = 25
+    ordering = '-height'
 
     def get_queryset(self):
         qs = super().get_queryset()
@@ -99,7 +99,7 @@ class AssetListView(ListView):
     queryset = Asset.objects.using('java-wallet').all()
     template_name = 'assets/list.html'
     context_object_name = 'assets'
-    paginate_by = 15
+    paginate_by = 25
     ordering = '-height'
 
 
@@ -117,7 +117,7 @@ class MarketPlaceListView(ListView):
     queryset = Goods.objects.using('java-wallet').filter(latest=True).all()
     template_name = 'goods/list.html'
     context_object_name = 'goods'
-    paginate_by = 15
+    paginate_by = 25
     ordering = '-height'
 
 

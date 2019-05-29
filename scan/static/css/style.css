@@ -13,6 +13,10 @@ main > .container {
     max-width: 960px;
 }
 
+.table td, .table th {
+    vertical-align: middle;
+}
+
 .footer {
     background-color: #f5f5f5;
 }

@@ -4,7 +4,6 @@ from datetime import datetime
 from django.db import models
 
 
-# models.BigIntegerField -> PositiveBigIntegerField
 class PositiveBigIntegerField(models.BigIntegerField):
     empty_strings_allowed = False
     description = "Big (8 byte) positive integer"
@@ -26,7 +25,6 @@ class PositiveBigIntegerField(models.BigIntegerField):
         return ctypes.c_ulong(value).value
 
 
-# timestamp = IntegerField -> timestamp = TimestampField
 class TimestampField(models.DateTimeField):
     @staticmethod
     def from_db_value(value, expression, connection):

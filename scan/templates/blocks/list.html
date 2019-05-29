@@ -18,7 +18,7 @@
     {% include "paginator.html" %}
   </div>
 
-  <table class="table table-hover">
+  <table class="table table-hover small table-sm">
     <thead>
     <tr>
       <th scope="col">Height</th>
@@ -27,19 +27,31 @@
       <th scope="col">Sent</th>
       <th scope="col">Reward</th>
       <th scope="col">Size</th>
-      <th scope="col">Miner (Pool)</th>
+      <th scope="col">Miner</th>
+      <th scope="col">Pool</th>
     </tr>
     </thead>
     <tbody>
     {% for block in blocks %}
       <tr>
         <td><a href="{% url 'block-detail' block.height %}">{{ block.height }}</a></td>
-        <td>{{ block.timestamp|date:'Y-m-d H:i:s' }}</td>
+        <td>{{ block.timestamp|naturaltime }}</td>
         <td><a href="{% url 'txs' %}?block={{ block.height }}">{{ block.txs_cnt|intcomma }}</a></td>
-        <td>{{ block.total_amount|burst_amount|intcomma }} Burst</td>
-        <td>{{ block|block_reward_fee|intcomma }} Burst</td>
+        <td>{{ block.total_amount|burst_amount|rounding:4|intcomma }} Burst</td>
+        <td>{{ block|block_reward_fee|rounding:4|intcomma }} Burst</td>
         <td>{{ block.payload_length|filesizeformat }}</td>
-        <td>{{ block.generator_id|num2rs }}<small><span class="text-danger">(?empty name?)</span></small> (?Pool?)</td>
+        <td class="text-nowrap">
+          <a href="{% url 'address-detail' block.generator_id %}">
+            {{ block.generator_id|num2rs }}<br>
+            <small><span class="text-black-50">(?empty name?)</span></small>
+          </a>
+        </td>
+        <td class="text-nowrap">
+          <a href="{% url 'address-detail' block.generator_id %}">
+            {{ block.generator_id|num2rs }}<br>
+            <small><span class="text-black-50">(?empty name?)</span></small>
+          </a>
+        </td>
       </tr>
     {% endfor %}
     </tbody>

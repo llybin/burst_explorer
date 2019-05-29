@@ -18,7 +18,7 @@
     {% include "paginator.html" %}
   </div>
 
-  <table class="table table-hover">
+  <table class="table table-hover small table-sm">
     <thead>
     <tr>
       <th scope="col">Txn id</th>
@@ -34,20 +34,31 @@
     <tbody>
     {% for tx in txs %}
       <tr>
-        <td><a href="{% url 'tx-detail' tx.id %}">{{ tx.id }}</a></td>
+        <td><a href="{% url 'tx-detail' tx.id %}">{{ tx.id|trunc_id }}</a></td>
         <td><a href="{% url 'block-detail' tx.block.height %}">{{ tx.block.height }}</a></td>
-        <td>{{ tx.timestamp|date:'Y-m-d H:i:s' }}</td>
+        <td>{{ tx.timestamp|naturaltime }}</td>
         <td>{{ tx|tx_type }}</td>
-        <td><a href="{% url 'address-detail' tx.sender_id %}">{{ tx.sender_id|num2rs }}</a><small><span class="text-danger">(?empty name?)</span></small></td>
-        <td>
+        <td class="text-nowrap">
+          <a href="{% url 'address-detail' tx.sender_id %}">
+            {{ tx.sender_id|num2rs }}<br>
+            <small><span class="text-black-50">(?empty name?)</span></small>
+          </a>
+        </td>
+        <td class="text-nowrap">
           {% if tx.recipient_id %}
-            <a href="{% url 'address-detail' tx.recipient_id %}">{{ tx.recipient_id|num2rs }}</a><small><span class="text-danger">(?empty name?)</span></small>
-          {% elif tx.sender_id %}
-            <a href="#">? recipients, see transaction details</a>
+            <a href="{% url 'address-detail' tx.recipient_id %}">
+              {{ tx.recipient_id|num2rs }}<br>
+              <small><span class="text-black-50">(?empty name?)</span></small>
+            </a>
+          {% elif tx.subtype == 1 or tx.subtype == 2 %}
+            <a href="#" class="text-info">
+              ? recipients<br>
+              <small><span class="text-black-50">see transaction details</span></small>
+            </a>
           {% endif %}
         </td>
-        <td>{{ tx.amount|burst_amount|intcomma }} Burst</td>
-        <td>{{ tx.fee|burst_amount|intcomma }} Burst</td>
+        <td>{{ tx.amount|burst_amount|rounding:4|intcomma }} Burst</td>
+        <td>{{ tx.fee|burst_amount|rounding:4|intcomma }} Burst</td>
       </tr>
     {% endfor %}
     </tbody>

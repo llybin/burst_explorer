@@ -29,6 +29,21 @@ def burst_amount(value):
 
 
 @register.filter
+def rounding(value, accuracy):
+    return round(value, accuracy)
+
+
+@register.filter
+def trunc_id(value):
+    return "{}...".format(str(value)[:10])
+
+
+@register.filter
+def is_not_active(value):
+    return "no" if value else "yes"
+
+
+@register.filter
 def bin2hex(value):
     if not value:
         return ''

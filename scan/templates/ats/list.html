@@ -12,7 +12,7 @@
     {% include "paginator.html" %}
   </div>
 
-  <table class="table table-hover">
+  <table class="table table-hover small table-sm">
     <thead>
     <tr>
       <th scope="col">AT Id</th>
@@ -23,9 +23,14 @@
     <tbody>
     {% for at in ats %}
       <tr>
-        <td><a href="{% url 'at-detail' at.id %}">{{ at.id }}</a></td>
+        <td><a href="{% url 'at-detail' at.id %}">{{ at.id|trunc_id }}</a></td>
         <td>{{ at.name }}</td>
-        <td><a href="{% url 'address-detail' at.creator_id %}">{{ at.creator_id|num2rs }}<small><span class="text-danger">(?empty name?)</span></small></a></td>
+        <td class="text-nowrap">
+          <a href="{% url 'address-detail' at.creator_id %}">
+            {{ at.creator_id|num2rs }}<br>
+            <small><span class="text-black-50">(?empty name?)</span></small>
+          </a>
+        </td>
       </tr>
     {% endfor %}
     </tbody>

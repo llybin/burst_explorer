@@ -12,7 +12,7 @@
     {% include "paginator.html" %}
   </div>
 
-  <table class="table table-hover">
+  <table class="table table-hover small table-sm">
     <thead>
     <tr>
       <th scope="col">Good Id</th>
@@ -20,18 +20,23 @@
       <th scope="col">Seller</th>
       <th scope="col">Quantity</th>
       <th scope="col">Price</th>
-      <th scope="col">Delisted</th>
+      <th scope="col">Active</th>
     </tr>
     </thead>
     <tbody>
     {% for good in goods %}
       <tr>
-        <td><a href="{% url 'mp-detail' good.id %}">{{ good.id }}</a></td>
+        <td><a href="{% url 'mp-detail' good.id %}">{{ good.id|trunc_id }}</a></td>
         <td>{{ good.name }}</td>
-        <td><a href="{% url 'address-detail' good.seller_id %}">{{ good.seller_id|num2rs }}<small><span class="text-danger">(?empty name?)</span></small></a></td>
-        <td>{{ good.quantity|intcomma }}</td>
-        <td>{{ good.price|burst_amount|intcomma }} Burst</td>
-        <td>{{ good.delisted }}</td>
+        <td class="text-nowrap">
+          <a href="{% url 'address-detail' good.seller_id %}">
+            {{ good.seller_id|num2rs }}<br>
+            <small><span class="text-black-50">(?empty name?)</span></small>
+          </a>
+        </td>
+        <td class="text-nowrap">{{ good.quantity|intcomma }}</td>
+        <td class="text-nowrap">{{ good.price|burst_amount|rounding:4|intcomma }} Burst</td>
+        <td>{{ good.delisted|is_not_active }}</td>
       </tr>
     {% endfor %}
     </tbody>
