@@ -1,4 +1,5 @@
 from django.core.cache import cache
+from django.db.models import Sum
 
 from java_wallet.models import Account, Transaction, RewardRecipAssign
 
@@ -67,3 +68,18 @@ def get_pool_id_for_account(address_id):
         cache.set(key, pool_id)
 
     return pool_id
+
+
+def get_all_burst_amount():
+    key = "all_burst_amount"
+
+    amount = cache.get(key)
+
+    if amount is None:
+        amount = Account.objects.using('java-wallet').filter(
+            latest=True
+        ).aggregate(Sum('balance'))['balance__sum']
+
+        cache.set(key, amount, 86400)
+
+    return amount

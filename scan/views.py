@@ -1,4 +1,4 @@
-from django.db.models import Q, Sum
+from django.db.models import Q
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 
@@ -15,6 +15,7 @@ from scan.helpers import (
     get_txs_count_in_block,
     get_pool_id_for_block,
     get_pool_id_for_account,
+    get_all_burst_amount,
 )
 from scan.caching_paginator import CachingPaginator
 
@@ -155,11 +156,7 @@ class AccountsListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        res = Account.objects.using('java-wallet').filter(
-            latest=True
-        ).aggregate(Sum('balance'))
-
-        context['balance__sum'] = res['balance__sum']
+        context['balance__sum'] = get_all_burst_amount()
 
         return context
 
