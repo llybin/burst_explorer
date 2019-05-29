@@ -150,10 +150,10 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
         'LOCATION': '/tmp/django_cache',
-        'TIMEOUT': 3600,
-        'OPTIONS': {
-            'MAX_ENTRIES': 100000
-        }
+        'TIMEOUT': 604800,
+        # 'OPTIONS': {
+        #     'MAX_ENTRIES': 100000
+        # }
     }
 }
 
