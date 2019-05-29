@@ -1,4 +1,4 @@
-from django.db.models import Q
+from django.db.models import Q, Sum
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 
@@ -138,6 +138,17 @@ class AccountsListView(ListView):
     context_object_name = 'accounts'
     paginate_by = 25
     ordering = '-balance'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        res = Account.objects.using('java-wallet').filter(
+            latest=True
+        ).aggregate(Sum('balance'))
+
+        context['balance__sum'] = res['balance__sum']
+
+        return context
 
 
 class AddressDetailView(DetailView):

@@ -17,6 +17,7 @@
     <tr>
       <th scope="col">Rank</th>
       <th scope="col">Name</th>
+      <th scope="col">Percent</th>
       <th scope="col">Balance</th>
     </tr>
     </thead>
@@ -29,6 +30,7 @@
         <td class="text-nowrap">
           {% include "account_link.html" with account_id=account.id account_name=account.name %}
         </td>
+        <td>{{ account.balance|percent:balance__sum|rounding:2|intcomma }} %</td>
         <td>{{ account.balance|burst_amount|rounding:4|intcomma }} Burst</td>
       </tr>
     {% endfor %}

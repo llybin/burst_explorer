@@ -73,6 +73,11 @@ def boolean(value):
     return "yes" if value else "no"
 
 
+@register.filter
+def percent(value, total):
+    return value / total * 100
+
+
 @register.simple_tag(takes_context=True)
 def rank_row(context, number):
     start = 0
