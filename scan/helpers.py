@@ -34,30 +34,20 @@ def get_txs_count_in_block(block_id):
 def get_pool_id_for_block(block):
     key = "block_pool_{}".format(block.id)
 
-    recip_id = cache.get(key)
+    recipient_id = cache.get(key)
 
-    if not recip_id:
-        assign_reward_height = Transaction.objects.using('java-wallet').filter(
+    if not recipient_id:
+        recipient_id = Transaction.objects.using('java-wallet').filter(
             type=20,
             height__lte=block.height,
             sender_id=block.generator_id
         ).values_list(
-            'height', flat=True
+            'recipient_id', flat=True
         ).order_by('-height').first()
 
-        if not assign_reward_height:
-            cache.set(key, None)
-            return None
+        cache.set(key, recipient_id)
 
-        recip_id = RewardRecipAssign.objects.using('java-wallet').filter(
-            account_id=block.generator_id, height=assign_reward_height
-        ).values_list(
-            'recip_id', flat=True
-        ).first()
-
-        cache.set(key, recip_id)
-
-    return recip_id
+    return recipient_id
 
 
 def get_pool_id_for_account(address_id):

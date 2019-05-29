@@ -5,6 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 ipython = "*"
+django-debug-toolbar = "*"
 
 [packages]
 django = "==2.2.1"
