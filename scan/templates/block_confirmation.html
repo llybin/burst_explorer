@@ -1,0 +1,9 @@
+{% load burst_tags %}
+
+{% if blocks_confirm >= 10 %}
+  <span class="text-success">{{ blocks_confirm }} Block Confirmation</span>
+{% elif blocks_confirm >= 4  %}
+  <span class="text-warning">{{ blocks_confirm }} Block Confirmation</span>
+{% else %}
+  <span class="text-danger">{{ blocks_confirm }} Block Confirmation</span>
+{% endif %}

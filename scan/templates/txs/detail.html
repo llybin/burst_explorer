@@ -15,7 +15,10 @@
     </tr>
     <tr>
       <th>Height</th>
-      <td><a href="{% url 'block-detail' tx.block.height %}">{{ tx.block.height }}</a> <span class="text-success">{{ blocks_confirm }} Block Confirmation</span></td>
+      <td>
+        <a href="{% url 'block-detail' tx.block.height %}">{{ tx.block.height }}</a>
+        {% include "block_confirmation.html" %}
+      </td>
     </tr>
     <tr>
       <th>Type</th>
