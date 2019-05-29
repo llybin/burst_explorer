@@ -116,6 +116,14 @@ class TxDetailView(DetailView):
 
         obj = context[self.context_object_name]
 
+        last_block = Block.objects.using('java-wallet').order_by(
+            '-height'
+        ).values_list(
+            'height', flat=True
+        ).first()
+
+        context['blocks_confirm'] = last_block - obj.height
+
         context['sender_name'] = get_account_name(obj.sender_id)
         if context[self.context_object_name].recipient_id:
             context['recipient_name'] = get_account_name(obj.recipient_id)
