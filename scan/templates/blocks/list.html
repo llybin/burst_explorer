@@ -5,7 +5,11 @@
 
 {% block content %}
 
-  <h5>Blocks</h5>
+  <h5>Blocks
+    {% if 'm' in request.GET %}
+      <small class="text-muted">For miner #{% with blocks|first as block %}<a href="{% url 'address-detail' block.generator_id %}">{{ block.generator_id }}</a>{% endwith %}</small>
+    {% endif %}
+  </h5>
 
   <div class="d-flex flex-column flex-md-row align-items-center">
     <small class="my-0 mr-md-auto text-muted">
