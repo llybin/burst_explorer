@@ -39,10 +39,10 @@
         <td>{{ tx.timestamp|naturaltime }}</td>
         <td>{{ tx|tx_type }}</td>
         <td class="text-nowrap">
-          {% include "account_link.html" with account=tx.sender %}
+          {% include "account_link.html" with account_id=tx.sender_id account_name=tx.sender_name %}
         </td>
         <td class="text-nowrap">
-          {% include "recipient_link.html" with recipient=tx.recipient %}
+          {% include "recipient_link.html" with account_id=tx.recipient_id account_name=tx.recipient_name %}
         </td>
         <td>{{ tx.amount|burst_amount|rounding:4|intcomma }} Burst</td>
         <td>{{ tx.fee|burst_amount|rounding:4|intcomma }} Burst</td>

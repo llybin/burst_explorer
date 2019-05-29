@@ -146,6 +146,17 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/tmp/django_cache',
+        'TIMEOUT': 600,
+        'OPTIONS': {
+            'MAX_ENTRIES': 1000
+        }
+    }
+}
+
 ACCOUNTS_NAME_FORCE = [
     3011184961392690771,
     1606939141091290673,

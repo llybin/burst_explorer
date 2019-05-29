@@ -26,7 +26,7 @@
         <td><a href="{% url 'at-detail' at.id %}">{{ at.id|truncatechars:10 }}</a></td>
         <td>{{ at.name }}</td>
         <td class="text-nowrap">
-          {% include "account_link.html" with account=at.creator %}
+          {% include "account_link.html" with account_id=at.creator_id account_name=at.creator_name %}
         </td>
       </tr>
     {% endfor %}

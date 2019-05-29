@@ -1,12 +1,12 @@
 {% load burst_tags %}
 
-<a href="{% url 'address-detail' account.id %}">
-  {{ account.id|num2rs }}
+<a href="{% url 'address-detail' account_id %}">
+  {{ account_id|num2rs }}
 </a>
 {% if not oneline %}<br>{% endif %}
 <small>
-  {% if account.name and account.id not in ACCOUNTS_NAME_FORCE %}
-    <span class="text-secondary" title="{{ account.name }}">{{ account.name|truncatechars:30 }}</span>
+  {% if account_name and account_id not in ACCOUNTS_NAME_FORCE %}
+    <span class="text-secondary" title="{{ account_name }}">{{ account_name|truncatechars:30 }}</span>
   {% else %}
     <span class="text-success">empty name</span>
   {% endif %}

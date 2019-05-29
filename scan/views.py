@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 
 from java_wallet.models import Block, Transaction, Account, Asset, Goods, At
+from scan.helpers import get_account_name, get_txs_count_in_block
 
 
 def index(request):
@@ -23,9 +24,9 @@ class BlockListView(ListView):
         obj = context[self.context_object_name]
 
         for b in obj:
-            b.txs_cnt = Transaction.objects.using('java-wallet').filter(block_id=b.id).count()
+            b.txs_cnt = get_txs_count_in_block(b.id)
 
-            b.generator = Account.objects.using('java-wallet').filter(id=b.generator_id, latest=True).first()
+            b.generator_name = get_account_name(b.generator_id)
 
             # _tar = Transaction.objects.using('java-wallet').filter(
             #     type=20,
@@ -49,8 +50,8 @@ class BlockDetailView(DetailView):
 
         obj = context[self.context_object_name]
 
-        context['txs_cnt'] = Transaction.objects.using('java-wallet').filter(block_id=obj.id).count()
-        context['generator'] = Account.objects.using('java-wallet').filter(id=obj.generator_id, latest=True).first()
+        context['txs_cnt'] = get_txs_count_in_block(obj.id)
+        context['generator_name'] = get_account_name(obj.generator_id)
 
         return context
 
@@ -80,9 +81,9 @@ class TxListView(ListView):
         obj = context[self.context_object_name]
 
         for t in obj:
-            t.sender = Account.objects.using('java-wallet').filter(id=t.sender_id, latest=True).first()
+            t.sender_name = get_account_name(t.sender_id)
             if t.recipient_id:
-                t.recipient = Account.objects.using('java-wallet').filter(id=t.recipient_id, latest=True).first()
+                t.recipient_name = get_account_name(t.recipient_id)
 
         return context
 
@@ -100,9 +101,9 @@ class TxDetailView(DetailView):
 
         obj = context[self.context_object_name]
 
-        context['sender'] = Account.objects.using('java-wallet').filter(id=obj.sender_id, latest=True).first()
+        context['sender_name'] = get_account_name(obj.sender_id)
         if context[self.context_object_name].recipient_id:
-            context['recipient'] = Account.objects.using('java-wallet').filter(id=obj.recipient_id, latest=True).first()
+            context['recipient_name'] = get_account_name(obj.recipient_id)
 
         return context
 
@@ -125,9 +126,9 @@ class AddressDetailView(DetailView):
         ).order_by('-height')[:15]
 
         for t in context['txs']:
-            t.sender = Account.objects.using('java-wallet').filter(id=t.sender_id, latest=True).first()
+            t.sender_name = get_account_name(t.sender_id)
             if t.recipient_id:
-                t.recipient = Account.objects.using('java-wallet').filter(id=t.recipient_id, latest=True).first()
+                t.recipient_name = get_account_name(t.recipient_id)
 
         context['txs_cnt'] = Transaction.objects.using('java-wallet').filter(
             Q(sender_id=obj.id) | Q(recipient_id=obj.id)
@@ -150,7 +151,7 @@ class AssetListView(ListView):
         obj = context[self.context_object_name]
 
         for t in obj:
-            t.account = Account.objects.using('java-wallet').filter(id=t.account_id, latest=True).first()
+            t.account_name = get_account_name(t.account_id)
 
         return context
 
@@ -168,7 +169,7 @@ class AssetDetailView(DetailView):
 
         obj = context[self.context_object_name]
 
-        context['account'] = Account.objects.using('java-wallet').filter(id=obj.account_id, latest=True).first()
+        context['account_name'] = get_account_name(obj.account_id)
 
         return context
 
@@ -187,7 +188,7 @@ class MarketPlaceListView(ListView):
         obj = context[self.context_object_name]
 
         for t in obj:
-            t.seller = Account.objects.using('java-wallet').filter(id=t.seller_id, latest=True).first()
+            t.seller_name = get_account_name(t.seller_id)
 
         return context
 
@@ -205,7 +206,7 @@ class MarketPlaceDetailView(DetailView):
 
         obj = context[self.context_object_name]
 
-        context['seller'] = Account.objects.using('java-wallet').filter(id=obj.seller_id, latest=True).first()
+        context['seller_name'] = get_account_name(obj.seller_id)
 
         return context
 
@@ -224,7 +225,7 @@ class AtListView(ListView):
         obj = context[self.context_object_name]
 
         for t in obj:
-            t.creator = Account.objects.using('java-wallet').filter(id=t.creator_id, latest=True).first()
+            t.creator_name = get_account_name(t.creator_id)
 
         return context
 
@@ -242,7 +243,6 @@ class AtDetailView(DetailView):
 
         obj = context[self.context_object_name]
 
-        context['creator'] = Account.objects.using('java-wallet').filter(
-            id=obj.creator_id, latest=True).first()
+        context['creator_name'] = get_account_name(obj.creator_id)
 
         return context

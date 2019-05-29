@@ -1,7 +1,7 @@
 {% load burst_tags %}
 
-{% if recipient %}
-  {% include "account_link.html" with account=recipient oneline=oneline %}
+{% if account_id %}
+  {% include "account_link.html" with account_id=account_id account_name=account_name oneline=oneline %}
 {% elif tx.subtype == 1 or tx.subtype == 2 %}
   <a href="#" class="text-info">
     ? recipients

@@ -46,7 +46,7 @@
     <tr>
       <th>Mined by</th>
       <td>
-        {% include "account_link.html" with account=generator oneline=True %}
+        {% include "account_link.html" with account_id=blk.generator_id account_name=generator_name oneline=True %}
       </td>
     </tr>
     <tr>
