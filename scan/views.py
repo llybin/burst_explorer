@@ -14,6 +14,7 @@ from scan.helpers import (
     get_account_name,
     get_txs_count_in_block,
     get_pool_id_for_block,
+    get_pool_id_for_account,
 )
 
 
@@ -176,6 +177,11 @@ class AddressDetailView(DetailView):
         context['txs_cnt'] = Transaction.objects.using('java-wallet').filter(
             Q(sender_id=obj.id) | Q(recipient_id=obj.id)
         ).count()
+
+        pool_id = get_pool_id_for_account(obj.id)
+        if pool_id:
+            context['pool_id'] = pool_id
+            context['pool_name'] = get_account_name(pool_id)
 
         return context
 

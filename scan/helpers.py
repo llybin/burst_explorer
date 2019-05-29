@@ -46,6 +46,7 @@ def get_pool_id_for_block(block):
         ).order_by('-height').first()
 
         if not assign_reward_height:
+            cache.set(key, None)
             return None
 
         recip_id = RewardRecipAssign.objects.using('java-wallet').filter(
@@ -57,3 +58,22 @@ def get_pool_id_for_block(block):
         cache.set(key, recip_id)
 
     return recip_id
+
+
+def get_pool_id_for_account(address_id):
+    key = "block_pool_{}".format(address_id)
+
+    pool_id = cache.get(key)
+
+    if not pool_id:
+        pool_id = RewardRecipAssign.objects.using('java-wallet').filter(
+            account_id=address_id
+        ).values_list(
+            'recip_id', flat=True
+        ).order_by(
+            '-height'
+        ).first()
+
+        cache.set(key, pool_id)
+
+    return pool_id
