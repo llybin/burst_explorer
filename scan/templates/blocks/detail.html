@@ -52,7 +52,11 @@
     <tr>
       <th>Pool</th>
       <td>
-        {% if pool_id %}{% include "account_link.html" with account_id=pool_id account_name=pool_name oneline=True %}{% else %}solo{% endif %}
+        {% if pool_id and pool_id != blk.generator_id %}
+          {% include "account_link.html" with account_id=pool_id account_name=pool_name oneline=True %}
+        {% else %}
+          <span class="text-success">Solo Miner</span>
+        {% endif %}
       </td>
     </tr>
     <tr>
