@@ -33,7 +33,7 @@
         </td>
         <td class="text-nowrap">{{ good.quantity|intcomma }}</td>
         <td class="text-nowrap">{{ good.price|burst_amount|rounding:4|intcomma }} Burst</td>
-        <td>{{ good.delisted|is_not_active }}</td>
+        <td>{{ good.delisted|boolean }}</td>
       </tr>
     {% endfor %}
     </tbody>

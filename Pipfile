@@ -4,8 +4,9 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-ipython = "*"
-django-debug-toolbar = "*"
+coverage = "==4.5.3"
+django-debug-toolbar = "==1.11"
+ipython = "==7.5.0"
 
 [packages]
 django = "==2.2.1"

@@ -33,14 +33,19 @@ class ReedSolomon(object):
     def encode(self, plain: str) -> str:
         """
         :param plain: The numeric ID of the account
-        :return: The RS encoding of the ID in the form BURST-XXXX-XXXX-XXXX-XXXXX
+        :return: The RS encoding of the ID in the form XXXX-XXXX-XXXX-XXXXX
         """
         plain_string = bytearray(plain, "utf-8")
         length = len(plain_string)
+        if length > base_10_length or length == 0:
+            raise ReedSolomonError
 
         plain_string_10 = bytearray(base_10_length)
         for x in range(length):
-            plain_string_10[x] = plain_string[x] - ord("0")
+            b = plain_string[x] - ord("0")
+            if 0 > b < 256:
+                raise ReedSolomonError
+            plain_string_10[x] = b
 
         codeword_length = 0
         codeword = bytearray(len(initial_codeword))
@@ -97,6 +102,9 @@ class ReedSolomon(object):
 
         cypher_string = cypher_string.replace("-", "")
 
+        if len(cypher_string) != 17:
+            raise ReedSolomonError
+
         codeword = bytearray(len(initial_codeword))
 
         for x in range(len(initial_codeword)):
@@ -104,6 +112,8 @@ class ReedSolomon(object):
 
         codeword_length = 0
         for x in range(len(cypher_string)):
+            if cypher_string[x] not in alphabet:
+                raise ReedSolomonError
             position_in_alphabet = alphabet.index(cypher_string[x])
 
             if position_in_alphabet <= -1 or position_in_alphabet > len(alphabet):

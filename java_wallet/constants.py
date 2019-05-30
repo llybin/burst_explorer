@@ -1,12 +1,12 @@
-import logging
-
 from django.utils.translation import ugettext as _
 
+
+BLOCK_CHAIN_START_AT = 1407722400
 
 TX_TYPES = {
     (0, 0): _("Ordinary Payment"),
     (0, 1): _("Multiout Payment"),
-    (0, 2): _("Multiout Payment"),
+    (0, 2): _("MultioutSame Payment"),
     (1, 0): _("Arbitrary Message"),
     (1, 1): _("Alias Assignment"),
     (1, 5): _("Account Update"),
@@ -32,12 +32,3 @@ TX_TYPES = {
     (21, 5): _("Subscription Payment"),
     (22, 0): _("AT Creation"),
 }
-
-
-def get_desc_tx_type(tx_type, tx_subtype):
-    if (tx_type, tx_subtype) in TX_TYPES:
-        return TX_TYPES[(tx_type, tx_subtype)]
-
-    else:
-        logging.warning("Unknown transaction type: %d-%d", tx_type, tx_subtype)
-        return _("Unknown type")
