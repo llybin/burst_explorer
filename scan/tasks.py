@@ -42,7 +42,7 @@ def aggregate_multiouts():
                     recipient_id=r,
                     amount=amount,
                     tx_type=tx.subtype,
-                    block_timestamp=tx.block_timestamp,
+                    tx_timestamp=tx.timestamp,
                 )
 
         elif tx.subtype == 2:
@@ -56,5 +56,5 @@ def aggregate_multiouts():
                     recipient_id=r,
                     amount=amount,
                     tx_type=tx.subtype,
-                    block_timestamp=tx.block_timestamp,
+                    tx_timestamp=tx.timestamp,
                 )
