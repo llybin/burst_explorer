@@ -16,6 +16,7 @@ from scan.helpers import (
     get_pool_id_for_block,
     get_pool_id_for_account,
     get_all_burst_amount,
+    get_txs_count,
 )
 from scan.caching_paginator import CachingPaginator
 
@@ -99,7 +100,12 @@ class TxListView(ListView):
             qs = qs.filter(block__height=self.request.GET.get('block'))
 
         elif self.request.GET.get('a'):
-            qs = qs.filter(sender_id=self.request.GET.get('a'))
+            qs = qs.filter(
+                Q(sender_id=self.request.GET.get('a')) | Q(recipient_id=self.request.GET.get('a'))
+            )
+
+        else:
+            qs = qs[:100000]
 
         return qs
 
@@ -112,6 +118,8 @@ class TxListView(ListView):
             t.sender_name = get_account_name(t.sender_id)
             if t.recipient_id:
                 t.recipient_name = get_account_name(t.recipient_id)
+
+        context['txs_cnt'] = get_txs_count()
 
         return context
 

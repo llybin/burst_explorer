@@ -83,3 +83,15 @@ def get_all_burst_amount():
         cache.set(key, amount, 86400)
 
     return amount
+
+
+def get_txs_count():
+    key = "txs_count"
+
+    amount = cache.get(key)
+
+    if amount is None:
+        amount = Transaction.objects.using('java-wallet').count()
+        cache.set(key, amount, 3600)
+
+    return amount

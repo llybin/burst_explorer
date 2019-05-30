@@ -6,15 +6,28 @@
 {% block content %}
 
   <h5>Transactions
-    {% if 'block' in request.GET and txs %}
-      <small class="text-muted">For block #{% with txs|first as tx %}<a href="{% url 'block-detail' tx.height %}">{{ tx.height }}</a>{% endwith %}</small>
+    {% if 'block' in request.GET %}
+      <small class="text-muted">For block #<a href="{% url 'block-detail' request.GET.block %}">{{ request.GET.block }}</a></small>
     {% elif 'a' in request.GET %}
-      <small class="text-muted">For address #{% with txs|first as tx %}<a href="{% url 'address-detail' tx.sender_id %}">{{ tx.sender_id }}</a>{% endwith %}</small>
+      <small class="text-muted">For address #<a href="{% url 'address-detail' request.GET.a %}">{{ request.GET.a }}</a></small>
     {% endif %}
   </h5>
 
   <div class="d-flex flex-column flex-md-row align-items-center">
-    <small class="my-0 mr-md-auto text-muted">{{ paginator.count|intcomma }} transactions found</small>
+    <small class="my-0 mr-md-auto text-muted">
+      {% if 'block' not in request.GET and 'a' not in request.GET %}
+        More than > {{ txs_cnt|intcomma }} transactions found<br>
+        <small>(Showing the last 100k records)</small>
+      {% else %}
+        A total of
+        {% if txs %}
+          {{ paginator.count|intcomma }}
+        {% else %}
+          0
+        {% endif %}
+        transactions found
+      {% endif %}
+    </small>
     {% include "paginator.html" %}
   </div>
 
