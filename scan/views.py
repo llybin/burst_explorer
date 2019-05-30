@@ -18,6 +18,7 @@ from scan.helpers import (
     get_all_burst_amount,
     get_txs_count,
     get_last_height,
+    get_multiouts_count,
 )
 from scan.caching_paginator import CachingPaginator
 from burst.multiout import MultiOutPack
@@ -85,6 +86,46 @@ class BlockDetailView(DetailView):
         if pool_id:
             context['pool_id'] = pool_id
             context['pool_name'] = get_account_name(pool_id)
+
+        return context
+
+
+class MultiOutListView(ListView):
+    model = MultiOut
+    queryset = MultiOut.objects.all()
+    template_name = 'mos/list.html'
+    context_object_name = 'txs'
+    paginator_class = CachingPaginator
+    paginate_by = 25
+    ordering = '-height'
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+
+        if self.request.GET.get('block'):
+            qs = qs.filter(height=self.request.GET.get('block'))
+
+        elif self.request.GET.get('a'):
+            qs = qs.filter(
+                Q(sender_id=self.request.GET.get('a')) | Q(recipient_id=self.request.GET.get('a'))
+            )
+
+        else:
+            qs = qs[:100000]
+
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        obj = context[self.context_object_name]
+
+        for t in obj:
+            t.sender_name = get_account_name(t.sender_id)
+            if t.recipient_id:
+                t.recipient_name = get_account_name(t.recipient_id)
+
+        context['txs_cnt'] = get_multiouts_count()
 
         return context
 

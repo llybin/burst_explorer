@@ -25,6 +25,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('blocks/', views.BlockListView.as_view(), name='blocks'),
     path('block/<str:height>', views.BlockDetailView.as_view(), name='block-detail'),
+    path('mos/', views.MultiOutListView.as_view(), name='mos'),
     path('txs/', views.TxListView.as_view(), name='txs'),
     path('tx/<str:id>', views.TxDetailView.as_view(), name='tx-detail'),
     path('accounts', views.AccountsListView.as_view(), name='accounts'),

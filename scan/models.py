@@ -1,6 +1,6 @@
 from django.db import models
 
-from java_wallet.fields import PositiveBigIntegerField
+from java_wallet.fields import PositiveBigIntegerField, TimestampField
 
 
 class MultiOut(models.Model):
@@ -11,3 +11,4 @@ class MultiOut(models.Model):
     recipient_id = PositiveBigIntegerField(db_index=True)
     amount = PositiveBigIntegerField()
     tx_type = models.PositiveSmallIntegerField()
+    block_timestamp = TimestampField()

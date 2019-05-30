@@ -2,6 +2,7 @@ from django.core.cache import cache
 from django.db.models import Sum
 
 from java_wallet.models import Account, Transaction, RewardRecipAssign, Block
+from scan.models import MultiOut
 
 
 def get_account_name(account_id):
@@ -92,6 +93,18 @@ def get_txs_count():
 
     if amount is None:
         amount = Transaction.objects.using('java-wallet').count()
+        cache.set(key, amount, 3600)
+
+    return amount
+
+
+def get_multiouts_count():
+    key = "multiouts_count"
+
+    amount = cache.get(key)
+
+    if amount is None:
+        amount = MultiOut.objects.count()
         cache.set(key, amount, 3600)
 
     return amount

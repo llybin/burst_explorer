@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% load humanize %}
+{% load burst_tags %}
+
+{% block content %}
+
+  <h5>MultiOut</h5>
+
+  <div class="d-flex flex-column flex-md-row align-items-center">
+    <small class="my-0 mr-md-auto text-muted">
+      {% if 'block' not in request.GET and 'a' not in request.GET %}
+        More than > {{ txs_cnt|intcomma }} transactions found<br>
+        <small>(Showing the last 100k records)</small>
+      {% else %}
+        A total of
+        {% if txs %}
+          {{ paginator.count|intcomma }}
+        {% else %}
+          0
+        {% endif %}
+        transactions found
+      {% endif %}
+    </small>
+    {% include "paginator.html" %}
+  </div>
+
+  <table class="table table-hover small table-sm">
+    <thead>
+    <tr>
+      <th scope="col">Txn id</th>
+      <th scope="col">Block</th>
+      <th scope="col">Type</th>
+      <th scope="col">From</th>
+      <th scope="col">To</th>
+      <th scope="col">Value</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for tx in txs %}
+      <tr>
+        <td><a href="{% url 'tx-detail' tx.tx_id %}">{{ tx.tx_id|truncatechars:10 }}</a></td>
+        <td><a href="{% url 'block-detail' tx.height %}">{{ tx.height }}</a></td>
+        <td>{{ tx.tx_type }}</td>
+        <td class="text-nowrap">
+          {% include "account_link.html" with account_id=tx.sender_id account_name=tx.sender_name %}
+        </td>
+        <td class="text-nowrap">
+          {% include "recipient_link.html" with account_id=tx.recipient_id account_name=tx.recipient_name %}
+        </td>
+        <td class="text-nowrap">{{ tx.amount|burst_amount|rounding:4|intcomma }} Burst</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  {% include "paginator.html" %}
+
+{% endblock %}
