@@ -7,7 +7,9 @@ class UnpackError(Exception):
     pass
 
 
-class MultiOut(object):
+# TODO: typing
+# TODO: test unpack_header
+class MultiOutPack(object):
     @staticmethod
     def _unpack_header(data):
         headers = struct.unpack("2c", data)
@@ -20,6 +22,9 @@ class MultiOut(object):
         nums = int.from_bytes(headers[1], byteorder=sys.byteorder)
 
         return version, nums
+
+    def unpack_header(self, data):
+        return self._unpack_header(data[:2])
 
     def unpack_multi_out(self, data):
         try:

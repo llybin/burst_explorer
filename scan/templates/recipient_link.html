@@ -1,11 +1,22 @@
+{% load humanize %}
 {% load burst_tags %}
 
 {% if account_id %}
   {% include "account_link.html" with account_id=account_id account_name=account_name oneline=oneline %}
 {% elif tx.type == 0 and tx.subtype == 1 or tx.type == 0 and tx.subtype == 2 %}
-  <a href="{% url 'tx-detail' tx.id %}" class="text-info">
-    {{ tx.multiout }} recipients
-  </a>
-  {% if not oneline %}<br>{% endif %}
-  <small><span class="text-black-50">see transaction details</span></small>
+  {% if tx.recipients %}
+    <span class="text-info">
+      {{ tx.multiout }} recipients<br><br>
+      {% for r in tx.recipients %}
+        {% include "account_link.html" with account_id=r.recipient_id account_name=' ' oneline=oneline %}
+        - {{ r.amount|burst_amount|intcomma }}<br>
+      {% endfor %}
+    </span>
+  {% else %}
+    <a href="{% url 'tx-detail' tx.id %}" class="text-info">
+      {{ tx.multiout }} recipients
+    </a>
+    {% if not oneline %}<br>{% endif %}
+    <small><span class="text-black-50">see transaction details</span></small>
+  {% endif %}
 {% endif %}

@@ -1,11 +1,11 @@
 from django.test import TestCase
 
-from ..multiout import MultiOut
+from ..multiout import MultiOutPack
 
 
 class MultiOutTest(TestCase):
     def setUp(self) -> None:
-        self.mo = MultiOut()
+        self.mo = MultiOutPack()
 
     def test_multiout_ok(self):
         # transaction #15440603410472198198

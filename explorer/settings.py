@@ -100,6 +100,11 @@ DATABASES = {
 DB_DEFAULT_URL = os.getenv('DB_DEFAULT_URL')
 if DB_DEFAULT_URL:
     DATABASES['default'] = dj_database_url.parse(DB_DEFAULT_URL)
+    if 'mysql' in DB_DEFAULT_URL:
+        DATABASES['default']['OPTIONS'] = {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            'charset': 'utf8mb4',
+        }
 
 DB_JAVA_WALLET_URL = os.getenv('DB_JAVA_WALLET_URL')
 if DB_JAVA_WALLET_URL:
