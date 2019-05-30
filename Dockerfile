@@ -8,7 +8,7 @@ WORKDIR /code
 COPY wait-for-it.sh ./
 
 RUN apt-get update \
-    && apt-get -y install libssl-dev python3-dev default-libmysqlclient-dev \
+    && apt-get -y install --no-install-recommends libssl-dev python3-dev default-libmysqlclient-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 

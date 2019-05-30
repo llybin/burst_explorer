@@ -1,4 +1,8 @@
-# Development
+# Java Wallet models
+
+[https://github.com/burst-apps-team/burstcoin](https://github.com/burst-apps-team/burstcoin)
+
+## Development
 
 After upgrading [init-mysql.sql](https://github.com/burst-apps-team/burstcoin/blob/develop/init-mysql.sql) from wallet repository add first line `USE data;`
 
@@ -14,11 +18,11 @@ Replace:
 
 `timestamp = IntegerField -> timestamp = TimestampField`
 
-# Production and development
+## Production and development
 
 Add indexes in your wallet DB for speedups:
 
-```
+``` sql
 CREATE INDEX height ON transaction(height);
 CREATE INDEX timestamp ON transaction(timestamp);
 CREATE INDEX height ON asset(height);

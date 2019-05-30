@@ -27,7 +27,7 @@ See additional info about set up DB [here](java_wallet)
 
 Configure your .env:
 
-```
+``` console
 DEBUG=False
 SECRET_KEY= set up
 DB_DEFAULT_URL= set up
@@ -48,7 +48,7 @@ Python >=3.6
 
 `pip3 install --user pipenv`
 
-```
+``` console
 export PATH="/home/<user>/.local/bin:$PATH"
 echo 'export PATH="/home/<user>/.local/bin:$PATH"' >> ~/.bashrc
 ```
