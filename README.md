@@ -1,5 +1,6 @@
 # BurstCoin Blockchain Explorer
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f37cb0ffe26f4a88b12d12fb602c5ab2)](https://app.codacy.com/app/llybin/burst_explorer?utm_source=github.com&utm_medium=referral&utm_content=llybin/burst_explorer&utm_campaign=Badge_Grade_Dashboard)
 [![Build Status](https://travis-ci.com/llybin/burst_explorer.svg?branch=master)](https://travis-ci.com/llybin/burst_explorer)
 [![GPLv3](https://img.shields.io/badge/license-GPLv3-blue.svg)](LICENSE)
 
