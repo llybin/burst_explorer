@@ -12,6 +12,11 @@ initial_codeword = (1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 codeword_map = (3, 2, 1, 0, 7, 6, 5, 4, 13, 14, 15, 16, 12, 8, 9, 10, 11)
 alphabet = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ"
 
+initial_codeword_length = len(initial_codeword)
+alphabet_length = len(alphabet)
+
+cypher_string_length = 17
+
 base_32_length = 13
 base_10_length = 20
 
@@ -47,9 +52,9 @@ class ReedSolomon(object):
                 raise ReedSolomonError
             plain_string_10[x] = b
 
-        codeword_length = 0
-        codeword = bytearray(len(initial_codeword))
+        codeword = bytearray(initial_codeword_length)
 
+        codeword_length = 0
         while length > 0:
             new_length = 0
             digit_32 = 0
@@ -77,12 +82,13 @@ class ReedSolomon(object):
             p[1] = p[0] ^ self.gf_mul(9, fb)
             p[0] = self.gf_mul(17, fb)
 
-        for x in range(len(initial_codeword) - base_32_length):
+        # len(initial_codeword) - base_32_length == 17 - 13 == 4
+        for x in range(4):
             codeword[x + base_32_length] = p[x]
 
         cypher_string_builder = ""
 
-        for x in range(17):
+        for x in range(cypher_string_length):
             codework_index = codeword_map[x]
             alphabet_index = codeword[codework_index]
             cypher_string_builder += alphabet[alphabet_index]
@@ -102,21 +108,18 @@ class ReedSolomon(object):
 
         cypher_string = cypher_string.replace("-", "")
 
-        if len(cypher_string) != 17:
+        if len(cypher_string) != cypher_string_length:
             raise ReedSolomonError
 
-        codeword = bytearray(len(initial_codeword))
-
-        for x in range(len(initial_codeword)):
-            codeword[x] = initial_codeword[x]
+        codeword = bytearray(initial_codeword)
 
         codeword_length = 0
-        for x in range(len(cypher_string)):
+        for x in range(cypher_string_length):
             if cypher_string[x] not in alphabet:
                 raise ReedSolomonError
             position_in_alphabet = alphabet.index(cypher_string[x])
 
-            if position_in_alphabet <= -1 or position_in_alphabet > len(alphabet):
+            if position_in_alphabet <= -1 or position_in_alphabet > alphabet_length:
                 continue
 
             if codeword_length > 16:
