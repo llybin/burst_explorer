@@ -2,7 +2,7 @@
 
 {% if account_id %}
   {% include "account_link.html" with account_id=account_id account_name=account_name oneline=oneline %}
-{% elif tx.subtype == 1 or tx.subtype == 2 %}
+{% elif tx.type == 0 and tx.subtype == 1 or tx.type == 0 and tx.subtype == 2 %}
   <a href="#" class="text-info">
     ? recipients
     {% if not oneline %}<br>{% endif %}

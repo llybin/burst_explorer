@@ -31,7 +31,7 @@
     {% include "paginator.html" %}
   </div>
 
-  {% include "txs/list_table.html" %}
+  {% include "txs/list_table.html" with filtered_account=request.GET.a %}
 
   {% include "paginator.html" %}
 
