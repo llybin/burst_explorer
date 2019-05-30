@@ -38,6 +38,7 @@ def aggregate_multiouts():
                 MultiOut.objects.create(
                     tx_id=tx.id,
                     height=tx.height,
+                    sender_id=tx.sender_id,
                     recipient_id=r,
                     amount=amount,
                     tx_type=1
@@ -50,6 +51,7 @@ def aggregate_multiouts():
                 MultiOut.objects.create(
                     tx_id=tx.id,
                     height=tx.height,
+                    sender_id=tx.sender_id,
                     recipient_id=r,
                     amount=amount,
                     tx_type=2
