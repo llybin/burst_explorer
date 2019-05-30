@@ -40,7 +40,13 @@
       <tr>
         <td><a href="{% url 'block-detail' block.height %}">{{ block.height }}</a></td>
         <td>{{ block.timestamp|naturaltime }}</td>
-        <td><a href="{% url 'txs' %}?block={{ block.height }}">{{ block.txs_cnt|intcomma }}</a></td>
+        <td>
+          {% if block.txs_cnt > 0 %}
+            <a href="{% url 'txs' %}?block={{ block.height }}">{{ block.txs_cnt|intcomma }}</a>
+          {% else %}
+            0
+          {% endif %}
+        </td>
         <td>{{ block.total_amount|burst_amount|rounding:4|intcomma }} Burst</td>
         <td>{{ block|block_reward_fee|rounding:4|intcomma }} Burst</td>
         <td>{{ block.payload_length|filesizeformat }}</td>

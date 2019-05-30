@@ -38,7 +38,14 @@
     </tr>
     <tr>
       <th>Transactions</th>
-      <td><a href="{% url 'txs' %}?block={{ blk.height }}">{{ txs_cnt|intcomma }} transactions</a> and ... in this block</td>
+      <td>
+        {% if txs_cnt > 0 %}
+          <a href="{% url 'txs' %}?block={{ blk.height }}">{{ txs_cnt|intcomma }} transactions</a>
+        {% else %}
+          0 transactions
+        {% endif %}
+        and ... in this block
+      </td>
     </tr>
     <tr>
       <th>Total Amount</th>
