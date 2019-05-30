@@ -6,7 +6,7 @@
 {% block content %}
 
   <h5>Transactions
-    {% if 'block' in request.GET %}
+    {% if 'block' in request.GET and txs %}
       <small class="text-muted">For block #{% with txs|first as tx %}<a href="{% url 'block-detail' tx.height %}">{{ tx.height }}</a>{% endwith %}</small>
     {% elif 'a' in request.GET %}
       <small class="text-muted">For address #{% with txs|first as tx %}<a href="{% url 'address-detail' tx.sender_id %}">{{ tx.sender_id }}</a>{% endwith %}</small>

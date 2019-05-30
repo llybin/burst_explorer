@@ -6,7 +6,7 @@
 {% block content %}
 
   <h5>Blocks
-    {% if 'm' in request.GET %}
+    {% if 'm' in request.GET and blocks %}
       <small class="text-muted">For miner #{% with blocks|first as block %}<a href="{% url 'address-detail' block.generator_id %}">{{ block.generator_id }}</a>{% endwith %}</small>
     {% endif %}
   </h5>
