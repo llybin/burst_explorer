@@ -1,7 +1,7 @@
 from django.core.cache import cache
 from django.db.models import Sum
 
-from java_wallet.models import Account, Transaction, RewardRecipAssign
+from java_wallet.models import Account, Transaction, RewardRecipAssign, Block
 
 
 def get_account_name(account_id):
@@ -95,3 +95,19 @@ def get_txs_count():
         cache.set(key, amount, 3600)
 
     return amount
+
+
+def get_last_height():
+    key = "last_height"
+
+    height = cache.get(key)
+
+    if height is None:
+        height = Block.objects.using('java-wallet').order_by(
+            '-height'
+        ).values_list(
+            'height', flat=True
+        ).first()
+        cache.set(key, height, 10)
+
+    return height

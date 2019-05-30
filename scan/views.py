@@ -17,6 +17,7 @@ from scan.helpers import (
     get_pool_id_for_account,
     get_all_burst_amount,
     get_txs_count,
+    get_last_height,
 )
 from scan.caching_paginator import CachingPaginator
 
@@ -56,6 +57,8 @@ class BlockListView(ListView):
             if pool_id:
                 b.pool_id = pool_id
                 b.pool_name = get_account_name(pool_id)
+
+        context['last_height'] = get_last_height()
 
         return context
 
@@ -137,13 +140,7 @@ class TxDetailView(DetailView):
 
         obj = context[self.context_object_name]
 
-        last_block = Block.objects.using('java-wallet').order_by(
-            '-height'
-        ).values_list(
-            'height', flat=True
-        ).first()
-
-        context['blocks_confirm'] = last_block - obj.height
+        context['blocks_confirm'] = get_last_height() - obj.height
 
         context['sender_name'] = get_account_name(obj.sender_id)
         if context[self.context_object_name].recipient_id:

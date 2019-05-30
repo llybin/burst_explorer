@@ -17,7 +17,7 @@
         {% if 'm' in request.GET %}
           A total of {{ paginator.count|intcomma }} blocks found
         {% else %}
-          Block #{% with blocks|first as blk %}{{ blk.height }} to #{{ blk.height|sub:blocks.count|add:1 }}{% endwith %} (Total of {{ paginator.count|intcomma }} blocks)
+          Block #{% with blocks|first as blk %}{{ blk.height }} to #{{ blk.height|sub:blocks.count|add:1 }}{% endwith %} (Total of {{ last_height|add:1|intcomma }} blocks)
         {% endif %}
       {% else %}
         0 blocks found
