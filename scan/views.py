@@ -20,6 +20,7 @@ from scan.helpers import (
     get_last_height,
 )
 from scan.caching_paginator import CachingPaginator
+from burst.multiout import MultiOut
 
 
 def index(request):
@@ -122,6 +123,12 @@ class TxListView(ListView):
             if t.recipient_id:
                 t.recipient_name = get_account_name(t.recipient_id)
 
+            if t.type == 0:
+                if t.subtype == 1:
+                    t.multiout = len(MultiOut().unpack_multi_out(t.attachment_bytes)) // 2
+                elif t.subtype == 2:
+                    t.multiout = len(MultiOut().unpack_multi_out_same(t.attachment_bytes))
+
         context['txs_cnt'] = get_txs_count()
 
         return context
@@ -145,6 +152,12 @@ class TxDetailView(DetailView):
         context['sender_name'] = get_account_name(obj.sender_id)
         if context[self.context_object_name].recipient_id:
             context['recipient_name'] = get_account_name(obj.recipient_id)
+
+        if obj.type == 0:
+            if obj.subtype == 1:
+                obj.multiout = len(MultiOut().unpack_multi_out(obj.attachment_bytes)) // 2
+            elif obj.subtype == 2:
+                obj.multiout = len(MultiOut().unpack_multi_out_same(obj.attachment_bytes))
 
         return context
 
