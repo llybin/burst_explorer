@@ -5,16 +5,22 @@
 
 {% block content %}
 
-  <h5>MultiOut</h5>
+  <h5>Multiout
+    {% if 'block' in request.GET %}
+      <small class="text-muted">For block #<a href="{% url 'block-detail' request.GET.block %}">{{ request.GET.block }}</a></small>
+    {% elif 'a' in request.GET %}
+      <small class="text-muted">For address #<a href="{% url 'address-detail' request.GET.a %}">{{ request.GET.a }}</a></small>
+    {% endif %}
+  </h5>
 
   <div class="d-flex flex-column flex-md-row align-items-center">
     <small class="my-0 mr-md-auto text-muted">
       {% if 'block' not in request.GET and 'a' not in request.GET %}
-        More than > {{ txs_cnt|intcomma }} transactions found<br>
+        More than > {{ mos_cnt|intcomma }} transactions found<br>
         <small>(Showing the last 100k records)</small>
       {% else %}
         A total of
-        {% if txs %}
+        {% if mos %}
           {{ paginator.count|intcomma }}
         {% else %}
           0
@@ -25,44 +31,7 @@
     {% include "paginator.html" %}
   </div>
 
-  <table class="table table-hover small table-sm">
-    <thead>
-    <tr>
-      <th scope="col">Txn id</th>
-      <th scope="col">Block</th>
-      <th scope="col">Txn Timestamp</th>
-      <th scope="col">Type</th>
-      <th scope="col">From</th>
-      <th scope="col">To</th>
-      <th scope="col">Value</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for tx in txs %}
-      <tr>
-        <td><a href="{% url 'tx-detail' tx.tx_id %}">{{ tx.tx_id|truncatechars:10 }}</a></td>
-        <td><a href="{% url 'block-detail' tx.height %}">{{ tx.height }}</a></td>
-        <td class="text-nowrap">{{ tx.tx_timestamp|naturaltime }}</td>
-        <td>
-          {% if tx.tx_type == 1 %}
-            Multiout Payment
-          {% elif tx.tx_type == 2 %}
-            MultioutSame Payment
-          {% else %}
-            Unknown type
-          {% endif %}
-        </td>
-        <td class="text-nowrap">
-          {% include "account_link.html" with account_id=tx.sender_id account_name=tx.sender_name %}
-        </td>
-        <td class="text-nowrap">
-          {% include "recipient_link.html" with account_id=tx.recipient_id account_name=tx.recipient_name %}
-        </td>
-        <td class="text-nowrap">{{ tx.amount|burst_amount|rounding:4|intcomma }} Burst</td>
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table>
+  {% include "mos/list_table.html" with filtered_account=request.GET.a %}
 
   {% include "paginator.html" %}
 

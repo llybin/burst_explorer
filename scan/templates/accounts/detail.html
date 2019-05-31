@@ -47,7 +47,7 @@
     <nav>
       <div class="nav nav-tabs small" id="nav-tab" role="tablist">
         <a class="nav-item nav-link active" id="nav-transactions-tab" data-toggle="tab" href="#nav-transactions" role="tab" aria-controls="nav-transactions" aria-selected="true">{{ txs_cnt|intcomma }} Transactions</a>
-        <a class="nav-item nav-link" id="nav-multiout-tab" data-toggle="tab" href="#nav-multiout" role="tab" aria-controls="nav-multiout" aria-selected="false">? MultiOut</a>
+        <a class="nav-item nav-link" id="nav-multiout-tab" data-toggle="tab" href="#nav-multiout" role="tab" aria-controls="nav-multiout" aria-selected="false">{{ mos_cnt|intcomma }} MultiOut</a>
         <a class="nav-item nav-link" id="nav-blocks-tab" data-toggle="tab" href="#nav-blocks" role="tab" aria-controls="nav-blocks" aria-selected="false">{{ mined_blocks_cnt|intcomma }} Blocks</a>
         <a class="nav-item nav-link" id="nav-asset-hold-tab" data-toggle="tab" href="#nav-asset-hold" role="tab" aria-controls="nav-asset-hold" aria-selected="false">? Asset holdings</a>
         <a class="nav-item nav-link" id="nav-asset-txs-tab" data-toggle="tab" href="#nav-asset-txs" role="tab" aria-controls="nav-asset-txs" aria-selected="false">? Asset transactions</a>
@@ -69,7 +69,19 @@
         {% include "txs/list_table.html"  with filtered_account=address.id %}
       </div>
 
-      <div class="tab-pane fade" id="nav-multiout" role="tabpanel" aria-labelledby="nav-multiout-tab">...</div>
+      <div class="tab-pane fade" id="nav-multiout" role="tabpanel" aria-labelledby="nav-multiout-tab">
+        <br>
+        <p class="small">
+          Latest {{ mos.count }} from a total of
+          {% if mos_cnt > 0 %}
+            <a href="{% url 'mos' %}?a={{ address.id }}">{{ mos_cnt|intcomma }}</a>
+          {% else %}
+            0
+          {% endif %}
+          transactions
+        </p>
+        {% include "mos/list_table.html"  with filtered_account=address.id %}
+      </div>
 
       <div class="tab-pane fade" id="nav-blocks" role="tabpanel" aria-labelledby="nav-blocks-tab">
         <br>
