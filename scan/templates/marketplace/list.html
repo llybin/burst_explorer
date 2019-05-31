@@ -29,11 +29,11 @@
         <tr>
           <td><a href="{% url 'mp-detail' good.id %}">{{ good.id|truncatechars:10 }}</a></td>
           <td style="max-width: 250px;">{{ good.name }}</td>
-          <td>
+          <td class="text-nowrap">
             {% include "account_link.html" with account_id=good.seller_id account_name=good.seller_name %}
           </td>
           <td>{{ good.quantity|intcomma }}</td>
-          <td>{{ good.price|burst_amount|rounding:4|intcomma }} Burst</td>
+          <td class="text-nowrap">{{ good.price|burst_amount|rounding:4|intcomma }} Burst</td>
           <td>{{ good.delisted|boolean }}</td>
         </tr>
       {% endfor %}

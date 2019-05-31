@@ -27,7 +27,7 @@
         <tr>
           <td><a href="{% url 'asset-detail' asset.id %}">{{ asset.id|truncatechars:10 }}</a></td>
           <td style="word-wrap: break-word; max-width: 250px">{{ asset.name }}</td>
-          <td>
+          <td class="text-nowrap">
               {% include "account_link.html" with account_id=asset.account_id account_name=asset.account_name %}
           </td>
           <td>{{ asset.quantity|intcomma }}</td>

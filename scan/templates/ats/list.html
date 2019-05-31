@@ -26,7 +26,7 @@
         <tr>
           <td><a href="{% url 'at-detail' at.id %}">{{ at.id|truncatechars:10 }}</a></td>
           <td style="word-wrap: break-word; max-width: 250px">{{ at.name }}</td>
-          <td>
+          <td class="text-nowrap">
             {% include "account_link.html" with account_id=at.creator_id account_name=at.creator_name %}
           </td>
         </tr>

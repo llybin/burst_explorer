@@ -44,7 +44,7 @@
       {% for block in blocks %}
         <tr>
           <td><a href="{% url 'block-detail' block.height %}">{{ block.height }}</a></td>
-          <td>{{ block.timestamp|naturaltime }}</td>
+          <td class="text-nowrap">{{ block.timestamp|naturaltime }}</td>
           <td>
             {% if block.txs_cnt > 0 %}
               <a href="{% url 'txs' %}?block={{ block.height }}">{{ block.txs_cnt|intcomma }}</a>
@@ -52,13 +52,13 @@
               0
             {% endif %}
           </td>
-          <td>{{ block.total_amount|burst_amount|rounding:4|intcomma }} Burst</td>
-          <td>{{ block|block_reward_fee|rounding:4|intcomma }} Burst</td>
+          <td class="text-nowrap">{{ block.total_amount|burst_amount|rounding:4|intcomma }} Burst</td>
+          <td class="text-nowrap">{{ block|block_reward_fee|rounding:4|intcomma }} Burst</td>
           <td>{{ block.payload_length|filesizeformat }}</td>
-          <td>
+          <td class="text-nowrap">
             {% include "account_link.html" with account_id=block.generator_id account_name=block.generator_name filtered_account=request.GET.m %}
           </td>
-          <td>
+          <td class="text-nowrap">
             {% if block.pool_id and block.pool_id != block.generator_id %}
               {% include "account_link.html" with account_id=block.pool_id account_name=block.pool_name %}
             {% else %}
