@@ -1,6 +1,6 @@
 {% load static %}
 <!doctype html>
-<html lang="en" class="h-100">
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -11,64 +11,66 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
   </head>
 
-  <body class="d-flex flex-column h-100">
+  <body>
+    <div class="wrapper">
+      <header>
+        <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+          <a href="/"><img alt="BURST" src="{% static 'img/burst-logo.svg' %}" height="32px"></a>
+          <h5 class="my-0 mr-md-auto font-weight-normal">Explorer <i class="text-danger">in developing with <i class="fas fa-heart"></i></i></h5>
+          <nav class="my-2 my-md-0 mr-md-3">
+            <a class="p-2 text-dark" href="/">Home</a>
+            <a class="p-2 text-dark" href="{% url 'blocks' %}">Blocks</a>
+            <a class="p-2 text-dark" href="{% url 'txs' %}">Transactions</a>
+            <a class="p-2 text-dark" href="{% url 'mos' %}">MultiOut</a>
+            <a class="p-2 text-dark" href="{% url 'assets' %}">Assets</a>
+            <a class="p-2 text-dark" href="{% url 'mps' %}">Marketplace</a>
+            <a class="p-2 text-dark" href="{% url 'ats' %}">ATs</a>
+            <a class="p-2 text-dark" href="{% url 'accounts' %}">Top Accounts</a>
+  {#          <a class="p-2 text-dark" href="#">Network</a>#}
+            <a class="p-2 text-dark dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              More
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <a class="dropdown-item" href="https://burst-coin.org" target="_blank">Burstcoin Site</a>
+              <a class="dropdown-item" href="https://burstforum.net" target="_blank">Burstcoin Forum</a>
+              <a class="dropdown-item" href="https://burstcoin.ist" target="_blank">Burstcoin News</a>
+              <a class="dropdown-item" href="https://www.reddit.com/r/burstcoin/" target="_blank">Burstcoin Reddit</a>
+              <a class="dropdown-item" href="https://github.com/burst-apps-team/" target="_blank">Burstcoin Github</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="https://discord.gg/G8N2QPa" target="_blank">Discord Community</a>
+              <a class="dropdown-item" href="https://t.me/burstcoin" target="_blank">Telegram Community</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="https://telegram.me/ExchangeRatesBot" target="_blank">Telegram ExchangeRatesBot</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="https://wallet.burst.devtrue.net" target="_blank">Online Wallet</a>
+            </div>
+          </nav>
+          <form class="form-inline mt-2 mt-md-0 col-xs-4" action="{% url 'search' %}">
+            <input class="form-control mr-sm-2" type="text" name="q" placeholder="Search by Address / Block ..." aria-label="Search">
+            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" name="submit" value="Search">Search</button>
+          </form>
+        </div>
+      </header>
 
-    <header>
-      <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
-        <a href="/"><img alt="BURST" src="{% static 'img/burst-logo.svg' %}" height="32px"></a>
-        <h5 class="my-0 mr-md-auto font-weight-normal">Explorer <i class="text-danger">in developing</i> <a href="https://github.com/llybin/burst_explorer"><i class="fab fa-github"></i></a></h5>
-        <nav class="my-2 my-md-0 mr-md-3">
-          <a class="p-2 text-dark" href="/">Home</a>
-          <a class="p-2 text-dark" href="{% url 'blocks' %}">Blocks</a>
-          <a class="p-2 text-dark" href="{% url 'txs' %}">Transactions</a>
-          <a class="p-2 text-dark" href="{% url 'mos' %}">MultiOut</a>
-          <a class="p-2 text-dark" href="{% url 'assets' %}">Assets</a>
-          <a class="p-2 text-dark" href="{% url 'mps' %}">Marketplace</a>
-          <a class="p-2 text-dark" href="{% url 'ats' %}">ATs</a>
-          <a class="p-2 text-dark" href="{% url 'accounts' %}">Top Accounts</a>
-{#          <a class="p-2 text-dark" href="#">Network</a>#}
-          <a class="p-2 text-dark dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            More
-          </a>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <a class="dropdown-item" href="https://burst-coin.org" target="_blank">Burstcoin Site</a>
-            <a class="dropdown-item" href="https://burstforum.net" target="_blank">Burstcoin Forum</a>
-            <a class="dropdown-item" href="https://burstcoin.ist" target="_blank">Burstcoin News</a>
-            <a class="dropdown-item" href="https://www.reddit.com/r/burstcoin/" target="_blank">Burstcoin Reddit</a>
-            <a class="dropdown-item" href="https://github.com/burst-apps-team/" target="_blank">Burstcoin Github</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="https://discord.gg/G8N2QPa" target="_blank">Discord Community</a>
-            <a class="dropdown-item" href="https://t.me/burstcoin" target="_blank">Telegram Community</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="https://telegram.me/ExchangeRatesBot" target="_blank">Telegram ExchangeRatesBot</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="https://wallet.burst.devtrue.net" target="_blank">Online Wallet</a>
-          </div>
-        </nav>
-        <form class="form-inline mt-2 mt-md-0 col-xs-4" action="{% url 'search' %}">
-          <input class="form-control mr-sm-2" type="text" name="q" placeholder="block / account / transaction" aria-label="Search">
-          <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" name="submit" value="Search">Search</button>
-        </form>
-      </div>
-    </header>
+      <main role="main">
+        <div class="container">
+          {% if submit == 'Search' %}
+            <div class="alert alert-danger" role="alert">
+              Nothing found.
+            </div>
+          {% endif %}
+          {% block content %}
+          {% endblock %}
+        </div>
+      </main>
+    </div>
 
-    <main role="main" class="flex-shrink-0">
-      <div class="container">
-        {% if submit == 'Search' %}
-          <div class="alert alert-danger" role="alert">
-            Nothing found.
-          </div>
-        {% endif %}
-        {% block content %}
-        {% endblock %}
-      </div>
-    </main>
+    <div id="push"></div>
 
     <footer class="footer mt-auto py-3">
       <div class="container text-center">
         <span>
-          Developed by
-          <a href="https://github.com/llybin/burst_explorer"><b>Lev Lybin</b></a>.
+          Developed by <b>Lev Lybin</b>
           <br>
           Donations: <b>BURST-D372-C2DU-HMKK-CQLHA</b> or <a href="https://paypal.me/lybin" target="_blank"><b>Paypal</b></a></span>
         <br>
