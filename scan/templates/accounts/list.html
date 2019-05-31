@@ -12,30 +12,32 @@
     {% include "paginator.html" %}
   </div>
 
-  <table class="table table-hover small table-sm">
-    <thead>
-    <tr>
-      <th scope="col">Rank</th>
-      <th scope="col">Name</th>
-      <th scope="col">Percent</th>
-      <th scope="col">Balance</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for account in accounts %}
+  <div class="table-responsive">
+    <table class="table table-hover small table-sm">
+      <thead>
       <tr>
-        <td>
-          {% rank_row forloop.counter %}
-        </td>
-        <td class="text-nowrap">
-          {% include "account_link.html" with account_id=account.id account_name=account.name %}
-        </td>
-        <td>{{ account.balance|percent:balance__sum|rounding:2|intcomma }} %</td>
-        <td>{{ account.balance|burst_amount|rounding:4|intcomma }} Burst</td>
+        <th scope="col">Rank</th>
+        <th scope="col">Name</th>
+        <th scope="col">Percent</th>
+        <th scope="col">Balance</th>
       </tr>
-    {% endfor %}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+      {% for account in accounts %}
+        <tr>
+          <td>
+            {% rank_row forloop.counter %}
+          </td>
+          <td>
+            {% include "account_link.html" with account_id=account.id account_name=account.name %}
+          </td>
+          <td>{{ account.balance|percent:balance__sum|rounding:2|intcomma }} %</td>
+          <td>{{ account.balance|burst_amount|rounding:4|intcomma }} Burst</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
 
   {% include "paginator.html" %}
 

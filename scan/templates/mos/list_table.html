@@ -1,6 +1,7 @@
 {% load humanize %}
 {% load burst_tags %}
 
+<div class="table-responsive">
   <table class="table table-hover small table-sm">
     <thead>
     <tr>
@@ -18,7 +19,7 @@
       <tr>
         <td><a href="{% url 'tx-detail' mo.tx_id %}">{{ mo.tx_id|truncatechars:10 }}</a></td>
         <td><a href="{% url 'block-detail' mo.height %}">{{ mo.height }}</a></td>
-        <td class="text-nowrap">{{ mo.tx_timestamp|naturaltime }}</td>
+        <td>{{ mo.tx_timestamp|naturaltime }}</td>
         <td>
           {% if mo.tx_type == 1 %}
             Multiout Payment
@@ -28,14 +29,15 @@
             Unknown type
           {% endif %}
         </td>
-        <td class="text-nowrap">
+        <td>
           {% include "account_link.html" with account_id=mo.sender_id account_name=mo.sender_name %}
         </td>
-        <td class="text-nowrap">
+        <td>
           {% include "recipient_link.html" with account_id=mo.recipient_id account_name=mo.recipient_name %}
         </td>
-        <td class="text-nowrap">{{ mo.amount|burst_amount|rounding:4|intcomma }} Burst</td>
+        <td>{{ mo.amount|burst_amount|rounding:4|intcomma }} Burst</td>
       </tr>
     {% endfor %}
     </tbody>
   </table>
+</div>

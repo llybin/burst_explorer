@@ -1,6 +1,7 @@
 {% load humanize %}
 {% load burst_tags %}
 
+<div class="table-responsive">
   <table class="table table-hover small table-sm">
     <thead>
     <tr>
@@ -19,17 +20,18 @@
       <tr>
         <td><a href="{% url 'tx-detail' tx.id %}">{{ tx.id|truncatechars:10 }}</a></td>
         <td><a href="{% url 'block-detail' tx.height %}">{{ tx.height }}</a></td>
-        <td class="text-nowrap">{{ tx.block_timestamp|naturaltime }}</td>
+        <td>{{ tx.block_timestamp|naturaltime }}</td>
         <td>{{ tx|tx_type }}</td>
-        <td class="text-nowrap">
+        <td>
           {% include "account_link.html" with account_id=tx.sender_id account_name=tx.sender_name %}
         </td>
-        <td class="text-nowrap">
+        <td>
           {% include "recipient_link.html" with account_id=tx.recipient_id account_name=tx.recipient_name %}
         </td>
-        <td class="text-nowrap">{{ tx.amount|burst_amount|rounding:4|intcomma }} Burst</td>
-        <td class="text-nowrap">{{ tx.fee|burst_amount|rounding:4|intcomma }} Burst</td>
+        <td>{{ tx.amount|burst_amount|rounding:4|intcomma }} Burst</td>
+        <td>{{ tx.fee|burst_amount|rounding:4|intcomma }} Burst</td>
       </tr>
     {% endfor %}
     </tbody>
   </table>
+</div>

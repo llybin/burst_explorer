@@ -12,26 +12,28 @@
     {% include "paginator.html" %}
   </div>
 
-  <table class="table table-hover small table-sm">
-    <thead>
-    <tr>
-      <th scope="col">AT Id</th>
-      <th scope="col">Name</th>
-      <th scope="col">Creator</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for at in ats %}
+  <div class="table-responsive">
+    <table class="table table-hover small table-sm">
+      <thead>
       <tr>
-        <td><a href="{% url 'at-detail' at.id %}">{{ at.id|truncatechars:10 }}</a></td>
-        <td>{{ at.name }}</td>
-        <td class="text-nowrap">
-          {% include "account_link.html" with account_id=at.creator_id account_name=at.creator_name %}
-        </td>
+        <th scope="col">AT Id</th>
+        <th scope="col">Name</th>
+        <th scope="col">Creator</th>
       </tr>
-    {% endfor %}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+      {% for at in ats %}
+        <tr>
+          <td><a href="{% url 'at-detail' at.id %}">{{ at.id|truncatechars:10 }}</a></td>
+          <td style="word-wrap: break-word; max-width: 250px">{{ at.name }}</td>
+          <td>
+            {% include "account_link.html" with account_id=at.creator_id account_name=at.creator_name %}
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
 
   {% include "paginator.html" %}
 

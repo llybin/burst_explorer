@@ -8,15 +8,16 @@
   <h5>Asset #{{ asset.id }} details</h5>
   <br>
 
+<div class="table-responsive">
   <table class="table small table-sm">
     <tbody>
     <tr>
-      <th>ID</th>
+      <th style="width: 200px;">ID</th>
       <td>{{ asset.id }}</td>
     </tr>
     <tr>
       <th>Name</th>
-      <td>{{ asset.name }}</td>
+      <td style="word-wrap: break-word; max-width: 250px">{{ asset.name }}</td>
     </tr>
     <tr>
       <th>Description</th>
@@ -38,4 +39,6 @@
     </tr>
     </tbody>
   </table>
+</div>
+
 {% endblock %}

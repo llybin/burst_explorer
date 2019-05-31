@@ -8,38 +8,40 @@
   <h5>Market Place Goods #{{ good.id }} details</h5>
   <br>
 
-  <table class="table small table-sm">
-    <tbody>
-    <tr>
-      <th>ID</th>
-      <td>{{ good.id }}</td>
-    </tr>
-    <tr>
-      <th>Name</th>
-      <td>{{ good.name }}</td>
-    </tr>
-    <tr>
-      <th>Description</th>
-      <td>{{ good.description }}</td>
-    </tr>
-    <tr>
-      <th>Quantity</th>
-      <td>{{ good.quantity|intcomma }}</td>
-    </tr>
-    <tr>
-      <th>Price</th>
-      <td>{{ good.price|burst_amount|intcomma }} Burst</td>
-    </tr>
-    <tr>
-      <th>Seller</th>
-      <td>
-        {% include "account_link.html" with account_id=good.seller_id account_name=seller_name oneline=True %}
-      </td>
-    </tr>
-    <tr>
-      <th>Block</th>
-      <td><a href="{% url 'block-detail' good.height %}">{{ good.height }}</a></td>
-    </tr>
-    </tbody>
-  </table>
+  <div class="table-responsive">
+    <table class="table small table-sm">
+      <tbody>
+      <tr>
+        <th style="width: 200px;">ID</th>
+        <td>{{ good.id }}</td>
+      </tr>
+      <tr>
+        <th>Name</th>
+        <td style="word-wrap: break-word; max-width: 250px">{{ good.name }}</td>
+      </tr>
+      <tr>
+        <th>Description</th>
+        <td style="word-wrap: break-word; max-width: 250px">{{ good.description }}</td>
+      </tr>
+      <tr>
+        <th>Quantity</th>
+        <td>{{ good.quantity|intcomma }}</td>
+      </tr>
+      <tr>
+        <th>Price</th>
+        <td>{{ good.price|burst_amount|intcomma }} Burst</td>
+      </tr>
+      <tr>
+        <th>Seller</th>
+        <td>
+          {% include "account_link.html" with account_id=good.seller_id account_name=seller_name oneline=True %}
+        </td>
+      </tr>
+      <tr>
+        <th>Block</th>
+        <td><a href="{% url 'block-detail' good.height %}">{{ good.height }}</a></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 {% endblock %}

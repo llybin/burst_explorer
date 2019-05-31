@@ -13,17 +13,21 @@ main > .container {
     max-width: 960px;
 }
 
-body,html{
-    height:100%
-}.wrapper{
-    height:auto!important;
-    height:100%;
-    margin:0 auto -150px;
-    min-height:100%;
-    background-color:#f8f9fa!important
+body, html {
+    height: 100%
 }
 
-#push{height:150px}
+.wrapper {
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -150px;
+    min-height: 100%;
+    background-color: #f8f9fa !important
+}
+
+#push {
+    height: 150px
+}
 
 .table td, .table th {
     vertical-align: middle;

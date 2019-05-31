@@ -5,19 +5,19 @@
 
 {% block content %}
 
-  <div>
-    <h5>Account #{{ address.id }}</h5>
-    <br>
+  <h5>Account #{{ address.id }}</h5>
+  <br>
 
+  <div class="table-responsive">
     <table class="table small table-sm">
       <tbody>
       <tr>
-        <th>Name</th>
-        <td>{% if address.name %}{{ address.name }}{% endif %}</td>
+        <th style="width: 200px;">Name</th>
+        <td style="word-wrap: break-word; max-width: 250px">{% if address.name %}{{ address.name }}{% endif %}</td>
       </tr>
       <tr>
         <th>Description</th>
-        <td>{% if address.description %}{{ address.description }}{% endif %}</td>
+        <td style="word-wrap: break-word; max-width: 250px">{% if address.description %}{{ address.description }}{% endif %}</td>
       </tr>
       <tr>
         <th>Address</th>
