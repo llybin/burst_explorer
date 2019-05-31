@@ -5,105 +5,122 @@
 
 {% block content %}
 
-  <h5>Account #{{ address.id }}</h5>
-  <br>
+  <h5 class="p-2">Account #{{ address.id }}</h5>
 
-  <div class="table-responsive">
-    <table class="table small table-sm">
-      <tbody>
-      <tr>
-        <th style="width: 200px;">Name</th>
-        <td style="word-wrap: break-word; max-width: 250px">{% if address.name %}{{ address.name }}{% endif %}</td>
-      </tr>
-      <tr>
-        <th>Description</th>
-        <td style="word-wrap: break-word; max-width: 250px">{% if address.description %}{{ address.description }}{% endif %}</td>
-      </tr>
-      <tr>
-        <th>Address</th>
-        <td>{{ address.id|num2rs }}</td>
-      </tr>
-      <tr>
-        <th>Public Key</th>
-        <td class="text-monospace" style="word-wrap: break-word; max-width: 250px">{{ address.public_key|bin2hex }}</td>
-      </tr>
-      <tr>
-        <th>Balance</th>
-        <td>{{ address.balance|burst_amount|intcomma }} Burst</td>
-      </tr>
-      <tr>
-        <th>Pool</th>
-        <td>
-          {% if pool_id and pool_id != address.id %}
-            {% include "account_link.html" with account_id=pool_id account_name=pool_name oneline=True %}
-          {% else %}
-            <span class="text-success">Solo Miner</span>
-          {% endif %}
-        </td>
-      </tr>
-      </tbody>
-    </table>
+  <div class="card-deck mb-3">
+    <div class="card mb-4 shadow-sm">
+      <div class="card-body">
 
-    <nav>
-      <div class="nav nav-tabs small" id="nav-tab" role="tablist">
-        <a class="nav-item nav-link active" id="nav-transactions-tab" data-toggle="tab" href="#nav-transactions" role="tab" aria-controls="nav-transactions" aria-selected="true">{{ txs_cnt|intcomma }} Transactions</a>
-        <a class="nav-item nav-link" id="nav-multiout-tab" data-toggle="tab" href="#nav-multiout" role="tab" aria-controls="nav-multiout" aria-selected="false">{{ mos_cnt|intcomma }} MultiOut</a>
-        <a class="nav-item nav-link" id="nav-blocks-tab" data-toggle="tab" href="#nav-blocks" role="tab" aria-controls="nav-blocks" aria-selected="false">{{ mined_blocks_cnt|intcomma }} Blocks</a>
-        <a class="nav-item nav-link" id="nav-asset-hold-tab" data-toggle="tab" href="#nav-asset-hold" role="tab" aria-controls="nav-asset-hold" aria-selected="false">? Asset holdings</a>
-        <a class="nav-item nav-link" id="nav-asset-txs-tab" data-toggle="tab" href="#nav-asset-txs" role="tab" aria-controls="nav-asset-txs" aria-selected="false">? Asset transactions</a>
-        <a class="nav-item nav-link" id="nav-pool-tab" data-toggle="tab" href="#nav-pool" role="tab" aria-controls="nav-pool" aria-selected="false">? Pool members</a>
+        <div class="table-responsive">
+          <table class="table small table-sm">
+            <tbody>
+            <tr>
+              <th style="width: 200px;">Name</th>
+              <td style="word-wrap: break-word; max-width: 250px">{% if address.name %}{{ address.name }}{% endif %}</td>
+            </tr>
+            <tr>
+              <th>Description</th>
+              <td style="word-wrap: break-word; max-width: 250px">{% if address.description %}{{ address.description }}{% endif %}</td>
+            </tr>
+            <tr>
+              <th>Address</th>
+              <td>{{ address.id|num2rs }}</td>
+            </tr>
+            <tr>
+              <th>Public Key</th>
+              <td class="text-monospace" style="word-wrap: break-word; max-width: 250px">{{ address.public_key|bin2hex }}</td>
+            </tr>
+            <tr>
+              <th>Balance</th>
+              <td>{{ address.balance|burst_amount|intcomma }} Burst</td>
+            </tr>
+            <tr>
+              <th>Pool</th>
+              <td>
+                {% if pool_id and pool_id != address.id %}
+                  {% include "account_link.html" with account_id=pool_id account_name=pool_name oneline=True %}
+                {% else %}
+                  <span class="text-success">Solo Miner</span>
+                {% endif %}
+              </td>
+            </tr>
+            </tbody>
+          </table>
+
+          <nav>
+            <div class="nav nav-tabs small" id="nav-tab" role="tablist">
+              <a class="nav-item nav-link active" id="nav-transactions-tab" data-toggle="tab" href="#nav-transactions" role="tab" aria-controls="nav-transactions" aria-selected="true">{{ txs_cnt|intcomma }} Transactions</a>
+              <a class="nav-item nav-link" id="nav-multiout-tab" data-toggle="tab" href="#nav-multiout" role="tab" aria-controls="nav-multiout" aria-selected="false">{{ mos_cnt|intcomma }} MultiOut</a>
+              <a class="nav-item nav-link" id="nav-blocks-tab" data-toggle="tab" href="#nav-blocks" role="tab" aria-controls="nav-blocks" aria-selected="false">{{ mined_blocks_cnt|intcomma }} Blocks</a>
+              <a class="nav-item nav-link" id="nav-asset-hold-tab" data-toggle="tab" href="#nav-asset-hold" role="tab" aria-controls="nav-asset-hold" aria-selected="false">{{ assets_cnt|intcomma }} Asset holdings</a>
+              <a class="nav-item nav-link" id="nav-asset-txs-tab" data-toggle="tab" href="#nav-asset-txs" role="tab" aria-controls="nav-asset-txs" aria-selected="false">? Asset transactions</a>
+              <a class="nav-item nav-link" id="nav-pool-tab" data-toggle="tab" href="#nav-pool" role="tab" aria-controls="nav-pool" aria-selected="false">? Pool members</a>
+            </div>
+          </nav>
+          <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-transactions" role="tabpanel" aria-labelledby="nav-transactions-tab">
+              <p class="small p-1" style="margin-top: 10px">
+                Latest {{ txs.count }} from a total of
+                {% if txs_cnt > 0 %}
+                  <a href="{% url 'txs' %}?a={{ address.id }}">{{ txs_cnt|intcomma }}</a>
+                {% else %}
+                  0
+                {% endif %}
+                transactions
+              </p>
+              {% include "txs/list_table.html"  with filtered_account=address.id %}
+            </div>
+
+            <div class="tab-pane fade" id="nav-multiout" role="tabpanel" aria-labelledby="nav-multiout-tab">
+              <p class="small p-1" style="margin-top: 10px">
+                Latest {{ mos.count }} from a total of
+                {% if mos_cnt > 0 %}
+                  <a href="{% url 'mos' %}?a={{ address.id }}">{{ mos_cnt|intcomma }}</a>
+                {% else %}
+                  0
+                {% endif %}
+                transactions
+              </p>
+              {% include "mos/list_table.html"  with filtered_account=address.id %}
+            </div>
+
+            <div class="tab-pane fade" id="nav-blocks" role="tabpanel" aria-labelledby="nav-blocks-tab">
+              <p class="small p-1" style="margin-top: 10px">
+                Latest {{ mined_blocks.count }} from a total of
+                {% if mined_blocks_cnt > 0 %}
+                  <a href="{% url 'blocks' %}?m={{ address.id }}">{{ mined_blocks_cnt|intcomma }}</a>
+                {% else %}
+                  0
+                {% endif %}
+                mined blocks
+              </p>
+              {% include "accounts/mined_blocks.html" %}
+            </div>
+
+            <div class="tab-pane fade" id="nav-asset-hold" role="tabpanel" aria-labelledby="nav-asset-hold-tab">
+              <p class="small p-1" style="margin-top: 10px">
+                {{ assets_cnt|intcomma }} assets found
+              </p>
+              {% include "accounts/assets.html" %}
+            </div>
+
+            <div class="tab-pane fade" id="nav-asset-txs" role="tabpanel" aria-labelledby="nav-asset-txs-tab">
+              <p class="small p-1" style="margin-top: 10px">
+                ?
+              </p>
+            </div>
+
+            <div class="tab-pane fade" id="nav-pool" role="tabpanel" aria-labelledby="nav-pool-tab">
+              <p class="small p-2" style="margin-top: 10px">
+                ?
+              </p>
+            </div>
+          </div>
+
+        </div>
+
       </div>
-    </nav>
-    <div class="tab-content" id="nav-tabContent">
-      <div class="tab-pane fade show active" id="nav-transactions" role="tabpanel" aria-labelledby="nav-transactions-tab">
-        <br>
-        <p class="small">
-          Latest {{ txs.count }} from a total of
-          {% if txs_cnt > 0 %}
-            <a href="{% url 'txs' %}?a={{ address.id }}">{{ txs_cnt|intcomma }}</a>
-          {% else %}
-            0
-          {% endif %}
-          transactions
-        </p>
-        {% include "txs/list_table.html"  with filtered_account=address.id %}
-      </div>
-
-      <div class="tab-pane fade" id="nav-multiout" role="tabpanel" aria-labelledby="nav-multiout-tab">
-        <br>
-        <p class="small">
-          Latest {{ mos.count }} from a total of
-          {% if mos_cnt > 0 %}
-            <a href="{% url 'mos' %}?a={{ address.id }}">{{ mos_cnt|intcomma }}</a>
-          {% else %}
-            0
-          {% endif %}
-          transactions
-        </p>
-        {% include "mos/list_table.html"  with filtered_account=address.id %}
-      </div>
-
-      <div class="tab-pane fade" id="nav-blocks" role="tabpanel" aria-labelledby="nav-blocks-tab">
-        <br>
-        <p class="small">
-          Latest {{ mined_blocks.count }} from a total of
-          {% if mined_blocks_cnt > 0 %}
-            <a href="{% url 'blocks' %}?m={{ address.id }}">{{ mined_blocks_cnt|intcomma }}</a>
-          {% else %}
-            0
-          {% endif %}
-          mined blocks
-        </p>
-        {% include "accounts/mined_blocks.html" %}
-      </div>
-
-      <div class="tab-pane fade" id="nav-asset-hold" role="tabpanel" aria-labelledby="nav-asset-hold-tab">...</div>
-
-      <div class="tab-pane fade" id="nav-asset-txs" role="tabpanel" aria-labelledby="nav-asset-txs-tab">...</div>
-
-      <div class="tab-pane fade" id="nav-pool" role="tabpanel" aria-labelledby="nav-pool-tab">...</div>
     </div>
-
   </div>
 
 {% endblock %}

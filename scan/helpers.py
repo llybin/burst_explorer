@@ -1,7 +1,7 @@
 from django.core.cache import cache
 from django.db.models import Sum
 
-from java_wallet.models import Account, Transaction, RewardRecipAssign, Block
+from java_wallet.models import Account, Transaction, RewardRecipAssign, Block, Asset
 from scan.models import MultiOut
 
 
@@ -19,6 +19,22 @@ def get_account_name(account_id):
         cache.set(key, account_name or '')
 
     return account_name
+
+
+def get_asset_name(asset_id):
+    key = "asset_name:{}".format(asset_id)
+
+    asset_name = cache.get(key)
+
+    if asset_name is None:
+        asset_name = Asset.objects.using('java-wallet').filter(
+            id=asset_id
+        ).values_list(
+            'name', flat=True
+        ).first()
+        cache.set(key, asset_name or '')
+
+    return asset_name
 
 
 def get_txs_count_in_block(block_id):

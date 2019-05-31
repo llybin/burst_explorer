@@ -45,10 +45,12 @@
               <a class="dropdown-item" href="https://wallet.burst.devtrue.net" target="_blank">Online Wallet</a>
             </div>
           </nav>
+          {% if request.path != '/' %}
           <form class="form-inline mt-2 mt-md-0 col-xs-4" action="{% url 'search' %}">
             <input class="form-control mr-sm-2" type="text" name="q" placeholder="Search by Address / Block ..." aria-label="Search">
             <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" name="submit" value="Search">Search</button>
           </form>
+          {% endif %}
         </div>
       </header>
 

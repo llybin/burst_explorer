@@ -4,6 +4,7 @@ from django.views.generic import ListView, DetailView
 
 from java_wallet.models import (
     Account,
+    AccountAsset,
     At,
     Asset,
     Block,
@@ -19,6 +20,7 @@ from scan.helpers import (
     get_txs_count,
     get_last_height,
     get_multiouts_count,
+    get_asset_name,
 )
 from scan.caching_paginator import CachingPaginator
 from burst.multiout import MultiOutPack
@@ -260,6 +262,21 @@ class AddressDetailView(DetailView):
 
         context['mos_cnt'] = MultiOut.objects.filter(
             Q(sender_id=obj.id) | Q(recipient_id=obj.id)
+        ).count()
+
+        # assets
+
+        context['assets'] = AccountAsset.objects.using('java-wallet').filter(
+            account_id=obj.id,
+            latest=True
+        ).order_by('-db_id')
+
+        for asset in context['assets']:
+            asset.name = get_asset_name(asset.asset_id)
+
+        context['assets_cnt'] = AccountAsset.objects.using('java-wallet').filter(
+            account_id=obj.id,
+            latest=True
         ).count()
 
         # pool info

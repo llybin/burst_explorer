@@ -5,42 +5,50 @@
 
 {% block content %}
 
-  <h5>Market Place</h5>
+  <h5 class="p-2">Market Place</h5>
 
-  <div class="d-flex flex-column flex-md-row align-items-center">
-    <small class="my-0 mr-md-auto text-muted">{{ paginator.count|intcomma }} goods found</small>
-    {% include "paginator.html" %}
+  <div class="card-deck mb-3">
+    <div class="card mb-4 shadow-sm">
+      <div class="card-body">
+
+        <div class="d-flex flex-column flex-md-row align-items-center">
+          <small class="my-0 mr-md-auto text-muted">{{ paginator.count|intcomma }} goods found</small>
+          {% include "paginator.html" %}
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-hover small table-sm">
+            <thead>
+            <tr>
+              <th scope="col">Good Id</th>
+              <th scope="col">Name</th>
+              <th scope="col">Seller</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Price</th>
+              <th scope="col">Active</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for good in goods %}
+              <tr>
+                <td><a href="{% url 'mp-detail' good.id %}">{{ good.id|truncatechars:10 }}</a></td>
+                <td style="max-width: 250px;">{{ good.name }}</td>
+                <td class="text-nowrap">
+                  {% include "account_link.html" with account_id=good.seller_id account_name=good.seller_name %}
+                </td>
+                <td>{{ good.quantity|intcomma }}</td>
+                <td class="text-nowrap">{{ good.price|burst_amount|rounding:4|intcomma }} Burst</td>
+                <td>{{ good.delisted|boolean }}</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        {% include "paginator.html" %}
+
+      </div>
+    </div>
   </div>
-
-  <div class="table-responsive">
-    <table class="table table-hover small table-sm">
-      <thead>
-      <tr>
-        <th scope="col">Good Id</th>
-        <th scope="col">Name</th>
-        <th scope="col">Seller</th>
-        <th scope="col">Quantity</th>
-        <th scope="col">Price</th>
-        <th scope="col">Active</th>
-      </tr>
-      </thead>
-      <tbody>
-      {% for good in goods %}
-        <tr>
-          <td><a href="{% url 'mp-detail' good.id %}">{{ good.id|truncatechars:10 }}</a></td>
-          <td style="max-width: 250px;">{{ good.name }}</td>
-          <td class="text-nowrap">
-            {% include "account_link.html" with account_id=good.seller_id account_name=good.seller_name %}
-          </td>
-          <td>{{ good.quantity|intcomma }}</td>
-          <td class="text-nowrap">{{ good.price|burst_amount|rounding:4|intcomma }} Burst</td>
-          <td>{{ good.delisted|boolean }}</td>
-        </tr>
-      {% endfor %}
-      </tbody>
-    </table>
-  </div>
-
-  {% include "paginator.html" %}
 
 {% endblock %}

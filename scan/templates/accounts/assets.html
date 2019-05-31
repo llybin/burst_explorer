@@ -1,0 +1,27 @@
+{% load humanize %}
+{% load burst_tags %}
+
+<div class="table-responsive">
+  <table class="table table-hover small table-sm">
+    <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Unconfirmed quantity</th>
+      <th scope="col">Asset share</th>
+      <th scope="col">Since block</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for asset in assets %}
+      <tr>
+        <td><a href="{% url 'asset-detail' asset.asset_id %}">{{ asset.name }}</a></td>
+        <td>{{ asset.quantity|intcomma }}</td>
+        <td>{{ asset.unconfirmed_quantity|intcomma }}</td>
+        <td>?</td>
+        <td><a href="{% url 'block-detail' asset.height %}">{{ asset.height }}</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>

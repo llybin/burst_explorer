@@ -5,69 +5,76 @@
 
 {% block content %}
 
-  <h5>AT #{{ at.id }} details</h5>
-  <br>
+  <h5 class="p-2">AT #{{ at.id }} details</h5>
 
-  <div class="table-responsive">
-    <table class="table small table-sm">
-      <tbody>
-      <tr>
-        <th style="width: 200px;">ID</th>
-        <td>{{ at.id }}</td>
-      </tr>
-      <tr>
-        <th>Name</th>
-        <td style="word-wrap: break-word; max-width: 250px">{{ at.name }}</td>
-      </tr>
-      <tr>
-        <th>Description</th>
-        <td style="word-wrap: break-word; max-width: 250px">{{ at.description }}</td>
-      </tr>
-      <tr>
-        <th>Creator</th>
-        <td>
-          {% include "account_link.html" with account_id=at.creator_id account_name=creator_name oneline=True %}
-        </td>
-      </tr>
-      <tr class="collapse show_more_info" style="min-width: 200px;">
-        <th>Block</th>
-        <td><a href="{% url 'block-detail' at.height %}">{{ at.height }}</a></td>
-      </tr>
-      <tr class="collapse show_more_info">
-        <th>Creation Block</th>
-        <td>
-          <a href="{% url 'block-detail' at.creation_height %}">{{ at.creation_height }}</a></td>
-      </tr>
-      <tr class="collapse show_more_info">
-        <th>Version</th>
-        <td>{{ at.version }}</td>
-      </tr>
-      <tr class="collapse show_more_info">
-        <th>CSize</th>
-        <td>{{ at.csize }}</td>
-      </tr>
-      <tr class="collapse show_more_info">
-        <th>DSize</th>
-        <td>{{ at.dsize }}</td>
-      </tr>
-      <tr class="collapse show_more_info">
-        <th>CUser Stack Bytes</th>
-        <td>{{ at.c_user_stack_bytes }}</td>
-      </tr>
-      <tr class="collapse show_more_info">
-        <th>CCall Stack Bytes</th>
-        <td>{{ at.c_call_stack_bytes }}</td>
-      </tr>
-      <tr class="collapse show_more_info">
-        <th>Ap Code</th>
-        <td class="text-monospace">
-          <textarea id="ap_code" class="form-control" spellcheck="false" rows="5" disabled>{{ at.ap_code|bin2hex }}</textarea>
-          <label for="ap_code"></label>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+  <div class="card-deck mb-3">
+    <div class="card mb-4 shadow-sm">
+      <div class="card-body">
+
+          <div class="table-responsive">
+            <table class="table small table-sm">
+              <tbody>
+              <tr>
+                <th style="width: 200px;">ID</th>
+                <td>{{ at.id }}</td>
+              </tr>
+              <tr>
+                <th>Name</th>
+                <td style="word-wrap: break-word; max-width: 250px">{{ at.name }}</td>
+              </tr>
+              <tr>
+                <th>Description</th>
+                <td style="word-wrap: break-word; max-width: 250px">{{ at.description }}</td>
+              </tr>
+              <tr>
+                <th>Creator</th>
+                <td>
+                  {% include "account_link.html" with account_id=at.creator_id account_name=creator_name oneline=True %}
+                </td>
+              </tr>
+              <tr class="collapse show_more_info" style="min-width: 200px;">
+                <th>Block</th>
+                <td><a href="{% url 'block-detail' at.height %}">{{ at.height }}</a></td>
+              </tr>
+              <tr class="collapse show_more_info">
+                <th>Creation Block</th>
+                <td>
+                  <a href="{% url 'block-detail' at.creation_height %}">{{ at.creation_height }}</a></td>
+              </tr>
+              <tr class="collapse show_more_info">
+                <th>Version</th>
+                <td>{{ at.version }}</td>
+              </tr>
+              <tr class="collapse show_more_info">
+                <th>CSize</th>
+                <td>{{ at.csize }}</td>
+              </tr>
+              <tr class="collapse show_more_info">
+                <th>DSize</th>
+                <td>{{ at.dsize }}</td>
+              </tr>
+              <tr class="collapse show_more_info">
+                <th>CUser Stack Bytes</th>
+                <td>{{ at.c_user_stack_bytes }}</td>
+              </tr>
+              <tr class="collapse show_more_info">
+                <th>CCall Stack Bytes</th>
+                <td>{{ at.c_call_stack_bytes }}</td>
+              </tr>
+              <tr class="collapse show_more_info">
+                <th>Ap Code</th>
+                <td class="text-monospace">
+                  <textarea id="ap_code" class="form-control" spellcheck="false" rows="5" disabled>{{ at.ap_code|bin2hex }}</textarea>
+                  <label for="ap_code"></label>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <a data-toggle="collapse" data-target=".show_more_info" href="#">Show more details</a>
+
+        </div>
+    </div>
   </div>
-  <a data-toggle="collapse" data-target=".show_more_info" href="#">Show more details</a>
 
 {% endblock %}

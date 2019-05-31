@@ -5,72 +5,79 @@
 
 {% block content %}
 
-  <h5>Blocks
+  <h5 class="p-2">Blocks
     {% if 'm' in request.GET %}
       <small class="text-muted">For miner #<a href="{% url 'address-detail' request.GET.m %}">{{ request.GET.m }}</a></small>
     {% endif %}
   </h5>
 
-  <div class="d-flex flex-column flex-md-row align-items-center">
-    <small class="my-0 mr-md-auto text-muted">
-      {% if blocks %}
-        {% if 'm' in request.GET %}
-          A total of {{ paginator.count|intcomma }} blocks found
-        {% else %}
-          Block #{% with blocks|first as blk %}{{ blk.height }} to #{{ blk.height|sub:blocks.count|add:1 }}{% endwith %} (Total of {{ last_height|add:1|intcomma }} blocks)
-        {% endif %}
-      {% else %}
-        0 blocks found
-      {% endif %}
-    </small>
-    {% include "paginator.html" %}
-  </div>
+  <div class="card-deck mb-3">
+    <div class="card mb-4 shadow-sm">
+      <div class="card-body">
 
-  <div class="table-responsive">
-    <table class="table table-hover small table-sm">
-      <thead>
-      <tr>
-        <th scope="col">Height</th>
-        <th scope="col">Timestamp</th>
-        <th scope="col">Txn</th>
-        <th scope="col">Sent</th>
-        <th scope="col">Reward</th>
-        <th scope="col">Size</th>
-        <th scope="col">Miner</th>
-        <th scope="col">Pool</th>
-      </tr>
-      </thead>
-      <tbody>
-      {% for block in blocks %}
-        <tr>
-          <td><a href="{% url 'block-detail' block.height %}">{{ block.height }}</a></td>
-          <td class="text-nowrap">{{ block.timestamp|naturaltime }}</td>
-          <td>
-            {% if block.txs_cnt > 0 %}
-              <a href="{% url 'txs' %}?block={{ block.height }}">{{ block.txs_cnt|intcomma }}</a>
+        <div class="d-flex flex-column flex-md-row align-items-center">
+          <small class="my-0 mr-md-auto text-muted">
+            {% if blocks %}
+              {% if 'm' in request.GET %}
+                A total of {{ paginator.count|intcomma }} blocks found
+              {% else %}
+                Block #{% with blocks|first as blk %}{{ blk.height }} to #{{ blk.height|sub:blocks.count|add:1 }}{% endwith %} (Total of {{ last_height|add:1|intcomma }} blocks)
+              {% endif %}
             {% else %}
-              0
+              0 blocks found
             {% endif %}
-          </td>
-          <td class="text-nowrap">{{ block.total_amount|burst_amount|rounding:4|intcomma }} Burst</td>
-          <td class="text-nowrap">{{ block|block_reward_fee|rounding:4|intcomma }} Burst</td>
-          <td>{{ block.payload_length|filesizeformat }}</td>
-          <td class="text-nowrap">
-            {% include "account_link.html" with account_id=block.generator_id account_name=block.generator_name filtered_account=request.GET.m %}
-          </td>
-          <td class="text-nowrap">
-            {% if block.pool_id and block.pool_id != block.generator_id %}
-              {% include "account_link.html" with account_id=block.pool_id account_name=block.pool_name %}
-            {% else %}
-              <span class="text-info">Solo Miner</span>
-            {% endif %}
-          </td>
-        </tr>
-      {% endfor %}
-      </tbody>
-    </table>
-  </div>
+          </small>
+          {% include "paginator.html" %}
+        </div>
 
-  {% include "paginator.html" %}
+        <div class="table-responsive bg-white">
+          <table class="table table-hover small table-sm">
+            <thead>
+            <tr>
+              <th scope="col">Height</th>
+              <th scope="col">Timestamp</th>
+              <th scope="col">Txn</th>
+              <th scope="col">Sent</th>
+              <th scope="col">Reward</th>
+              <th scope="col">Size</th>
+              <th scope="col">Miner</th>
+              <th scope="col">Pool</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for block in blocks %}
+              <tr>
+                <td><a href="{% url 'block-detail' block.height %}">{{ block.height }}</a></td>
+                <td class="text-nowrap">{{ block.timestamp|naturaltime }}</td>
+                <td>
+                  {% if block.txs_cnt > 0 %}
+                    <a href="{% url 'txs' %}?block={{ block.height }}">{{ block.txs_cnt|intcomma }}</a>
+                  {% else %}
+                    0
+                  {% endif %}
+                </td>
+                <td class="text-nowrap">{{ block.total_amount|burst_amount|rounding:4|intcomma }} Burst</td>
+                <td class="text-nowrap">{{ block|block_reward_fee|rounding:4|intcomma }} Burst</td>
+                <td>{{ block.payload_length|filesizeformat }}</td>
+                <td class="text-nowrap">
+                  {% include "account_link.html" with account_id=block.generator_id account_name=block.generator_name filtered_account=request.GET.m %}
+                </td>
+                <td class="text-nowrap">
+                  {% if block.pool_id and block.pool_id != block.generator_id %}
+                    {% include "account_link.html" with account_id=block.pool_id account_name=block.pool_name %}
+                  {% else %}
+                    <span class="text-info">Solo Miner</span>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% include "paginator.html" %}
+
+      </div>
+    </div>
+  </div>
 
 {% endblock %}

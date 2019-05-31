@@ -5,38 +5,46 @@
 
 {% block content %}
 
-  <h5>Assets</h5>
+  <h5 class="p-2">Assets</h5>
 
-  <div class="d-flex flex-column flex-md-row align-items-center">
-    <small class="my-0 mr-md-auto text-muted">{{ paginator.count|intcomma }} assets found</small>
-    {% include "paginator.html" %}
+  <div class="card-deck mb-3">
+    <div class="card mb-4 shadow-sm">
+      <div class="card-body">
+
+        <div class="d-flex flex-column flex-md-row align-items-center">
+          <small class="my-0 mr-md-auto text-muted">{{ paginator.count|intcomma }} assets found</small>
+          {% include "paginator.html" %}
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-hover small table-sm">
+            <thead>
+            <tr>
+              <th scope="col">Asset Id</th>
+              <th scope="col">Name</th>
+              <th scope="col">Issuer</th>
+              <th scope="col">Quantity</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for asset in assets %}
+              <tr>
+                <td><a href="{% url 'asset-detail' asset.id %}">{{ asset.id|truncatechars:10 }}</a></td>
+                <td style="word-wrap: break-word; max-width: 250px">{{ asset.name }}</td>
+                <td class="text-nowrap">
+                    {% include "account_link.html" with account_id=asset.account_id account_name=asset.account_name %}
+                </td>
+                <td>{{ asset.quantity|intcomma }}</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        {% include "paginator.html" %}
+
+      </div>
+    </div>
   </div>
-
-  <div class="table-responsive">
-    <table class="table table-hover small table-sm">
-      <thead>
-      <tr>
-        <th scope="col">Asset Id</th>
-        <th scope="col">Name</th>
-        <th scope="col">Issuer</th>
-        <th scope="col">Quantity</th>
-      </tr>
-      </thead>
-      <tbody>
-      {% for asset in assets %}
-        <tr>
-          <td><a href="{% url 'asset-detail' asset.id %}">{{ asset.id|truncatechars:10 }}</a></td>
-          <td style="word-wrap: break-word; max-width: 250px">{{ asset.name }}</td>
-          <td class="text-nowrap">
-              {% include "account_link.html" with account_id=asset.account_id account_name=asset.account_name %}
-          </td>
-          <td>{{ asset.quantity|intcomma }}</td>
-        </tr>
-      {% endfor %}
-      </tbody>
-    </table>
-  </div>
-
-  {% include "paginator.html" %}
 
 {% endblock %}
