@@ -7,6 +7,15 @@ class MultiOutTest(TestCase):
     def setUp(self) -> None:
         self.mo = MultiOutPack()
 
+    def test_header_ok(self):
+        # transaction #15440603410472198198
+        data = b'\x01\x02\xfd\xb6\x06W\xaa\x8c\xa1\x88\xb6jG\xa4\x02\x00\x00' \
+               b'\x00\xaf\xc6\xef\xdd;\xa2C\x8f\x1c\x11 \xd1\x00\x00\x00\x00'
+        self.assertEqual(
+            self.mo.unpack_header(data),
+            (1, 2)
+        )
+
     def test_multiout_ok(self):
         # transaction #15440603410472198198
         data = b'\x01\x02\xfd\xb6\x06W\xaa\x8c\xa1\x88\xb6jG\xa4\x02\x00\x00' \

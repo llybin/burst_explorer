@@ -1,4 +1,3 @@
-# TODO: scheduler :)
 from django.db.models import Q
 
 from java_wallet.models import Transaction
@@ -7,7 +6,7 @@ from scan.helpers import get_last_height
 from burst.multiout import MultiOutPack
 
 
-def group_list(lst, n):
+def group_list(lst: list or tuple, n: int):
     for i in range(0, len(lst), n):
         val = lst[i:i + n]
         if len(val) == n:

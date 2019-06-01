@@ -7,11 +7,9 @@ class UnpackError(Exception):
     pass
 
 
-# TODO: typing
-# TODO: test unpack_header
 class MultiOutPack(object):
     @staticmethod
-    def _unpack_header(data):
+    def _unpack_header(data: bytes) -> (int, int):
         headers = struct.unpack("2c", data)
 
         version = int.from_bytes(headers[0], byteorder=sys.byteorder)
@@ -23,10 +21,10 @@ class MultiOutPack(object):
 
         return version, nums
 
-    def unpack_header(self, data):
+    def unpack_header(self, data: bytes) -> (int, int):
         return self._unpack_header(data[:2])
 
-    def unpack_multi_out(self, data):
+    def unpack_multi_out(self, data: bytes) -> [int]:
         try:
             version, nums = self._unpack_header(data[:2])
             return struct.unpack("{}P".format(2 * nums), data[2:])
@@ -34,7 +32,7 @@ class MultiOutPack(object):
             logging.error("Unpack error: %r", data)
             raise UnpackError
 
-    def unpack_multi_out_same(self, data):
+    def unpack_multi_out_same(self, data: bytes) -> [int]:
         try:
             version, nums = self._unpack_header(data[:2])
             return struct.unpack("{}P".format(nums), data[2:])

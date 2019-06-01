@@ -1,4 +1,6 @@
 from django.db.models import Q
+from django.http import Http404
+from django.utils.translation import gettext as _
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 
@@ -29,6 +31,16 @@ from scan.models import MultiOut
 
 def index(request):
     return render(request, 'index.html')
+
+
+class IntSlugDetailView(DetailView):
+    def get_object(self, queryset=None):
+        slug = self.kwargs.get(self.slug_url_kwarg)
+        if not slug.isdigit():
+            raise Http404(_("No %(verbose_name)s found matching the query") %
+                          {'verbose_name': self.queryset.model._meta.verbose_name})
+
+        return super().get_object(queryset)
 
 
 class BlockListView(ListView):
@@ -68,7 +80,7 @@ class BlockListView(ListView):
         return context
 
 
-class BlockDetailView(DetailView):
+class BlockDetailView(IntSlugDetailView):
     model = Block
     queryset = Block.objects.using('java-wallet').all()
     template_name = 'blocks/detail.html'
@@ -175,7 +187,7 @@ class TxListView(ListView):
         return context
 
 
-class TxDetailView(DetailView):
+class TxDetailView(IntSlugDetailView):
     model = Transaction
     queryset = Transaction.objects.using('java-wallet').all()
     template_name = 'txs/detail.html'
@@ -218,7 +230,7 @@ class AccountsListView(ListView):
         return context
 
 
-class AddressDetailView(DetailView):
+class AddressDetailView(IntSlugDetailView):
     model = Account
     queryset = Account.objects.using('java-wallet').filter(latest=True).all()
     template_name = 'accounts/detail.html'
@@ -319,7 +331,7 @@ class AssetListView(ListView):
         return context
 
 
-class AssetDetailView(DetailView):
+class AssetDetailView(IntSlugDetailView):
     model = Asset
     queryset = Asset.objects.using('java-wallet').all()
     template_name = 'assets/detail.html'
@@ -357,7 +369,7 @@ class MarketPlaceListView(ListView):
         return context
 
 
-class MarketPlaceDetailView(DetailView):
+class MarketPlaceDetailView(IntSlugDetailView):
     model = Goods
     queryset = Goods.objects.using('java-wallet').filter(latest=True).all()
     template_name = 'marketplace/detail.html'
@@ -395,7 +407,7 @@ class AtListView(ListView):
         return context
 
 
-class AtDetailView(DetailView):
+class AtDetailView(IntSlugDetailView):
     model = At
     queryset = At.objects.using('java-wallet').filter(latest=True).all()
     template_name = 'ats/detail.html'

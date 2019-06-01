@@ -5,7 +5,7 @@ from java_wallet.models import Account, Transaction, RewardRecipAssign, Block, A
 from scan.models import MultiOut
 
 
-def get_account_name(account_id):
+def get_account_name(account_id: int) -> str:
     key = "account_name:{}".format(account_id)
 
     account_name = cache.get(key)
@@ -21,7 +21,7 @@ def get_account_name(account_id):
     return account_name
 
 
-def get_asset_name(asset_id):
+def get_asset_name(asset_id: int) -> str:
     key = "asset_name:{}".format(asset_id)
 
     asset_name = cache.get(key)
@@ -37,7 +37,7 @@ def get_asset_name(asset_id):
     return asset_name
 
 
-def get_txs_count_in_block(block_id):
+def get_txs_count_in_block(block_id: int) -> int:
     key = "block_txs_count:{}".format(block_id)
 
     cnt = cache.get(key)
@@ -49,7 +49,7 @@ def get_txs_count_in_block(block_id):
     return cnt
 
 
-def get_pool_id_for_block(block):
+def get_pool_id_for_block(block: Block) -> int:
     key = "block_pool:{}".format(block.id)
 
     recipient_id = cache.get(key, -1)
@@ -68,7 +68,7 @@ def get_pool_id_for_block(block):
     return recipient_id
 
 
-def get_pool_id_for_account(address_id):
+def get_pool_id_for_account(address_id: int) -> int:
     key = "block_pool:{}".format(address_id)
 
     pool_id = cache.get(key, -1)
@@ -87,7 +87,7 @@ def get_pool_id_for_account(address_id):
     return pool_id
 
 
-def get_all_burst_amount():
+def get_all_burst_amount() -> int:
     key = "all_burst_amount"
 
     amount = cache.get(key)
@@ -102,7 +102,7 @@ def get_all_burst_amount():
     return amount
 
 
-def get_txs_count():
+def get_txs_count() -> int:
     key = "txs_count"
 
     amount = cache.get(key)
@@ -114,7 +114,7 @@ def get_txs_count():
     return amount
 
 
-def get_multiouts_count():
+def get_multiouts_count() -> int:
     key = "multiouts_count"
 
     amount = cache.get(key)
@@ -126,7 +126,7 @@ def get_multiouts_count():
     return amount
 
 
-def get_last_height():
+def get_last_height() -> int:
     key = "last_height"
 
     height = cache.get(key)
