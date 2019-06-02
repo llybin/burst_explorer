@@ -8,8 +8,8 @@
       <th scope="col">Txn id</th>
       <th scope="col">Block</th>
       <th scope="col">Timestamp</th>
-      <th scope="col">Type</th>
       <th scope="col">From</th>
+      <th scope="col"></th>
       <th scope="col">To</th>
       <th scope="col">Value</th>
       <th scope="col">Txn Fee</th>
@@ -21,9 +21,15 @@
         <td><a href="{% url 'tx-detail' tx.id %}">{{ tx.id|truncatechars:10 }}</a></td>
         <td><a href="{% url 'block-detail' tx.height %}">{{ tx.height }}</a></td>
         <td class="text-nowrap">{{ tx.block_timestamp|naturaltime }}</td>
-        <td>{{ tx|tx_type }}</td>
         <td class="text-nowrap">
           {% include "account_link.html" with account_id=tx.sender_id account_name=tx.sender_name %}
+        </td>
+        <td>
+          {% if filtered_account|slugify == tx.sender_id|slugify %}
+            <span class="text-center font-weight-bold rounded-pill" style="background-color: rgb(255, 214, 214)!important; color: rgb(140, 45, 80); line-height: 1.6; font-size: .61rem; width: 100%!important; display: inline-block; padding: .2rem .5rem;">OUT</span>
+          {% elif filtered_account|slugify == tx.recipient_id|slugify %}
+            <span class="text-center font-weight-bold rounded-pill" style="background-color: rgb(222, 249, 210)!important; color: rgb(35, 118, 64); line-height: 1.6; font-size: .61rem; width: 100%!important; display: inline-block; padding: .2rem .5rem;">IN</span>
+          {% endif %}
         </td>
         <td class="text-nowrap">
           {% include "recipient_link.html" with account_id=tx.recipient_id account_name=tx.recipient_name %}

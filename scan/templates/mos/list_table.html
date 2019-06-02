@@ -8,8 +8,8 @@
       <th scope="col">Txn id</th>
       <th scope="col">Block</th>
       <th scope="col">Txn Timestamp</th>
-      <th scope="col">Type</th>
       <th scope="col">From</th>
+      <th scope="col"></th>
       <th scope="col">To</th>
       <th scope="col">Value</th>
     </tr>
@@ -20,21 +20,19 @@
         <td><a href="{% url 'tx-detail' mo.tx_id %}">{{ mo.tx_id|truncatechars:10 }}</a></td>
         <td><a href="{% url 'block-detail' mo.height %}">{{ mo.height }}</a></td>
         <td class="text-nowrap">{{ mo.tx_timestamp|naturaltime }}</td>
-        <td>
-          {% if mo.tx_type == 1 %}
-            Multiout Payment
-          {% elif mo.tx_type == 2 %}
-            MultioutSame Payment
-          {% else %}
-            Unknown type
-          {% endif %}
-        </td>
         <td class="text-nowrap">
           {% include "account_link.html" with account_id=mo.sender_id account_name=mo.sender_name %}
         </td>
+        <td>
+          {% if filtered_account|slugify == mo.sender_id|slugify %}
+            <span class="text-center font-weight-bold rounded-pill" style="background-color: rgb(255, 214, 214)!important; color: rgb(140, 45, 80); line-height: 1.6; font-size: .61rem; width: 100%!important; display: inline-block; padding: .2rem .5rem;">OUT</span>
+          {% elif filtered_account|slugify == mo.recipient_id|slugify %}
+            <span class="text-center font-weight-bold rounded-pill" style="background-color: rgb(222, 249, 210)!important; color: rgb(35, 118, 64); line-height: 1.6; font-size: .61rem; width: 100%!important; display: inline-block; padding: .2rem .5rem;">IN</span>
+          {% endif %}
+        </td>
         <td class="text-nowrap">
           {% include "recipient_link.html" with account_id=mo.recipient_id account_name=mo.recipient_name %}
-        </td class="text-nowrap">
+        </td>
         <td>{{ mo.amount|burst_amount|rounding:4|intcomma }} Burst</td>
       </tr>
     {% endfor %}
