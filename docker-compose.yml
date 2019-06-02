@@ -42,7 +42,7 @@ services:
       dockerfile: Dockerfile
     stdin_open: true
     tty: true
-    command: ["./wait-for-it.sh", "db_java_wallet:3306", "--", "python", "manage.py", "test", "-v2", "--no-input"]
+    command: ["./wait-for-it.sh", "db_java_wallet:3306", "--", "coverage", "run", "python", "manage.py", "test", "-v2", "--no-input"]
     volumes:
       - .:/code
     env_file:
