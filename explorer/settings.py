@@ -26,7 +26,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.getenv('SECRET_KEY', 'l42wty32hl$*6=lsy33%0%)cps87@@!vfns!ucu-#*%$x_@min')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', True)  # TODO: False
+DEBUG = os.getenv('DEBUG', False)
 
 ALLOWED_HOSTS = ['*']
 
@@ -41,10 +41,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    'debug_toolbar',
     'scan',
     'java_wallet',
 ]
+
+if DEBUG:
+    INSTALLED_APPS += ['debug_toolbar']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -54,8 +56,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
+
+if DEBUG:
+    MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware']
 
 ROOT_URLCONF = 'explorer.urls'
 
@@ -84,12 +88,16 @@ WSGI_APPLICATION = 'explorer.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    },
-    'java-wallet': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'data',
+        'NAME': 'default',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': 'db_default',
+        'PORT': '3306',
+    },
+    'java_wallet': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'java_wallet',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'db_java_wallet',
@@ -97,23 +105,25 @@ DATABASES = {
     },
 }
 
-DB_DEFAULT_URL = os.getenv('DB_DEFAULT_URL')
-if DB_DEFAULT_URL:
-    DATABASES['default'] = dj_database_url.parse(DB_DEFAULT_URL)
-    if 'mysql' in DB_DEFAULT_URL:
-        DATABASES['default']['OPTIONS'] = {
+
+def setup_db(database: dict, env_name_url: str) -> dict:
+    db_url = os.getenv(env_name_url)
+
+    if db_url:
+        database = dj_database_url.parse(db_url)
+
+    if 'mysql' in database['ENGINE']:
+        database['OPTIONS'] = {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
             'charset': 'utf8mb4',
         }
 
-DB_JAVA_WALLET_URL = os.getenv('DB_JAVA_WALLET_URL')
-if DB_JAVA_WALLET_URL:
-    DATABASES['java-wallet'] = dj_database_url.parse(DB_JAVA_WALLET_URL)
+    return database
 
-DATABASES['java-wallet']['OPTIONS'] = {
-    'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-    'charset': 'utf8mb4',
-}
+
+DATABASES['default'] = setup_db(DATABASES['default'], 'DB_DEFAULT_URL')
+DATABASES['java_wallet'] = setup_db(DATABASES['java_wallet'], 'DB_JAVA_WALLET_URL')
+DATABASES['java_wallet']['TEST'] = {'MIRROR': 'java_wallet'}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -152,6 +162,7 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 CACHES = {
     'default': {
@@ -164,10 +175,12 @@ CACHES = {
     }
 }
 
-# INTERNAL_IPS = ['127.0.0.1']
-
 ACCOUNTS_NAME_FORCE = [
     3011184961392690771,
     1606939141091290673,
     3463450404564580757,
+    6368006909961888739,
 ]
+
+# debug_toolbar
+# INTERNAL_IPS = ['127.0.0.1']

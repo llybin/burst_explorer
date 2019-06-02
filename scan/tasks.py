@@ -22,7 +22,7 @@ def aggregate_multiouts():
     if last_aggr_height == get_last_height():
         return
 
-    txs = Transaction.objects.using('java-wallet').filter(
+    txs = Transaction.objects.using('java_wallet').filter(
         Q(type=0) & (Q(subtype=1) | Q(subtype=2))
     ).order_by('height')
 

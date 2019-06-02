@@ -25,7 +25,7 @@
               <th scope="col">Seller</th>
               <th scope="col">Quantity</th>
               <th scope="col">Price</th>
-              <th scope="col">Active</th>
+              <th scope="col">Delisted</th>
             </tr>
             </thead>
             <tbody>
@@ -38,7 +38,7 @@
                 </td>
                 <td>{{ good.quantity|intcomma }}</td>
                 <td class="text-nowrap">{{ good.price|burst_amount|rounding:4|intcomma }} Burst</td>
-                <td>{{ good.delisted|boolean }}</td>
+                <td>{{ good.delisted|yesno }}</td>
               </tr>
             {% endfor %}
             </tbody>

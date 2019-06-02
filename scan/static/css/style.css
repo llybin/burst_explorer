@@ -20,13 +20,13 @@ body, html {
 .wrapper {
     height: auto !important;
     height: 100%;
-    margin: 0 auto -150px;
+    margin: 0 auto -80px;
     min-height: 100%;
     background-color: #f8f9fa !important
 }
 
 #push {
-    height: 150px
+    height: 80px
 }
 
 .table td, .table th {

@@ -45,7 +45,7 @@ class IntSlugDetailView(DetailView):
 
 class BlockListView(ListView):
     model = Block
-    queryset = Block.objects.using('java-wallet').all()
+    queryset = Block.objects.using('java_wallet').all()
     template_name = 'blocks/list.html'
     context_object_name = 'blocks'
     paginator_class = CachingPaginator
@@ -82,7 +82,7 @@ class BlockListView(ListView):
 
 class BlockDetailView(IntSlugDetailView):
     model = Block
-    queryset = Block.objects.using('java-wallet').all()
+    queryset = Block.objects.using('java_wallet').all()
     template_name = 'blocks/detail.html'
     context_object_name = 'blk'
     slug_field = 'height'
@@ -146,7 +146,7 @@ class MultiOutListView(ListView):
 
 class TxListView(ListView):
     model = Transaction
-    queryset = Transaction.objects.using('java-wallet').all()
+    queryset = Transaction.objects.using('java_wallet').all()
     template_name = 'txs/list.html'
     context_object_name = 'txs'
     paginator_class = CachingPaginator
@@ -189,7 +189,7 @@ class TxListView(ListView):
 
 class TxDetailView(IntSlugDetailView):
     model = Transaction
-    queryset = Transaction.objects.using('java-wallet').all()
+    queryset = Transaction.objects.using('java_wallet').all()
     template_name = 'txs/detail.html'
     context_object_name = 'tx'
     slug_field = 'id'
@@ -215,7 +215,7 @@ class TxDetailView(IntSlugDetailView):
 
 class AccountsListView(ListView):
     model = Account
-    queryset = Account.objects.using('java-wallet').filter(latest=True).all()
+    queryset = Account.objects.using('java_wallet').filter(latest=True).all()
     template_name = 'accounts/list.html'
     context_object_name = 'accounts'
     paginator_class = CachingPaginator
@@ -232,7 +232,7 @@ class AccountsListView(ListView):
 
 class AddressDetailView(IntSlugDetailView):
     model = Account
-    queryset = Account.objects.using('java-wallet').filter(latest=True).all()
+    queryset = Account.objects.using('java_wallet').filter(latest=True).all()
     template_name = 'accounts/detail.html'
     context_object_name = 'address'
     slug_field = 'id'
@@ -245,7 +245,7 @@ class AddressDetailView(IntSlugDetailView):
 
         # transactions
 
-        context['txs'] = Transaction.objects.using('java-wallet').filter(
+        context['txs'] = Transaction.objects.using('java_wallet').filter(
             Q(sender_id=obj.id) | Q(recipient_id=obj.id)
         ).order_by('-height')[:15]
 
@@ -257,7 +257,7 @@ class AddressDetailView(IntSlugDetailView):
             if t.type == 0 and t.subtype in {1, 2}:
                 v, t.multiout = MultiOutPack().unpack_header(t.attachment_bytes)
 
-        context['txs_cnt'] = Transaction.objects.using('java-wallet').filter(
+        context['txs_cnt'] = Transaction.objects.using('java_wallet').filter(
             Q(sender_id=obj.id) | Q(recipient_id=obj.id)
         ).count()
 
@@ -278,7 +278,7 @@ class AddressDetailView(IntSlugDetailView):
 
         # assets
 
-        context['assets'] = AccountAsset.objects.using('java-wallet').filter(
+        context['assets'] = AccountAsset.objects.using('java_wallet').filter(
             account_id=obj.id,
             latest=True
         ).order_by('-db_id')
@@ -286,7 +286,7 @@ class AddressDetailView(IntSlugDetailView):
         for asset in context['assets']:
             asset.name = get_asset_name(asset.asset_id)
 
-        context['assets_cnt'] = AccountAsset.objects.using('java-wallet').filter(
+        context['assets_cnt'] = AccountAsset.objects.using('java_wallet').filter(
             account_id=obj.id,
             latest=True
         ).count()
@@ -300,11 +300,11 @@ class AddressDetailView(IntSlugDetailView):
 
         # blocks
 
-        context['mined_blocks'] = Block.objects.using('java-wallet').filter(
+        context['mined_blocks'] = Block.objects.using('java_wallet').filter(
             generator_id=obj.id
         ).order_by('-height')[:15]
 
-        context['mined_blocks_cnt'] = Block.objects.using('java-wallet').filter(
+        context['mined_blocks_cnt'] = Block.objects.using('java_wallet').filter(
             generator_id=obj.id
         ).count()
 
@@ -313,7 +313,7 @@ class AddressDetailView(IntSlugDetailView):
 
 class AssetListView(ListView):
     model = Asset
-    queryset = Asset.objects.using('java-wallet').all()
+    queryset = Asset.objects.using('java_wallet').all()
     template_name = 'assets/list.html'
     context_object_name = 'assets'
     paginator_class = CachingPaginator
@@ -333,7 +333,7 @@ class AssetListView(ListView):
 
 class AssetDetailView(IntSlugDetailView):
     model = Asset
-    queryset = Asset.objects.using('java-wallet').all()
+    queryset = Asset.objects.using('java_wallet').all()
     template_name = 'assets/detail.html'
     context_object_name = 'asset'
     slug_field = 'id'
@@ -351,7 +351,7 @@ class AssetDetailView(IntSlugDetailView):
 
 class MarketPlaceListView(ListView):
     model = Goods
-    queryset = Goods.objects.using('java-wallet').filter(latest=True).all()
+    queryset = Goods.objects.using('java_wallet').filter(latest=True).all()
     template_name = 'marketplace/list.html'
     context_object_name = 'goods'
     paginator_class = CachingPaginator
@@ -371,7 +371,7 @@ class MarketPlaceListView(ListView):
 
 class MarketPlaceDetailView(IntSlugDetailView):
     model = Goods
-    queryset = Goods.objects.using('java-wallet').filter(latest=True).all()
+    queryset = Goods.objects.using('java_wallet').filter(latest=True).all()
     template_name = 'marketplace/detail.html'
     context_object_name = 'good'
     slug_field = 'id'
@@ -389,7 +389,7 @@ class MarketPlaceDetailView(IntSlugDetailView):
 
 class AtListView(ListView):
     model = At
-    queryset = At.objects.using('java-wallet').filter(latest=True).all()
+    queryset = At.objects.using('java_wallet').filter(latest=True).all()
     template_name = 'ats/list.html'
     context_object_name = 'ats'
     paginator_class = CachingPaginator
@@ -409,7 +409,7 @@ class AtListView(ListView):
 
 class AtDetailView(IntSlugDetailView):
     model = At
-    queryset = At.objects.using('java-wallet').filter(latest=True).all()
+    queryset = At.objects.using('java_wallet').filter(latest=True).all()
     template_name = 'ats/detail.html'
     context_object_name = 'at'
     slug_field = 'id'

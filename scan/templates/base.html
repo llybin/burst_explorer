@@ -8,7 +8,7 @@
     <title>BurstCoin Blockchain Explorer</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=1">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=2">
   </head>
 
   <body>
@@ -70,14 +70,10 @@
 
     <footer class="footer mt-auto py-3">
       <div class="container text-center">
-        <span>
-          Developed by <b>Lev Lybin</b>
-          <br>
-          Donations: <b>BURST-D372-C2DU-HMKK-CQLHA</b> or <a href="https://paypal.me/lybin" target="_blank"><b>Paypal</b></a></span>
+        Developed by <a href="https://github.com/llybin/burst_explorer" target="_blank">Lev Lybin</a>
         <br>
-        <span>Explorer and Burst node аre running on one</span>
+        Donations: <a href="{% url 'address-detail' 11834991772770337952 %}">BURST-D372-C2DU-HMKK-CQLHA</a>
         <br>
-        $5/mo 1GB 1CPU 25GB SSD Referral link <a href="https://www.digitalocean.com/?refcode=ba04a478e10d" target="_blank">get 100$</a> on VPS
       </div>
     </footer>
 

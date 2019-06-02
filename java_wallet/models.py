@@ -1,5 +1,11 @@
+# This is an auto-generated Django model module.
+# You'll have to do the following manually to clean this up:
+#   * Rearrange models' order
+#   * Make sure each model has one field with primary_key=True
+#   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
+#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
+# Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
-
 from .fields import PositiveBigIntegerField, TimestampField
 
 
@@ -179,8 +185,7 @@ class Block(models.Model):
     id = PositiveBigIntegerField(unique=True)
     version = models.IntegerField()
     timestamp = TimestampField(unique=True)
-    previous_block = models.ForeignKey('self', models.DO_NOTHING, blank=True, null=True,
-                                       related_name='previous_block_r', to_field='id')
+    previous_block = models.ForeignKey('self', models.DO_NOTHING, blank=True, null=True, related_name='previous_block_r', to_field='id')
     total_amount = PositiveBigIntegerField()
     total_fee = PositiveBigIntegerField()
     payload_length = models.IntegerField()
@@ -188,8 +193,7 @@ class Block(models.Model):
     previous_block_hash = models.CharField(max_length=32, blank=True, null=True)
     cumulative_difficulty = models.TextField()
     base_target = PositiveBigIntegerField()
-    next_block = models.ForeignKey('self', models.DO_NOTHING, blank=True, null=True,
-                                   related_name='next_block_r', to_field='id')
+    next_block = models.ForeignKey('self', models.DO_NOTHING, blank=True, null=True, related_name='next_block_r', to_field='id')
     height = models.IntegerField(unique=True)
     generation_signature = models.BinaryField(max_length=64)
     block_signature = models.CharField(max_length=64)

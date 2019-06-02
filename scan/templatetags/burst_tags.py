@@ -62,11 +62,6 @@ def sub(a: int or float, b: int or float) -> int or float:
 
 
 @register.filter
-def boolean(value: int or bool) -> str:
-    return "yes" if value else "no"
-
-
-@register.filter
 def percent(value: int or float, total: int or float) -> int or float:
     return value / total * 100
 

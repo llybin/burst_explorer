@@ -75,19 +75,19 @@
             </tr>
             <tr class="collapse show_more_info">
               <th>Has message</th>
-              <td>{{ tx.has_message|boolean }}</td>
+              <td>{{ tx.has_message|yesno }}</td>
             </tr>
             <tr class="collapse show_more_info">
               <th>Has encrypted message</th>
-              <td>{{ tx.has_encrypted_message|boolean }}</td>
+              <td>{{ tx.has_encrypted_message|yesno }}</td>
             </tr>
             <tr class="collapse show_more_info">
               <th>Has Public Key Announcement</th>
-              <td>{{ tx.has_public_key_announcement|boolean }}</td>
+              <td>{{ tx.has_public_key_announcement|yesno }}</td>
             </tr>
             <tr class="collapse show_more_info">
               <th>Has Encrypttoself Message</th>
-              <td>{{ tx.has_encrypttoself_message|boolean }}</td>
+              <td>{{ tx.has_encrypttoself_message|yesno }}</td>
             </tr>
             <tr class="collapse show_more_info">
               <th>Sender Public Key</th>

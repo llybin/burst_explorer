@@ -25,7 +25,7 @@ def search_view(request):
         query = int(query)
 
         for x in SEARCH_BY:
-            exists = getattr(models, x[0]).objects.using('java-wallet').filter(
+            exists = getattr(models, x[0]).objects.using('java_wallet').filter(
                 **{x[1]: query}
             ).exists()
 
@@ -36,7 +36,7 @@ def search_view(request):
     elif len(query) in {17, 20, 26}:
         try:
             numeric_id = ReedSolomon().decode(query)
-            exists = models.Account.objects.using('java-wallet').filter(
+            exists = models.Account.objects.using('java_wallet').filter(
                 id=numeric_id
             ).exists()
             if exists:
