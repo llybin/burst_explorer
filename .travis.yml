@@ -8,9 +8,12 @@ env:
 
 script:
   - touch .env
-  - docker-compose up autotests
-  - docker-compose run autotests coverage report
-  - docker-compose run autotests coverage xml
+  - docker-compose build
+  - docker-compose up -d db_java_wallet db_default
+  - sleep 15
+  - docker-compose run service coverage run ./manage.py test -v2
+  - docker-compose run service coverage report
+  - docker-compose run service coverage xml
 
 after_success:
   - sudo pip install codacy-coverage==1.3.11
