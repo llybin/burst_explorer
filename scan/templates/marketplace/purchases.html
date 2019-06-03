@@ -1,0 +1,34 @@
+{% load humanize %}
+{% load burst_tags %}
+
+<div class="table-responsive">
+  <table class="table table-hover small table-sm">
+    <thead>
+    <tr>
+      <th scope="col">Block</th>
+      <th scope="col">Timestamp</th>
+      <th scope="col">Seller</th>
+      <th scope="col">Buyer</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Price</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for purchase in purchases %}
+      <tr>
+        <td><a href="{% url 'block-detail' purchase.height %}">{{ purchase.height }}</a></td>
+        <td class="text-nowrap">{{ purchase.timestamp|naturaltime }}</td>
+        <td class="text-nowrap">
+          {% include "account_link.html" with account_id=purchase.seller_id account_name=purchase.seller_name %}
+        </td>
+        <td class="text-nowrap">
+          {% include "account_link.html" with account_id=purchase.buyer_id account_name=purchase.buyer_name %}
+        </td>
+        <td>{{ purchase.quantity|intcomma }}
+        </td>
+        <td>{{ purchase.price|burst_amount|intcomma }} Burst</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>

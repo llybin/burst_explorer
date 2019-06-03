@@ -26,7 +26,7 @@ from scan.views.ats import AtListView, AtDetailView
 from scan.views.transactions import TxListView, TxDetailView
 from scan.views.multiout import MultiOutListView
 from scan.views.search import search_view
-from scan.views.market_place import MarketPlaceListView, MarketPlaceDetailView
+from scan.views.marketplace import MarketPlaceListView, MarketPlaceDetailView
 
 
 urlpatterns = [

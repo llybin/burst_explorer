@@ -46,6 +46,21 @@
             </tr>
             </tbody>
           </table>
+
+          <h5 class="p-1">Purchases</h5>
+
+          <p class="small p-1" style="margin-top: 10px">
+            Latest {{ purchases.count }} from a total of
+            {% if purchases_cnt > 0 %}
+              {{ purchases_cnt|intcomma }}
+            {% else %}
+              0
+            {% endif %}
+            purchases found
+          </p>
+
+          {% include "marketplace/purchases.html" %}
+
         </div>
 
         </div>

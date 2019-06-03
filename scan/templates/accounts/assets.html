@@ -16,7 +16,7 @@
     <tbody>
     {% for asset in assets %}
       <tr>
-      <td><a href="{% url 'asset-detail' asset.asset_id %}">{{ asset.asset_id|truncatechars:10 }}</a></td>
+        <td><a href="{% url 'asset-detail' asset.asset_id %}">{{ asset.asset_id|truncatechars:10 }}</a></td>
         <td><a href="{% url 'asset-detail' asset.asset_id %}">{{ asset.name }}</a></td>
         <td>
           {% if asset.decimals == 0 %}
