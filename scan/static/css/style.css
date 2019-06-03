@@ -25,6 +25,11 @@ body, html {
     background-color: #f8f9fa !important
 }
 
+.table > tbody > tr:first-child > th,
+.table > tbody > tr:first-child > td {
+    border: none;
+}
+
 #push {
     height: 80px
 }
