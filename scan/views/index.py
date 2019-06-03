@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.views.decorators.cache import cache_page
 
 from java_wallet.models import Transaction, Block
 from scan.helpers import get_last_height
@@ -6,6 +7,7 @@ from scan.views.blocks import fill_data_block
 from scan.views.transactions import fill_data_transaction
 
 
+@cache_page(10)
 def index(request):
     txs = Transaction.objects.using('java_wallet').order_by('-height')[:5]
 
