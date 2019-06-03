@@ -10,3 +10,6 @@ class IndexViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Latest Blocks")
         self.assertContains(response, "View All Transactions")
+        self.assertQuerysetEqual(response.context['blocks'], [])
+        self.assertQuerysetEqual(response.context['txs'], [])
+
