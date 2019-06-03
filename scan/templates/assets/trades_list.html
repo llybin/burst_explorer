@@ -5,8 +5,10 @@
   <table class="table table-hover small table-sm">
     <thead>
     <tr>
-      <th scope="col">Asset id</th>
-      <th scope="col">Name</th>
+      {% if not asset_specific %}
+        <th scope="col">Asset id</th>
+        <th scope="col">Name</th>
+      {% endif %}
       <th scope="col">Block</th>
       <th scope="col">Timestamp</th>
       <th scope="col">Seller</th>
@@ -19,8 +21,10 @@
     <tbody>
     {% for asset in assets_trades %}
       <tr>
-      <td><a href="{% url 'asset-detail' asset.asset_id %}">{{ asset.asset_id|truncatechars:10 }}</a></td>
-        <td><a href="{% url 'asset-detail' asset.asset_id %}">{{ asset.name }}</a></td>
+        {% if not asset_specific %}
+          <td><a href="{% url 'asset-detail' asset.asset_id %}">{{ asset.asset_id|truncatechars:10 }}</a></td>
+          <td><a href="{% url 'asset-detail' asset.asset_id %}">{{ asset.name }}</a></td>
+        {% endif %}
         <td><a href="{% url 'block-detail' asset.height %}">{{ asset.height }}</a></td>
         <td class="text-nowrap">{{ asset.timestamp|naturaltime }}</td>
         <td class="text-nowrap">

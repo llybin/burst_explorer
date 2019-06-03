@@ -73,7 +73,7 @@
                 {% endif %}
                 assets trades found
               </p>
-              {% include "assets/trades_list.html" with filtered_account=address.id %}
+              {% include "assets/trades_list.html" with filtered_account=address.id asset_specific=1 %}
             </div>
 
             <div class="tab-pane fade" id="nav-asset-transfer" role="tabpanel" aria-labelledby="nav-asset-transfer-tab">
@@ -86,7 +86,7 @@
                 {% endif %}
                 assets transfers found
               </p>
-              {% include "assets/transfers_list.html" with filtered_account=address.id %}
+              {% include "assets/transfers_list.html" with filtered_account=address.id  asset_specific=1 %}
             </div>
           </div>
 
