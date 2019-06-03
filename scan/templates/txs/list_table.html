@@ -34,7 +34,11 @@
           {% endif %}
         </td>
         <td class="text-nowrap">
-          {% include "recipient_link.html" with account_id=tx.recipient_id account_name=tx.recipient_name %}
+          {% if tx.recipient_id or tx.multiout %}
+            {% include "recipient_link.html" with account_id=tx.recipient_id account_name=tx.recipient_name %}
+          {% else %}
+            {{ tx|tx_type }}
+          {% endif %}
         </td>
         <td class="text-nowrap">{{ tx.amount|burst_amount|rounding:4|intcomma }} Burst</td>
         <td class="text-nowrap">{{ tx.fee|burst_amount|rounding:4|intcomma }} Burst</td>

@@ -17,7 +17,7 @@
   <div class="card-deck mb-3 text-center">
     <div class="card mb-4 shadow-sm">
       <div class="card-body">
-        ???
+        Last height: {{ last_height }}
       </div>
     </div>
   </div>
@@ -25,10 +25,10 @@
   <div class="card-deck mb-3 text-center">
     <div class="card mb-4 shadow-sm">
       <div class="card-header">
-        <h4 class="my-0 font-weight-normal">Latest Blocks</h4>
+        <h5 class="my-0 font-weight-normal">Latest Blocks</h5>
       </div>
       <div class="card-body">
-        ?
+        {% include "home/blocks_list.html" %}
       </div>
       <div class="card-footer">
         <a class="btn btn-xs btn-block btn-outline-primary" href="{% url 'blocks' %}">View all blocks</a>
@@ -36,10 +36,10 @@
     </div>
     <div class="card mb-4 shadow-sm">
       <div class="card-header">
-        <h4 class="my-0 font-weight-normal">Transactions</h4>
+        <h5 class="my-0 font-weight-normal">Transactions</h5>
       </div>
       <div class="card-body">
-        ?
+        {% include "home/transactions_list.html" %}
       </div>
       <div class="card-footer">
         <a class="btn btn-xs btn-block btn-outline-primary" href="{% url 'txs' %}">View All Transactions</a>
