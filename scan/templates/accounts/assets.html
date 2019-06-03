@@ -8,7 +8,6 @@
       <th scope="col">Asset id</th>
       <th scope="col">Name</th>
       <th scope="col">Quantity</th>
-      <th scope="col">Unconfirmed quantity</th>
       <th scope="col">Asset share</th>
       <th scope="col">Since block</th>
     </tr>
@@ -23,13 +22,6 @@
             {{ asset.quantity|intcomma }}
           {% else %}
             {{ asset.quantity|div_decimals:asset.decimals|intcomma }}
-          {% endif %}
-        </td>
-        <td>
-          {% if asset.decimals == 0 %}
-            {{ asset.unconfirmed_quantity|intcomma }}
-          {% else %}
-            {{ asset.unconfirmed_quantity|div_decimals:asset.decimals|intcomma }}
           {% endif %}
         </td>
         <td>
