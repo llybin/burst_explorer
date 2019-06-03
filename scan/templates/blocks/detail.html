@@ -43,8 +43,8 @@
             <tr>
               <th>Transactions</th>
               <td>
-                {% if block.txs_cnt > 0 %}
-                  <a href="{% url 'txs' %}?block={{ blk.height }}">{{ block.txs_cnt|intcomma }} transactions</a>
+                {% if blk.txs_cnt > 0 %}
+                  <a href="{% url 'txs' %}?block={{ blk.height }}">{{ blk.txs_cnt|intcomma }} transactions</a>
                 {% else %}
                   0 transactions
                 {% endif %}
