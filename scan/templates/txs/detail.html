@@ -22,7 +22,7 @@
               <th>Height</th>
               <td>
                 <a href="{% url 'block-detail' tx.block.height %}">{{ tx.block.height }}</a>
-                {% include "block_confirmation.html" %}
+                {% include "block_confirmation.html" with blocks_confirm=tx.blocks_confirm %}
               </td>
             </tr>
             <tr>
@@ -36,13 +36,13 @@
             <tr>
               <th>From</th>
               <td>
-                {% include "account_link.html" with account_id=tx.sender_id account_name=sender_name oneline=True %}
+                {% include "account_link.html" with account_id=tx.sender_id account_name=tx.sender_name oneline=True %}
               </td>
             </tr>
             <tr>
               <th>To</th>
               <td>
-                {% include "recipient_link.html" with account_id=tx.recipient_id account_name=recipient_name oneline=True %}
+                {% include "recipient_link.html" with account_id=tx.recipient_id account_name=tx.recipient_name oneline=True %}
               </td>
             </tr>
             <tr>

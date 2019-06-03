@@ -7,6 +7,7 @@
     <tr>
       <th scope="col">Block</th>
       <th scope="col">Timestamp</th>
+      <th scope="col">Pool</th>
       <th scope="col">Reward</th>
     </tr>
     </thead>
@@ -15,6 +16,13 @@
       <tr>
         <td><a href="{% url 'block-detail' block.height %}">{{ block.height }}</a></td>
         <td>{{ block.timestamp|naturaltime }}</td>
+        <td>
+          {% if block.pool_id and block.pool_id != block.generator_id %}
+            {% include "account_link.html" with account_id=block.pool_id account_name=block.pool_name %}
+          {% else %}
+            <span class="text-info">Solo Miner</span>
+          {% endif %}
+        </td>
         <td>{{ block|block_reward_fee|rounding:4|intcomma }} Burst</td>
       </tr>
     {% endfor %}

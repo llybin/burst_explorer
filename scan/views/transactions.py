@@ -9,6 +9,17 @@ from scan.models import MultiOut
 from scan.views.base import IntSlugDetailView
 
 
+def fill_data_transaction(obj, list_page=True):
+    obj.sender_name = get_account_name(obj.sender_id)
+    if obj.recipient_id:
+        obj.recipient_name = get_account_name(obj.recipient_id)
+
+    if obj.type == 0 and obj.subtype in {1, 2}:
+        v, obj.multiout = MultiOutPack().unpack_header(obj.attachment_bytes)
+        if not list_page:
+            obj.recipients = MultiOut.objects.filter(tx_id=obj.id).all()
+
+
 class TxListView(ListView):
     model = Transaction
     queryset = Transaction.objects.using('java_wallet').all()
@@ -40,12 +51,7 @@ class TxListView(ListView):
         obj = context[self.context_object_name]
 
         for t in obj:
-            t.sender_name = get_account_name(t.sender_id)
-            if t.recipient_id:
-                t.recipient_name = get_account_name(t.recipient_id)
-
-            if t.type == 0 and t.subtype in {1, 2}:
-                v, t.multiout = MultiOutPack().unpack_header(t.attachment_bytes)
+            fill_data_transaction(t, list_page=True)
 
         context['txs_cnt'] = get_txs_count()
 
@@ -65,14 +71,8 @@ class TxDetailView(IntSlugDetailView):
 
         obj = context[self.context_object_name]
 
-        context['blocks_confirm'] = get_last_height() - obj.height
+        obj.blocks_confirm = get_last_height() - obj.height
 
-        context['sender_name'] = get_account_name(obj.sender_id)
-        if context[self.context_object_name].recipient_id:
-            context['recipient_name'] = get_account_name(obj.recipient_id)
-
-        if obj.type == 0 and obj.subtype in {1, 2}:
-            v, obj.multiout = MultiOutPack().unpack_header(obj.attachment_bytes)
-            obj.recipients = MultiOut.objects.filter(tx_id=obj.id).all()
+        fill_data_transaction(obj, list_page=False)
 
         return context

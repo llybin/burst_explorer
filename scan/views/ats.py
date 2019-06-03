@@ -6,6 +6,10 @@ from scan.helpers import get_account_name
 from scan.views.base import IntSlugDetailView
 
 
+def fill_data(obj):
+    obj.creator_name = get_account_name(obj.creator_id)
+
+
 class AtListView(ListView):
     model = At
     queryset = At.objects.using('java_wallet').filter(latest=True).all()
@@ -21,7 +25,7 @@ class AtListView(ListView):
         obj = context[self.context_object_name]
 
         for t in obj:
-            t.creator_name = get_account_name(t.creator_id)
+            fill_data(t)
 
         return context
 
@@ -39,6 +43,6 @@ class AtDetailView(IntSlugDetailView):
 
         obj = context[self.context_object_name]
 
-        context['creator_name'] = get_account_name(obj.creator_id)
+        fill_data(obj)
 
         return context

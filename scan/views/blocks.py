@@ -6,6 +6,16 @@ from scan.helpers import get_txs_count_in_block, get_account_name, get_pool_id_f
 from scan.views.base import IntSlugDetailView
 
 
+def fill_data_block(obj):
+    obj.txs_cnt = get_txs_count_in_block(obj.id)
+    obj.generator_name = get_account_name(obj.generator_id)
+
+    pool_id = get_pool_id_for_block(obj)
+    if pool_id:
+        obj.pool_id = pool_id
+        obj.pool_name = get_account_name(pool_id)
+
+
 class BlockListView(ListView):
     model = Block
     queryset = Block.objects.using('java_wallet').all()
@@ -29,14 +39,7 @@ class BlockListView(ListView):
         obj = context[self.context_object_name]
 
         for b in obj:
-            b.txs_cnt = get_txs_count_in_block(b.id)
-
-            b.generator_name = get_account_name(b.generator_id)
-
-            pool_id = get_pool_id_for_block(b)
-            if pool_id:
-                b.pool_id = pool_id
-                b.pool_name = get_account_name(pool_id)
+            fill_data_block(b)
 
         context['last_height'] = get_last_height()
 
@@ -56,12 +59,6 @@ class BlockDetailView(IntSlugDetailView):
 
         obj = context[self.context_object_name]
 
-        context['txs_cnt'] = get_txs_count_in_block(obj.id)
-        context['generator_name'] = get_account_name(obj.generator_id)
-
-        pool_id = get_pool_id_for_block(obj)
-        if pool_id:
-            context['pool_id'] = pool_id
-            context['pool_name'] = get_account_name(pool_id)
+        fill_data_block(obj)
 
         return context

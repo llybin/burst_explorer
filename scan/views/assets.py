@@ -6,6 +6,20 @@ from scan.helpers import get_account_name, get_asset_details
 from scan.views.base import IntSlugDetailView
 
 
+def fill_data_asset_transfer(transfer):
+    transfer.name, transfer.decimals, transfer.total_quantity = get_asset_details(transfer.asset_id)
+
+    transfer.sender_name = get_account_name(transfer.sender_id)
+    transfer.recipient_name = get_account_name(transfer.recipient_id)
+
+
+def fill_data_asset_trade(trade):
+    trade.name, trade.decimals, trade.total_quantity = get_asset_details(trade.asset_id)
+
+    trade.buyer_name = get_account_name(trade.buyer_id)
+    trade.seller_name = get_account_name(trade.seller_id)
+
+
 class AssetListView(ListView):
     model = Asset
     queryset = Asset.objects.using('java_wallet').all()
@@ -39,19 +53,18 @@ class AssetDetailView(IntSlugDetailView):
 
         obj = context[self.context_object_name]
 
-        context['account_name'] = get_account_name(obj.account_id)
+        obj.account_name = get_account_name(obj.account_id)
 
         # assets transfer
 
-        context['assets_transfers'] = AssetTransfer.objects.using('java_wallet').using('java_wallet').filter(
+        assets_transfers = AssetTransfer.objects.using('java_wallet').using('java_wallet').filter(
             asset_id=obj.id
         ).order_by('-height')[:15]
 
-        for asset in context['assets_transfers']:
-            asset.name, asset.decimals, asset.total_quantity = get_asset_details(asset.asset_id)
+        for transfer in assets_transfers:
+            fill_data_asset_transfer(transfer)
 
-            asset.sender_name = get_account_name(asset.sender_id)
-            asset.recipient_name = get_account_name(asset.recipient_id)
+        context['assets_transfers'] = assets_transfers
 
         context['assets_transfers_cnt'] = AssetTransfer.objects.using('java_wallet').filter(
             asset_id=obj.id
@@ -59,15 +72,14 @@ class AssetDetailView(IntSlugDetailView):
 
         # assets trades
 
-        context['assets_trades'] = Trade.objects.using('java_wallet').using('java_wallet').filter(
+        assets_trades = Trade.objects.using('java_wallet').using('java_wallet').filter(
             asset_id=obj.id
         ).order_by('-height')[:15]
 
-        for asset in context['assets_trades']:
-            asset.name, asset.decimals, asset.total_quantity = get_asset_details(asset.asset_id)
+        for trade in assets_trades:
+            fill_data_asset_trade(trade)
 
-            asset.buyer_name = get_account_name(asset.buyer_id)
-            asset.seller_name = get_account_name(asset.seller_id)
+        context['assets_trades'] = assets_trades
 
         context['assets_trades_cnt'] = Trade.objects.using('java_wallet').filter(
             asset_id=obj.id

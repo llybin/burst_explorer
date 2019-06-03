@@ -37,8 +37,8 @@
             <tr>
               <th>Pool</th>
               <td>
-                {% if pool_id and pool_id != address.id %}
-                  {% include "account_link.html" with account_id=pool_id account_name=pool_name oneline=True %}
+                {% if address.pool_id and address.pool_id != address.id %}
+                  {% include "account_link.html" with account_id=address.pool_id account_name=address.pool_name oneline=True %}
                 {% else %}
                   <span class="text-success">Solo Miner</span>
                 {% endif %}

@@ -6,6 +6,12 @@ from scan.helpers import get_account_name, get_multiouts_count
 from scan.models import MultiOut
 
 
+def fill_data_multiouts(obj):
+    obj.sender_name = get_account_name(obj.sender_id)
+    if obj.recipient_id:
+        obj.recipient_name = get_account_name(obj.recipient_id)
+
+
 class MultiOutListView(ListView):
     model = MultiOut
     queryset = MultiOut.objects.all()
@@ -37,9 +43,7 @@ class MultiOutListView(ListView):
         obj = context[self.context_object_name]
 
         for t in obj:
-            t.sender_name = get_account_name(t.sender_id)
-            if t.recipient_id:
-                t.recipient_name = get_account_name(t.recipient_id)
+            fill_data_multiouts(t)
 
         context['mos_cnt'] = get_multiouts_count()
 

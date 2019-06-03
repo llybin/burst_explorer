@@ -43,8 +43,8 @@
             <tr>
               <th>Transactions</th>
               <td>
-                {% if txs_cnt > 0 %}
-                  <a href="{% url 'txs' %}?block={{ blk.height }}">{{ txs_cnt|intcomma }} transactions</a>
+                {% if block.txs_cnt > 0 %}
+                  <a href="{% url 'txs' %}?block={{ blk.height }}">{{ block.txs_cnt|intcomma }} transactions</a>
                 {% else %}
                   0 transactions
                 {% endif %}
@@ -58,14 +58,14 @@
             <tr>
               <th>Mined by</th>
               <td>
-                {% include "account_link.html" with account_id=blk.generator_id account_name=generator_name oneline=True %}
+                {% include "account_link.html" with account_id=blk.generator_id account_name=blk.generator_name oneline=True %}
               </td>
             </tr>
             <tr>
               <th>Pool</th>
               <td>
-                {% if pool_id and pool_id != blk.generator_id %}
-                  {% include "account_link.html" with account_id=pool_id account_name=pool_name oneline=True %}
+                {% if blk.pool_id and blk.pool_id != blk.generator_id %}
+                  {% include "account_link.html" with account_id=blk.pool_id account_name=blk.pool_name oneline=True %}
                 {% else %}
                   <span class="text-success">Solo Miner</span>
                 {% endif %}

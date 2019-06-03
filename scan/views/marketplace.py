@@ -39,14 +39,16 @@ class MarketPlaceDetailView(IntSlugDetailView):
 
         obj = context[self.context_object_name]
 
-        context['seller_name'] = get_account_name(obj.seller_id)
+        obj.seller_name = get_account_name(obj.seller_id)
 
-        context['purchases'] = Purchase.objects.using('java_wallet').using('java_wallet').filter(
+        purchases = Purchase.objects.using('java_wallet').using('java_wallet').filter(
             goods_id=obj.id
         ).order_by('-height')[:15]
 
-        for purchase in context['purchases']:
+        for purchase in purchases:
             purchase.buyer_name = get_account_name(purchase.buyer_id)
+
+        context['purchases'] = purchases
 
         context['purchases_cnt'] = Purchase.objects.using('java_wallet').filter(
             goods_id=obj.id
