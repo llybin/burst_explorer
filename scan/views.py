@@ -22,7 +22,7 @@ from scan.helpers import (
     get_txs_count,
     get_last_height,
     get_multiouts_count,
-    get_asset_name,
+    get_asset_details,
 )
 from scan.caching_paginator import CachingPaginator
 from burst.multiout import MultiOutPack
@@ -284,7 +284,7 @@ class AddressDetailView(IntSlugDetailView):
         ).order_by('-db_id')
 
         for asset in context['assets']:
-            asset.name = get_asset_name(asset.asset_id)
+            asset.name, asset.decimals, asset.total_quantity = get_asset_details(asset.asset_id)
 
         context['assets_cnt'] = AccountAsset.objects.using('java_wallet').filter(
             account_id=obj.id,

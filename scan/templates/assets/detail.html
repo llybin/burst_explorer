@@ -28,7 +28,17 @@
             </tr>
             <tr>
               <th>Quantity</th>
-              <td>{{ asset.quantity|intcomma }}</td>
+              <td>
+                {% if asset.decimals == 0 %}
+                  {{ asset.quantity|intcomma }}
+                {% else %}
+                  {{ asset.quantity|apply_decimals:asset.decimals|floatformat:0|intcomma }}
+                {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <th>Decimals</th>
+              <td>{{ asset.decimals }}</td>
             </tr>
             <tr>
               <th>Issuer</th>

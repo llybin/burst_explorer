@@ -16,9 +16,23 @@
     {% for asset in assets %}
       <tr>
         <td><a href="{% url 'asset-detail' asset.asset_id %}">{{ asset.name }}</a></td>
-        <td>{{ asset.quantity|intcomma }}</td>
-        <td>{{ asset.unconfirmed_quantity|intcomma }}</td>
-        <td>?</td>
+        <td>
+          {% if asset.decimals == 0 %}
+            {{ asset.quantity|intcomma }}
+          {% else %}
+            {{ asset.quantity|apply_decimals:asset.decimals|intcomma }}
+          {% endif %}
+        </td>
+        <td>
+          {% if asset.decimals == 0 %}
+            {{ asset.unconfirmed_quantity|intcomma }}
+          {% else %}
+            {{ asset.unconfirmed_quantity|apply_decimals:asset.decimals|intcomma }}
+          {% endif %}
+        </td>
+        <td>
+          {{ asset.quantity|div:asset.total_quantity|mul:100|floatformat:2|intcomma }} %
+        </td>
         <td><a href="{% url 'block-detail' asset.height %}">{{ asset.height }}</a></td>
       </tr>
     {% endfor %}

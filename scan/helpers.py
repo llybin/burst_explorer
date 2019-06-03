@@ -16,25 +16,25 @@ def get_account_name(account_id: int) -> str:
         ).values_list(
             'name', flat=True
         ).first()
-        cache.set(key, account_name or '')
+        cache.set(key, account_name or '', 86400)
 
     return account_name
 
 
-def get_asset_name(asset_id: int) -> str:
-    key = "asset_name:{}".format(asset_id)
+def get_asset_details(asset_id: int) -> (str, int, int):
+    key = "asset_details:{}".format(asset_id)
 
-    asset_name = cache.get(key)
+    asset_details = cache.get(key)
 
-    if asset_name is None:
-        asset_name = Asset.objects.using('java_wallet').filter(
+    if asset_details is None:
+        asset_details = Asset.objects.using('java_wallet').filter(
             id=asset_id
         ).values_list(
-            'name', flat=True
+            'name', 'decimals', 'quantity'
         ).first()
-        cache.set(key, asset_name or '')
+        cache.set(key, asset_details or '')
 
-    return asset_name
+    return asset_details
 
 
 def get_txs_count_in_block(block_id: int) -> int:
@@ -82,7 +82,7 @@ def get_pool_id_for_account(address_id: int) -> int:
             '-height'
         ).first()
 
-        cache.set(key, pool_id)
+        cache.set(key, pool_id, 3600)
 
     return pool_id
 

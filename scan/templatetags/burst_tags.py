@@ -62,6 +62,21 @@ def sub(a: int or float, b: int or float) -> int or float:
 
 
 @register.filter
+def div(a: int or float, b: int or float) -> float:
+    return a / b
+
+
+@register.filter
+def mul(a: int or float, b: int or float) -> int or float:
+    return a * b
+
+
+@register.filter
+def apply_decimals(a: int or float, b: int) -> float:
+    return a / 10 ** b
+
+
+@register.filter
 def percent(value: int or float, total: int or float) -> int or float:
     return value / total * 100
 
