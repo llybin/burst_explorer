@@ -8,7 +8,7 @@
     <title>BurstCoin Blockchain Explorer</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=3">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=4">
   </head>
 
   <body>
@@ -72,7 +72,9 @@
       <div class="container text-center">
         Developed by <a href="https://github.com/llybin/burst_explorer" target="_blank">Lev Lybin</a>
         <br>
-        Donations: <a href="{% url 'address-detail' 11834991772770337952 %}">BURST-D372-C2DU-HMKK-CQLHA</a>
+        Donations:
+        <a href="{% url 'address-detail' 11834991772770337952 %}">BURST-D372-C2DU-HMKK-CQLHA</a> |
+        <a href="{% url 'asset-detail' 14686983107863035136 %}">BurstScan Asset</a>
         <br>
       </div>
     </footer>

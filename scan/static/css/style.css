@@ -2,7 +2,7 @@ html {
     font-size: 14px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1140px) {
     html {
         font-size: 16px;
     }
@@ -10,7 +10,7 @@ html {
 
 main > .container {
     padding: 5px 15px 0;
-    max-width: 960px;
+    max-width: 1140px;
 }
 
 body, html {
