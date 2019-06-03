@@ -20,7 +20,10 @@
             </tr>
             <tr>
               <th>Name</th>
-              <td style="word-wrap: break-word; max-width: 250px">{{ asset.name }}</td>
+              <td style="word-wrap: break-word; max-width: 250px">
+                {{ asset.name }}
+                {% if asset.id == 14686983107863035136 %}❤️{% endif %}
+              </td>
             </tr>
             <tr>
               <th>Description</th>
@@ -32,7 +35,7 @@
                 {% if asset.decimals == 0 %}
                   {{ asset.quantity|intcomma }}
                 {% else %}
-                  {{ asset.quantity|apply_decimals:asset.decimals|floatformat:0|intcomma }}
+                  {{ asset.quantity|div_decimals:asset.decimals|floatformat:0|intcomma }}
                 {% endif %}
               </td>
             </tr>

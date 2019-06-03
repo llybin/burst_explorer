@@ -32,7 +32,16 @@ def get_asset_details(asset_id: int) -> (str, int, int):
         ).values_list(
             'name', 'decimals', 'quantity'
         ).first()
-        cache.set(key, asset_details or '')
+
+        # BurstScan
+        if asset_id == 14686983107863035136:
+            asset_details = (
+                '{} ❤️'.format(asset_details[0]),
+                asset_details[1],
+                asset_details[2],
+            )
+
+        cache.set(key, asset_details)
 
     return asset_details
 

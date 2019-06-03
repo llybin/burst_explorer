@@ -53,8 +53,8 @@
               <a class="nav-item nav-link" id="nav-multiout-tab" data-toggle="tab" href="#nav-multiout" role="tab" aria-controls="nav-multiout" aria-selected="false">{{ mos_cnt|intcomma }} MultiOut</a>
               <a class="nav-item nav-link" id="nav-blocks-tab" data-toggle="tab" href="#nav-blocks" role="tab" aria-controls="nav-blocks" aria-selected="false">{{ mined_blocks_cnt|intcomma }} Blocks</a>
               <a class="nav-item nav-link" id="nav-asset-hold-tab" data-toggle="tab" href="#nav-asset-hold" role="tab" aria-controls="nav-asset-hold" aria-selected="false">{{ assets_cnt|intcomma }} Asset holdings</a>
-              <a class="nav-item nav-link" id="nav-asset-txs-tab" data-toggle="tab" href="#nav-asset-txs" role="tab" aria-controls="nav-asset-txs" aria-selected="false">? Asset transactions</a>
-              <a class="nav-item nav-link" id="nav-pool-tab" data-toggle="tab" href="#nav-pool" role="tab" aria-controls="nav-pool" aria-selected="false">? Pool members</a>
+              <a class="nav-item nav-link" id="nav-asset-transfer-tab" data-toggle="tab" href="#nav-asset-transfer" role="tab" aria-controls="nav-asset-transfer" aria-selected="false">{{ assets_transfer_cnt|intcomma }} Asset transfers</a>
+              <a class="nav-item nav-link" id="nav-asset-trades-tab" data-toggle="tab" href="#nav-asset-trades" role="tab" aria-controls="nav-asset-trades" aria-selected="false">{{ assets_trades_cnt|intcomma }} Asset trades</a>
             </div>
           </nav>
           <div class="tab-content" id="nav-tabContent">
@@ -68,7 +68,7 @@
                 {% endif %}
                 transactions
               </p>
-              {% include "txs/list_table.html"  with filtered_account=address.id %}
+              {% include "txs/list_table.html" with filtered_account=address.id %}
             </div>
 
             <div class="tab-pane fade" id="nav-multiout" role="tabpanel" aria-labelledby="nav-multiout-tab">
@@ -81,7 +81,7 @@
                 {% endif %}
                 transactions
               </p>
-              {% include "mos/list_table.html"  with filtered_account=address.id %}
+              {% include "mos/list_table.html" with filtered_account=address.id %}
             </div>
 
             <div class="tab-pane fade" id="nav-blocks" role="tabpanel" aria-labelledby="nav-blocks-tab">
@@ -104,17 +104,32 @@
               {% include "accounts/assets.html" %}
             </div>
 
-            <div class="tab-pane fade" id="nav-asset-txs" role="tabpanel" aria-labelledby="nav-asset-txs-tab">
+            <div class="tab-pane fade" id="nav-asset-transfer" role="tabpanel" aria-labelledby="nav-asset-transfer-tab">
               <p class="small p-1" style="margin-top: 10px">
-                ?
+                Latest {{ assets_transfer_cnt }} from a total of
+                {% if assets_transfer_cnt > 0 %}
+                  {{ assets_transfer_cnt|intcomma }}
+                {% else %}
+                  0
+                {% endif %}
+                assets transfers found
               </p>
+              {% include "accounts/assets_transfer.html" with filtered_account=address.id %}
             </div>
 
-            <div class="tab-pane fade" id="nav-pool" role="tabpanel" aria-labelledby="nav-pool-tab">
-              <p class="small p-2" style="margin-top: 10px">
-                ?
+            <div class="tab-pane fade" id="nav-asset-trades" role="tabpanel" aria-labelledby="nav-asset-trades-tab">
+              <p class="small p-1" style="margin-top: 10px">
+                Latest {{ assets_trades_cnt }} from a total of
+                {% if assets_trades_cnt > 0 %}
+                  {{ assets_trades_cnt|intcomma }}
+                {% else %}
+                  0
+                {% endif %}
+                assets trades found
               </p>
+              {% include "accounts/assets_trades.html" with filtered_account=address.id %}
             </div>
+
           </div>
 
         </div>

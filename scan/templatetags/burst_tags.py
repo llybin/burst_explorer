@@ -72,8 +72,13 @@ def mul(a: int or float, b: int or float) -> int or float:
 
 
 @register.filter
-def apply_decimals(a: int or float, b: int) -> float:
+def div_decimals(a: int or float, b: int) -> float:
     return a / 10 ** b
+
+
+@register.filter
+def mul_decimals(a: int or float, b: int) -> float:
+    return a * 10 ** b
 
 
 @register.filter

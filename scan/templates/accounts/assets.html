@@ -5,6 +5,7 @@
   <table class="table table-hover small table-sm">
     <thead>
     <tr>
+      <th scope="col">Asset id</th>
       <th scope="col">Name</th>
       <th scope="col">Quantity</th>
       <th scope="col">Unconfirmed quantity</th>
@@ -15,19 +16,20 @@
     <tbody>
     {% for asset in assets %}
       <tr>
+      <td><a href="{% url 'asset-detail' asset.asset_id %}">{{ asset.asset_id|truncatechars:10 }}</a></td>
         <td><a href="{% url 'asset-detail' asset.asset_id %}">{{ asset.name }}</a></td>
         <td>
           {% if asset.decimals == 0 %}
             {{ asset.quantity|intcomma }}
           {% else %}
-            {{ asset.quantity|apply_decimals:asset.decimals|intcomma }}
+            {{ asset.quantity|div_decimals:asset.decimals|intcomma }}
           {% endif %}
         </td>
         <td>
           {% if asset.decimals == 0 %}
             {{ asset.unconfirmed_quantity|intcomma }}
           {% else %}
-            {{ asset.unconfirmed_quantity|apply_decimals:asset.decimals|intcomma }}
+            {{ asset.unconfirmed_quantity|div_decimals:asset.decimals|intcomma }}
           {% endif %}
         </td>
         <td>

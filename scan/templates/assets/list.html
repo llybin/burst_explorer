@@ -30,7 +30,10 @@
             {% for asset in assets %}
               <tr>
                 <td><a href="{% url 'asset-detail' asset.id %}">{{ asset.id|truncatechars:10 }}</a></td>
-                <td style="word-wrap: break-word; max-width: 250px">{{ asset.name }}</td>
+                <td style="word-wrap: break-word; max-width: 250px">
+                  {{ asset.name }}
+                  {% if asset.id == 14686983107863035136 %}❤️{% endif %}
+                </td>
                 <td class="text-nowrap">
                     {% include "account_link.html" with account_id=asset.account_id account_name=asset.account_name %}
                 </td>
@@ -38,7 +41,7 @@
                   {% if asset.decimals == 0 %}
                     {{ asset.quantity|intcomma }}
                   {% else %}
-                    {{ asset.quantity|apply_decimals:asset.decimals|floatformat:0|intcomma }}
+                    {{ asset.quantity|div_decimals:asset.decimals|floatformat:0|intcomma }}
                   {% endif %}
                 </td>
               </tr>

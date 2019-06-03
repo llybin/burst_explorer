@@ -9,6 +9,8 @@ from java_wallet.models import (
     AccountAsset,
     At,
     Asset,
+    AssetTransfer,
+    Trade,
     Block,
     Goods,
     Transaction,
@@ -289,6 +291,38 @@ class AddressDetailView(IntSlugDetailView):
         context['assets_cnt'] = AccountAsset.objects.using('java_wallet').filter(
             account_id=obj.id,
             latest=True
+        ).count()
+
+        # assets transfer
+
+        context['assets_transfer'] = AssetTransfer.objects.using('java_wallet').using('java_wallet').filter(
+            Q(sender_id=obj.id) | Q(recipient_id=obj.id)
+        ).order_by('-height')[:15]
+
+        for asset in context['assets_transfer']:
+            asset.name, asset.decimals, asset.total_quantity = get_asset_details(asset.asset_id)
+
+            asset.sender_name = get_account_name(asset.sender_id)
+            asset.recipient_name = get_account_name(asset.recipient_id)
+
+        context['assets_transfer_cnt'] = AssetTransfer.objects.using('java_wallet').filter(
+            Q(sender_id=obj.id) | Q(recipient_id=obj.id)
+        ).count()
+
+        # assets trades
+
+        context['assets_trades'] = Trade.objects.using('java_wallet').using('java_wallet').filter(
+            Q(buyer_id=obj.id) | Q(seller_id=obj.id)
+        ).order_by('-height')[:15]
+
+        for asset in context['assets_trades']:
+            asset.name, asset.decimals, asset.total_quantity = get_asset_details(asset.asset_id)
+
+            asset.buyer_name = get_account_name(asset.buyer_id)
+            asset.seller_name = get_account_name(asset.seller_id)
+
+        context['assets_trades_cnt'] = Trade.objects.using('java_wallet').filter(
+            Q(buyer_id=obj.id) | Q(seller_id=obj.id)
         ).count()
 
         # pool info
