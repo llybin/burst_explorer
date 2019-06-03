@@ -18,25 +18,33 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 
-from scan import views, search
+from scan.views.index import index
+from scan.views.accounts import AccountsListView, AddressDetailView
+from scan.views.blocks import BlockListView, BlockDetailView
+from scan.views.assets import AssetListView, AssetDetailView
+from scan.views.ats import AtListView, AtDetailView
+from scan.views.transactions import TxListView, TxDetailView
+from scan.views.multiout import MultiOutListView
+from scan.views.search import search_view
+from scan.views.market_place import MarketPlaceListView, MarketPlaceDetailView
 
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('blocks/', views.BlockListView.as_view(), name='blocks'),
-    path('block/<str:height>', views.BlockDetailView.as_view(), name='block-detail'),
-    path('mos/', views.MultiOutListView.as_view(), name='mos'),
-    path('txs/', views.TxListView.as_view(), name='txs'),
-    path('tx/<str:id>', views.TxDetailView.as_view(), name='tx-detail'),
-    path('accounts/', views.AccountsListView.as_view(), name='accounts'),
-    path('address/<str:id>', views.AddressDetailView.as_view(), name='address-detail'),
-    path('assets/', views.AssetListView.as_view(), name='assets'),
-    path('asset/<str:id>', views.AssetDetailView.as_view(), name='asset-detail'),
-    path('mps/', views.MarketPlaceListView.as_view(), name='mps'),
-    path('mp/<str:id>', views.MarketPlaceDetailView.as_view(), name='mp-detail'),
-    path('ats/', views.AtListView.as_view(), name='ats'),
-    path('at/<str:id>', views.AtDetailView.as_view(), name='at-detail'),
-    path('search/', search.search_view, name='search'),
+    path('', index, name='index'),
+    path('blocks/', BlockListView.as_view(), name='blocks'),
+    path('block/<str:height>', BlockDetailView.as_view(), name='block-detail'),
+    path('mos/', MultiOutListView.as_view(), name='mos'),
+    path('txs/', TxListView.as_view(), name='txs'),
+    path('tx/<str:id>', TxDetailView.as_view(), name='tx-detail'),
+    path('accounts/', AccountsListView.as_view(), name='accounts'),
+    path('address/<str:id>', AddressDetailView.as_view(), name='address-detail'),
+    path('assets/', AssetListView.as_view(), name='assets'),
+    path('asset/<str:id>', AssetDetailView.as_view(), name='asset-detail'),
+    path('mps/', MarketPlaceListView.as_view(), name='mps'),
+    path('mp/<str:id>', MarketPlaceDetailView.as_view(), name='mp-detail'),
+    path('ats/', AtListView.as_view(), name='ats'),
+    path('at/<str:id>', AtDetailView.as_view(), name='at-detail'),
+    path('search/', search_view, name='search'),
     path('admin/', admin.site.urls),
 ]
 
