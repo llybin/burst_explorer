@@ -16,7 +16,7 @@
     </tr>
     </thead>
     <tbody>
-    {% for asset in assets_transfer %}
+    {% for asset in assets_transfers %}
       <tr>
       <td><a href="{% url 'asset-detail' asset.asset_id %}">{{ asset.asset_id|truncatechars:10 }}</a></td>
         <td><a href="{% url 'asset-detail' asset.asset_id %}">{{ asset.name }}</a></td>
