@@ -88,22 +88,16 @@ WSGI_APPLICATION = 'explorer.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'default',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'db_default',
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db_default.sqlite3'),
     },
     'java_wallet': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'java_wallet',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'db_java_wallet',
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db_wallet.sqlite3'),
     },
 }
+
+DATABASE_ROUTERS = ['java_wallet.db_router.DBRouter', 'scan.db_router.DBRouter']
 
 
 def setup_db(database: dict, env_name_url: str) -> dict:
@@ -123,7 +117,7 @@ def setup_db(database: dict, env_name_url: str) -> dict:
 
 DATABASES['default'] = setup_db(DATABASES['default'], 'DB_DEFAULT_URL')
 DATABASES['java_wallet'] = setup_db(DATABASES['java_wallet'], 'DB_JAVA_WALLET_URL')
-DATABASES['java_wallet']['TEST'] = {'MIRROR': 'java_wallet'}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators

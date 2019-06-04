@@ -1,40 +1,18 @@
 version: '3'
 services:
-  db_default:
-    image: mariadb:10.1-bionic
-    hostname: db_default
-    environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: 1
-      MYSQL_DATABASE: default
-    volumes:
-      - mysql_default_data:/var/lib/mysql/data
-
-  db_java_wallet:
-    image: mariadb:10.1-bionic
-    hostname: db_java_wallet
-    environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: 1
-      MYSQL_DATABASE: java_wallet
-    volumes:
-      - mysql_java_wallet_data:/var/lib/mysql/data
-      - ./java_wallet/init-mysql.sql:/docker-entrypoint-initdb.d/dump.sql
-
   service:
     build:
       context: .
       dockerfile: Dockerfile
     stdin_open: true
     tty: true
-    command: ["./wait-for-it.sh", "db_java_wallet:3306", "--", "./docker-entrypoint.sh"]
+    command: ./docker-entrypoint.sh
     ports:
       - "8000:8000"
     volumes:
       - .:/code
     env_file:
       - .env
-    depends_on:
-      - db_default
-      - db_java_wallet
 
   autotests:
     build:
@@ -42,15 +20,8 @@ services:
       dockerfile: Dockerfile
     stdin_open: true
     tty: true
-    command: ["./wait-for-it.sh", "db_java_wallet:3306", "--", "python", "manage.py", "test", "-v2", "--no-input"]
+    command: ["python", "manage.py", "test", "-v2", "--no-input"]
     volumes:
       - .:/code
     env_file:
       - .env
-    depends_on:
-      - db_default
-      - db_java_wallet
-
-volumes:
-  mysql_default_data:
-  mysql_java_wallet_data:

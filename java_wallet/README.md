@@ -6,8 +6,6 @@
 
 Replace init-mysql.sql from [init-mysql.sql](https://github.com/burst-apps-team/burstcoin/blob/develop/init-mysql.sql)
 
-Add first line: `USE java_wallet;`
-
 Generate new models:
 
 ``` console
@@ -24,6 +22,7 @@ sed -i "s/block = models.ForeignKey(Block, models.DO_NOTHING)/block = models.For
 sed -i 's/generation_signature = models.CharField(max_length=64)/generation_signature = models.BinaryField(max_length=64)/g' java_wallet/models_new.py
 sed -i "s/previous_block = models.ForeignKey('self', models.DO_NOTHING, blank=True, null=True)/previous_block = models.ForeignKey('self', models.DO_NOTHING, blank=True, null=True, related_name='previous_block_r', to_field='id')/g" java_wallet/models_new.py
 sed -i "s/next_block = models.ForeignKey('self', models.DO_NOTHING, blank=True, null=True)/next_block = models.ForeignKey('self', models.DO_NOTHING, blank=True, null=True, related_name='next_block_r', to_field='id')/g" java_wallet/models_new.py
+sed -i 's/managed = False/managed = True/g' java_wallet/models.py
 ```
 
 Compare current and new model:
@@ -32,10 +31,17 @@ Compare current and new model:
 diff java_wallet/models.py java_wallet/models_new.py
 ```
 
-Replace model
+Replace model:
 
 ``` console
 mv java_wallet/models_new.py java_wallet/models.py
+```
+
+Recreate migration:
+
+``` console
+rm java_wallet/migrations/0001_initial.py
+manage.py makemigrations java_wallet
 ```
 
 Do changes in code if needed.

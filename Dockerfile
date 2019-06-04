@@ -5,8 +5,6 @@ ENV PYTHONUNBUFFERED 1
 
 WORKDIR /code
 
-COPY wait-for-it.sh ./
-
 RUN apt-get update \
     && apt-get -y install --no-install-recommends libssl-dev python3-dev default-libmysqlclient-dev \
     && apt-get clean \

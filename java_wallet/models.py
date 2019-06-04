@@ -3,7 +3,7 @@
 #   * Rearrange models' order
 #   * Make sure each model has one field with primary_key=True
 #   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
-#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
+#   * Remove `managed = True` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 from .fields import PositiveBigIntegerField, TimestampField
@@ -24,7 +24,7 @@ class Account(models.Model):
     latest = models.IntegerField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'account'
         unique_together = (('id', 'height'),)
 
@@ -39,7 +39,7 @@ class AccountAsset(models.Model):
     latest = models.IntegerField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'account_asset'
         unique_together = (('account_id', 'asset_id', 'height'),)
 
@@ -56,7 +56,7 @@ class Alias(models.Model):
     latest = models.IntegerField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'alias'
         unique_together = (('id', 'height'),)
 
@@ -70,7 +70,7 @@ class AliasOffer(models.Model):
     latest = models.IntegerField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'alias_offer'
         unique_together = (('id', 'height'),)
 
@@ -87,7 +87,7 @@ class AskOrder(models.Model):
     latest = models.IntegerField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ask_order'
         unique_together = (('id', 'height'),)
 
@@ -103,7 +103,7 @@ class Asset(models.Model):
     height = models.IntegerField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'asset'
 
 
@@ -118,7 +118,7 @@ class AssetTransfer(models.Model):
     height = models.IntegerField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'asset_transfer'
 
 
@@ -139,7 +139,7 @@ class At(models.Model):
     latest = models.IntegerField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'at'
         unique_together = (('id', 'height'),)
 
@@ -158,7 +158,7 @@ class AtState(models.Model):
     latest = models.IntegerField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'at_state'
         unique_together = (('at_id', 'height'),)
 
@@ -175,7 +175,7 @@ class BidOrder(models.Model):
     latest = models.IntegerField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'bid_order'
         unique_together = (('id', 'height'),)
 
@@ -203,7 +203,7 @@ class Block(models.Model):
     ats = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'block'
 
 
@@ -220,7 +220,7 @@ class Escrow(models.Model):
     latest = models.IntegerField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'escrow'
         unique_together = (('id', 'height'),)
 
@@ -234,7 +234,7 @@ class EscrowDecision(models.Model):
     latest = models.IntegerField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'escrow_decision'
         unique_together = (('escrow_id', 'account_id', 'height'),)
 
@@ -254,7 +254,7 @@ class Goods(models.Model):
     latest = models.IntegerField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'goods'
         unique_together = (('id', 'height'),)
 
@@ -263,7 +263,7 @@ class Peer(models.Model):
     address = models.CharField(primary_key=True, max_length=100)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'peer'
 
 
@@ -292,7 +292,7 @@ class Purchase(models.Model):
     latest = models.IntegerField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'purchase'
         unique_together = (('id', 'height'),)
 
@@ -306,7 +306,7 @@ class PurchaseFeedback(models.Model):
     latest = models.IntegerField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'purchase_feedback'
 
 
@@ -318,7 +318,7 @@ class PurchasePublicFeedback(models.Model):
     latest = models.IntegerField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'purchase_public_feedback'
 
 
@@ -332,7 +332,7 @@ class RewardRecipAssign(models.Model):
     latest = models.IntegerField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'reward_recip_assign'
         unique_together = (('account_id', 'height'),)
 
@@ -349,7 +349,7 @@ class Subscription(models.Model):
     latest = models.IntegerField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'subscription'
         unique_together = (('id', 'height'),)
 
@@ -370,7 +370,7 @@ class Trade(models.Model):
     height = models.IntegerField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'trade'
         unique_together = (('ask_order_id', 'bid_order_id'),)
 
@@ -403,7 +403,7 @@ class Transaction(models.Model):
     has_encrypttoself_message = models.IntegerField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'transaction'
 
 
@@ -418,7 +418,7 @@ class UnconfirmedTransaction(models.Model):
     height = models.IntegerField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'unconfirmed_transaction'
 
 
@@ -426,5 +426,5 @@ class Version(models.Model):
     next_update = models.IntegerField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'version'
