@@ -10,8 +10,8 @@
         <span class="small">{{ block.timestamp|naturaltime }}</span>
       </td>
       <td class="text-nowrap">
-        {% include "account_link.html" with account_id=block.generator_id account_name=block.generator_name %}<br>
-        {% if block.pool_id and block.pool_id != block.generator_id %}
+        Miner {% include "account_link.html" with account_id=block.generator_id account_name=block.generator_name %}<br>
+        Pool {% if block.pool_id and block.pool_id != block.generator_id %}
           {% include "account_link.html" with account_id=block.pool_id account_name=block.pool_name %}
         {% else %}
           <span class="text-info">Solo Miner</span>
