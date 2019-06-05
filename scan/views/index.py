@@ -35,7 +35,7 @@ def get_pending_txs():
     return txs_pending
 
 
-# @cache_page(10)
+@cache_page(10)
 def index(request):
     txs = Transaction.objects.using('java_wallet').order_by('-height')[:5]
 
