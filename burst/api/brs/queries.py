@@ -87,7 +87,7 @@ class GetPeer(QueryBase):
         "type": "object",
         "properties": {
             "state": {"type": "number"},
-            "announcedAddress": {"type": "string"},
+            "announcedAddress": {"type": ["string", "null"]},
             "shareAddress": {"type": "boolean"},
             "downloadedVolume": {"type": "number"},
             "uploadedVolume": {"type": "number"},

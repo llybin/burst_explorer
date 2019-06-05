@@ -76,8 +76,8 @@ class GetPeersTest(TestCase):
 
 
 class GetPeerTest(TestCase):
-    @my_vcr.use_cassette('get_peer')
-    def test_ok(self):
+    @my_vcr.use_cassette('get_peer_offline')
+    def test_offline(self):
         self.assertDictEqual(
             BrsApi('https://wallet.burst.devtrue.net').get_peer('68.65.35.34'),
             {
@@ -92,6 +92,34 @@ class GetPeerTest(TestCase):
                 "blacklisted": False,
                 "lastUpdated": 0,
                 "requestProcessingTime": 0
+            })
+
+    @my_vcr.use_cassette('get_peer_online')
+    def test_online(self):
+        self.assertDictEqual(
+            BrsApi('https://wallet.burst.devtrue.net').get_peer('178.48.21.145'),
+            {
+                "state": 0,
+                "announcedAddress": "178.48.21.145",
+                "shareAddress": True,
+                "downloadedVolume": 134948,
+                "uploadedVolume": 117110,
+                "application": "BRS",
+                "version": "v2.3.0",
+                "platform": "Q-H2",
+                "blacklisted": False,
+                "lastUpdated": 151846101,
+                "requestProcessingTime": 0
+            })
+
+    @my_vcr.use_cassette('get_peer_error')
+    def test_error(self):
+        self.assertDictEqual(
+            BrsApi('https://wallet.burst.devtrue.net').get_peer('178.48.21.1451'),
+            {
+                "errorCode": 5,
+                "errorDescription": "Unknown peer",
+                "requestProcessingTime": 2
             })
 
 
