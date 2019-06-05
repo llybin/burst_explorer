@@ -188,3 +188,78 @@ class GetStateTest(TestCase):
                 "freeMemory": 78025328,
                 "requestProcessingTime": 9608
             })
+
+
+class GetUnconfirmedTransactionsTest(TestCase):
+    @my_vcr.use_cassette('get_unconfirmed_transactions_multiout')
+    def test_multiout(self):
+        self.assertListEqual(
+            BrsApi('https://wallet.burst.devtrue.net').get_unconfirmed_transactions(),
+            [
+                {
+                    "type": 0,
+                    "subtype": 1,
+                    "timestamp": 152020345,
+                    "deadline": 1440,
+                    "senderPublicKey": "95244648e02bb02fcc9d93b9e2d9ff5aac4f4eddaddf0b07bce5d2e287295455",
+                    "amountNQT": "71856680037",
+                    "feeNQT": "150000000",
+                    "signature": "cf13b161509f78b60395a71e07b9a83bd2f495b4e612a2467c64f0b768519b0c45b9c4797010fae5b37fa072fc6f07975035a335e575d02f05f7af93e41250b0",  # NOQA
+                    "signatureHash": "006be3c30835836d2df705a02d99bcdf7e637c0f1404c079de172b896e8e76aa",
+                    "fullHash": "b6f50cd575ce35fc4df7e332bdd57e9cff30d92a248bc0b214914e670dbcd153",
+                    "transaction": "18173658876804396470",
+                    "attachment": {
+                        "version.MultiOutCreation": 1,
+                        "recipients": [
+                            ["5775640609968742793", "10056387470"],
+                            ["8134605299845103408", "10646786554"],
+                            ["13963886526464512666", "10174613985"],
+                            ["15292335569475861611", "10050574440"],
+                            ["15421345662421390096", "10012112866"],
+                            ["18248060628606727216", "10123985380"],
+                            ["3581830426445587205", "10792219342"]
+                        ]
+                    },
+                    "sender": "3606956930919944878",
+                    "senderRS": "BURST-VNPG-8ZFT-5DC8-5WM56",
+                    "height": 628533,
+                    "version": 1,
+                    "ecBlockId": "5188876724881306039",
+                    "ecBlockHeight": 628522
+                }
+            ])
+
+    @my_vcr.use_cassette('get_unconfirmed_transactions_single')
+    def test_single(self):
+        self.assertListEqual(
+            BrsApi('https://wallet.burst.devtrue.net').get_unconfirmed_transactions(),
+            [
+                {
+                    "type": 0,
+                    "subtype": 0,
+                    "timestamp": 152024579,
+                    "deadline": 1440,
+                    "senderPublicKey": "18f6f49edb73a5528ee0b12a0f907db1a3baf98f9a4b9bf9e62710a79cc04e2d",
+                    "recipient": "4476985392447067460",
+                    "recipientRS": "BURST-R7C6-HU8Q-F9DR-5LDAW",
+                    "amountNQT": "38540648977",
+                    "feeNQT": "100000000",
+                    "signature": "bc91e2534080efe239ef9696f8d4cab6229ef15a7d8e141c46d2ebbfa9e6110e890e200a37f5f30c3c58564bdb2be8f0ac3c29de11acdf8dfa6a114ea492a05c",
+                    "signatureHash": "218d9b7057d14e0c63a73a40945592c489f07c061ff54af04fbac4dcdc1c238d",
+                    "fullHash": "d233bcd327759b34c6e5d696928e02bd0b567383f282b2c434d9a7b47acc708d",
+                    "transaction": "3790752325278905298",
+                    "sender": "6887101586189604106",
+                    "senderRS": "BURST-SPAC-EWWF-CRX2-78Z6Z",
+                    "height": 628552,
+                    "version": 1,
+                    "ecBlockId": "8357613288046163076",
+                    "ecBlockHeight": 628544
+                }
+            ])
+
+    # TODO:
+    # @my_vcr.use_cassette('get_unconfirmed_transactions_multiout_same')
+    # def test_multiout_same(self):
+    #     self.assertListEqual(
+    #         BrsApi('https://wallet.burst.devtrue.net').get_unconfirmed_transactions(),
+    #         [])

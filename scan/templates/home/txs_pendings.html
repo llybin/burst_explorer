@@ -1,0 +1,35 @@
+{% load humanize %}
+{% load burst_tags %}
+
+<div class="table-responsive" style="position: relative;height: 200px;overflow: auto;display: block;">
+  <table class="table table-hover small table-sm">
+    <tbody>
+    {% for tx in txs_pending %}
+      <tr>
+        <td class="text-nowrap">{{ tx.timestamp|naturaltime }}</td>
+        <td>{{ tx.tx_name }}</td>
+        <td class="text-nowrap">
+          {% include "account_link.html" with account_id=tx.sender account_name=tx.sender_name %}
+        </td>
+        <td class="text-nowrap">
+          {% if tx.recipient or tx.multiout %}
+            {% if tx.recipient %}
+              {% include "account_link.html" with account_id=tx.recipient account_name=tx.recipient_name %}
+            {% elif tx.type == 0 and tx.subtype == 1 or tx.type == 0 and tx.subtype == 2 %}
+                <span class="text-info" title="Donate address in footer, todo">{{ tx.multiout }} recipients</span>
+            {% endif %}
+          {% else %}
+            {{ tx.tx_name }}
+          {% endif %}
+        </td>
+        <td class="text-nowrap">{{ tx.amountNQT|burst_amount|rounding:4|intcomma }} Burst</td>
+        <td class="text-nowrap">{{ tx.feeNQT|burst_amount|rounding:4|intcomma }} Burst</td>
+      </tr>
+    {% empty %}
+      <div class="text-secondary" style="display: flex;flex-direction: column;justify-content: center;height: 90%;">
+        <h2>No pending transactions</h2>
+      </div>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>

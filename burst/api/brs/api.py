@@ -75,3 +75,6 @@ class BrsApi(object):
 
     def get_state(self) -> dict:
         return self._request_get(queries.GetState())
+
+    def get_unconfirmed_transactions(self) -> list:
+        return self._request_get(queries.GetUnconfirmedTransactions())['unconfirmedTransactions']

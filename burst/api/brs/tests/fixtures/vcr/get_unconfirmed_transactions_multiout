@@ -1,0 +1,40 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.22.0
+    method: GET
+    uri: https://wallet.burst.devtrue.net/burst?requestType=getUnconfirmedTransactions
+  response:
+    body:
+      string: '{"unconfirmedTransactions":[{"type":0,"subtype":1,"timestamp":152020345,"deadline":1440,"senderPublicKey":"95244648e02bb02fcc9d93b9e2d9ff5aac4f4eddaddf0b07bce5d2e287295455","amountNQT":"71856680037","feeNQT":"150000000","signature":"cf13b161509f78b60395a71e07b9a83bd2f495b4e612a2467c64f0b768519b0c45b9c4797010fae5b37fa072fc6f07975035a335e575d02f05f7af93e41250b0","signatureHash":"006be3c30835836d2df705a02d99bcdf7e637c0f1404c079de172b896e8e76aa","fullHash":"b6f50cd575ce35fc4df7e332bdd57e9cff30d92a248bc0b214914e670dbcd153","transaction":"18173658876804396470","attachment":{"version.MultiOutCreation":1,"recipients":[["5775640609968742793","10056387470"],["8134605299845103408","10646786554"],["13963886526464512666","10174613985"],["15292335569475861611","10050574440"],["15421345662421390096","10012112866"],["18248060628606727216","10123985380"],["3581830426445587205","10792219342"]]},"sender":"3606956930919944878","senderRS":"BURST-VNPG-8ZFT-5DC8-5WM56","height":628533,"version":1,"ecBlockId":"5188876724881306039","ecBlockHeight":628522}],"requestProcessingTime":0}'
+    headers:
+      Cache-Control:
+      - no-cache, no-store, must-revalidate, private
+      Connection:
+      - keep-alive
+      Content-Type:
+      - text/plain;charset=utf-8
+      Date:
+      - Wed, 05 Jun 2019 08:21:03 GMT
+      Expires:
+      - Thu, 01 Jan 1970 00:00:00 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - nginx/1.14.0 (Ubuntu)
+      Strict-Transport-Security:
+      - max-age=15768000
+      Transfer-Encoding:
+      - chunked
+    status:
+      code: 200
+      message: OK
+version: 1

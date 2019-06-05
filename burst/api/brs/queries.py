@@ -166,3 +166,8 @@ class GetState(QueryBase):
             "requestProcessingTime": {"type": "number"},
         },
     }
+
+
+class GetUnconfirmedTransactions(QueryBase):
+    _request_type = 'getUnconfirmedTransactions'
+    # TODO:

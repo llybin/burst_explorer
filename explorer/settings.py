@@ -176,6 +176,8 @@ ACCOUNTS_NAME_FORCE = [
     6368006909961888739,
 ]
 
+BRS_NODE = 'https://wallet.burst.devtrue.net'
+
 BRS_BOOTSTRAP_PEERS = [
     'https://wallet.burst.devtrue.net',
     'http://wallet.burstcoin.network:8125',

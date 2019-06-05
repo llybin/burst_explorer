@@ -1,0 +1,40 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.22.0
+    method: GET
+    uri: https://wallet.burst.devtrue.net/burst?requestType=getUnconfirmedTransactions
+  response:
+    body:
+      string: '{"unconfirmedTransactions":[{"type":0,"subtype":0,"timestamp":152024579,"deadline":1440,"senderPublicKey":"18f6f49edb73a5528ee0b12a0f907db1a3baf98f9a4b9bf9e62710a79cc04e2d","recipient":"4476985392447067460","recipientRS":"BURST-R7C6-HU8Q-F9DR-5LDAW","amountNQT":"38540648977","feeNQT":"100000000","signature":"bc91e2534080efe239ef9696f8d4cab6229ef15a7d8e141c46d2ebbfa9e6110e890e200a37f5f30c3c58564bdb2be8f0ac3c29de11acdf8dfa6a114ea492a05c","signatureHash":"218d9b7057d14e0c63a73a40945592c489f07c061ff54af04fbac4dcdc1c238d","fullHash":"d233bcd327759b34c6e5d696928e02bd0b567383f282b2c434d9a7b47acc708d","transaction":"3790752325278905298","sender":"6887101586189604106","senderRS":"BURST-SPAC-EWWF-CRX2-78Z6Z","height":628552,"version":1,"ecBlockId":"8357613288046163076","ecBlockHeight":628544}],"requestProcessingTime":0}'
+    headers:
+      Cache-Control:
+      - no-cache, no-store, must-revalidate, private
+      Connection:
+      - keep-alive
+      Content-Type:
+      - text/plain;charset=utf-8
+      Date:
+      - Wed, 05 Jun 2019 08:21:03 GMT
+      Expires:
+      - Thu, 01 Jan 1970 00:00:00 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - nginx/1.14.0 (Ubuntu)
+      Strict-Transport-Security:
+      - max-age=15768000
+      Transfer-Encoding:
+      - chunked
+    status:
+      code: 200
+      message: OK
+version: 1
