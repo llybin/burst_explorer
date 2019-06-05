@@ -30,7 +30,7 @@
             {% for asset in assets %}
               <tr>
                 <td><a href="{% url 'asset-detail' asset.id %}">{{ asset.id|truncatechars:10 }}</a></td>
-                <td style="word-wrap: break-word; max-width: 250px">
+                <td class="text-nowrap">
                   {{ asset.name }}
                   {% if asset.id == 14686983107863035136 %}❤️{% endif %}
                 </td>

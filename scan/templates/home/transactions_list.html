@@ -1,26 +1,28 @@
 {% load humanize %}
 {% load burst_tags %}
 
-<table class="table table-hover small table-sm text-left">
-  <tbody>
-  {% for tx in txs %}
-    <tr>
-      <td class="text-nowrap">
-        <a href="{% url 'tx-detail' tx.id %}">{{ tx.id|truncatechars:10 }}</a><br>
-        <span class="small">{{ tx.block_timestamp|naturaltime }}</span>
-      </td>
-      <td class="text-nowrap">
-        From
-        {% include "account_link.html" with account_id=tx.sender_id account_name=tx.sender_name %}<br>
-        To
-        {% if tx.recipient_id or tx.multiout %}
-          {% include "recipient_link.html" with account_id=tx.recipient_id account_name=tx.recipient_name %}
-        {% else %}
-          {{ tx|tx_type }}
-        {% endif %}
-      </td>
-      <td class="text-nowrap">{{ tx.amount|burst_amount|rounding:4|intcomma }} Burst</td>
-    </tr>
-  {% endfor %}
-  </tbody>
-</table>
+<div class="table-responsive">
+  <table class="table table-hover small table-sm text-left">
+    <tbody>
+    {% for tx in txs %}
+      <tr>
+        <td class="text-nowrap">
+          <a href="{% url 'tx-detail' tx.id %}">{{ tx.id|truncatechars:10 }}</a><br>
+          <span class="small">{{ tx.block_timestamp|naturaltime }}</span>
+        </td>
+        <td class="text-nowrap">
+          From
+          {% include "account_link.html" with account_id=tx.sender_id account_name=tx.sender_name %}<br>
+          To
+          {% if tx.recipient_id or tx.multiout %}
+            {% include "recipient_link.html" with account_id=tx.recipient_id account_name=tx.recipient_name %}
+          {% else %}
+            {{ tx|tx_type }}
+          {% endif %}
+        </td>
+        <td class="text-nowrap">{{ tx.amount|burst_amount|rounding:4|intcomma }} Burst</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>

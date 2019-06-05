@@ -15,7 +15,7 @@
             <table class="table small table-sm">
               <tbody>
               <tr>
-                <th style="width: 200px;">ID</th>
+                <th style="width: 160px;">ID</th>
                 <td>{{ at.id }}</td>
               </tr>
               <tr>
@@ -32,8 +32,8 @@
                   {% include "account_link.html" with account_id=at.creator_id account_name=at.creator_name oneline=True %}
                 </td>
               </tr>
-              <tr style="min-width: 200px;">
-                <th>Block</th>
+              <tr>
+                <th style="min-width: 160px;">Block</th>
                 <td><a href="{% url 'block-detail' at.height %}">{{ at.height }}</a></td>
               </tr>
               <tr>

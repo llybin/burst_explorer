@@ -22,7 +22,7 @@
       <tr>
         {% if not asset_specific %}
           <td><a href="{% url 'asset-detail' asset.asset_id %}">{{ asset.asset_id|truncatechars:10 }}</a></td>
-          <td><a href="{% url 'asset-detail' asset.asset_id %}">{{ asset.name }}</a></td>
+          <td class="text-nowrap"><a href="{% url 'asset-detail' asset.asset_id %}">{{ asset.name }}</a></td>
         {% endif %}
         <td><a href="{% url 'block-detail' asset.height %}">{{ asset.height }}</a></td>
         <td class="text-nowrap">{{ asset.timestamp|naturaltime }}</td>

@@ -43,7 +43,7 @@
         <td class="text-nowrap">
           {% include "recipient_link.html" with account_id=mo.recipient_id account_name=mo.recipient_name %}
         </td>
-        <td>{{ mo.amount|burst_amount|rounding:4|intcomma }} Burst</td>
+        <td class="text-nowrap">{{ mo.amount|burst_amount|rounding:4|intcomma }} Burst</td>
       </tr>
     {% endfor %}
     </tbody>
