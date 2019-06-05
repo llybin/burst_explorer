@@ -176,5 +176,10 @@ ACCOUNTS_NAME_FORCE = [
     6368006909961888739,
 ]
 
+BRS_BOOTSTRAP_PEERS = [
+    'https://wallet.burst.devtrue.net',
+    'http://wallet.burstcoin.network:8125',
+]
+
 # debug_toolbar
 # INTERNAL_IPS = ['127.0.0.1']

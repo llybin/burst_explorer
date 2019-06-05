@@ -2,7 +2,7 @@ from datetime import datetime
 
 from django import template
 
-from burst.reed_solomon import ReedSolomon
+from burst.libs.reed_solomon import ReedSolomon
 from java_wallet.fields import get_desc_tx_type
 from java_wallet.models import Block, Transaction
 

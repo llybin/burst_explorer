@@ -1,6 +1,6 @@
-from django.test import TestCase
+from unittest import TestCase
 
-from ..multiout import MultiOutPack
+from burst.libs.multiout import MultiOutPack
 
 
 class MultiOutTest(TestCase):

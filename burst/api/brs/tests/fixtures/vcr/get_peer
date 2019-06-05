@@ -1,0 +1,40 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.22.0
+    method: GET
+    uri: https://wallet.burst.devtrue.net/burst?requestType=getPeer&peer=68.65.35.34
+  response:
+    body:
+      string: '{"state":0,"announcedAddress":"68.65.35.34","shareAddress":true,"downloadedVolume":0,"uploadedVolume":0,"application":null,"version":"v0.0.0","platform":null,"blacklisted":false,"lastUpdated":0,"requestProcessingTime":0}'
+    headers:
+      Cache-Control:
+      - no-cache, no-store, must-revalidate, private
+      Connection:
+      - keep-alive
+      Content-Type:
+      - text/plain;charset=utf-8
+      Date:
+      - Wed, 05 Jun 2019 08:05:51 GMT
+      Expires:
+      - Thu, 01 Jan 1970 00:00:00 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - nginx/1.14.0 (Ubuntu)
+      Strict-Transport-Security:
+      - max-age=15768000
+      Transfer-Encoding:
+      - chunked
+    status:
+      code: 200
+      message: OK
+version: 1

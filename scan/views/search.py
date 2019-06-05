@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
 
 from java_wallet import models
-from burst.reed_solomon import ReedSolomon, ReedSolomonError
+from burst.libs.reed_solomon import ReedSolomon, ReedSolomonError
 
 
 SEARCH_BY = [

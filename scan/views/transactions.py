@@ -1,7 +1,7 @@
 from django.db.models import Q
 from django.views.generic import ListView
 
-from burst.multiout import MultiOutPack
+from burst.libs.multiout import MultiOutPack
 from java_wallet.models import Transaction
 from scan.caching_paginator import CachingPaginator
 from scan.helpers import get_account_name, get_txs_count, get_last_height

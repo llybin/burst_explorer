@@ -1,6 +1,6 @@
 from django.core.management import BaseCommand
 
-from scan.tasks import aggregate_multiouts
+from scan.multiout import aggregate_multiouts
 
 
 class Command(BaseCommand):

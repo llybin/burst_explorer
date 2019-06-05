@@ -1,6 +1,6 @@
-from django.test import TestCase
+from unittest import TestCase
 
-from ..reed_solomon import ReedSolomon, ReedSolomonError
+from burst.libs.reed_solomon import ReedSolomon, ReedSolomonError
 
 
 class ReedSolomonTest(TestCase):

@@ -1,0 +1,40 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.22.0
+    method: GET
+    uri: https://wallet.burst.devtrue.net/burst?requestType=getState
+  response:
+    body:
+      string: '{"application":"BRS","version":"v2.3.0","time":152000464,"lastBlock":"3461701356085316422","cumulativeDifficulty":"60714757902044174379","totalEffectiveBalanceNXT":2094200481,"numberOfBlocks":628451,"numberOfTransactions":8075239,"numberOfAccounts":707241,"numberOfAssets":400,"numberOfOrders":2994,"numberOfAskOrders":2657,"numberOfBidOrders":337,"numberOfTrades":111241,"numberOfTransfers":119844,"numberOfAliases":57700,"numberOfPeers":611,"numberOfUnlockedAccounts":0,"lastBlockchainFeeder":"84.10.50.53","lastBlockchainFeederHeight":628450,"isScanning":false,"availableProcessors":2,"maxMemory":524288000,"totalMemory":188743680,"freeMemory":78025328,"requestProcessingTime":9608}'
+    headers:
+      Cache-Control:
+      - no-cache, no-store, must-revalidate, private
+      Connection:
+      - keep-alive
+      Content-Type:
+      - text/plain;charset=utf-8
+      Date:
+      - Wed, 05 Jun 2019 08:21:13 GMT
+      Expires:
+      - Thu, 01 Jan 1970 00:00:00 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - nginx/1.14.0 (Ubuntu)
+      Strict-Transport-Security:
+      - max-age=15768000
+      Transfer-Encoding:
+      - chunked
+    status:
+      code: 200
+      message: OK
+version: 1
