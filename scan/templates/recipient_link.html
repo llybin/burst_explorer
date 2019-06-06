@@ -5,13 +5,16 @@
   {% include "account_link.html" with account_id=account_id account_name=account_name oneline=oneline %}
 {% elif tx.type == 0 and tx.subtype == 1 or tx.type == 0 and tx.subtype == 2 %}
   {% if tx.recipients %}
-    <span class="text-info">
-      {{ tx.multiout }} recipients<br><br>
+    <table class="table table-hover small no-border text-nowrap" style="max-width: 250px; margin-left: -5px; margin-bottom: -5px;">
+      <tbody>
       {% for r in tx.recipients %}
-        {% include "account_link.html" with account_id=r.recipient_id account_name=' ' oneline=oneline %}
-        - {{ r.amount|burst_amount|intcomma }}<br>
+        <tr>
+          <td>{% include "account_link.html" with account_id=r.recipient_id account_name=' ' oneline=oneline %}</td>
+          <td>{{ r.amount|burst_amount|intcomma }} Burst</td>
+        </tr>
       {% endfor %}
-    </span>
+      </tbody>
+    </table>
   {% else %}
     <a href="{% url 'tx-detail' tx.id %}" class="text-info">
       {{ tx.multiout }} recipients

@@ -30,6 +30,10 @@ body, html {
     border: none;
 }
 
+.no-border td, .no-border th {
+    border: none;
+}
+
 #push {
     height: 80px
 }

@@ -14,9 +14,25 @@
         <td class="text-nowrap">
           {% if tx.recipient or tx.multiout %}
             {% if tx.recipient %}
-              {% include "account_link.html" with account_id=tx.recipient account_name=tx.recipient_name %}
+              {% if tx.recipient_exists %}
+                {% include "account_link.html" with account_id=tx.recipient account_name=tx.recipient_name %}
+              {% else %}
+                {{ tx.recipient|num2rs }}
+              {% endif %}
             {% elif tx.type == 0 and tx.subtype == 1 or tx.type == 0 and tx.subtype == 2 %}
-                <span class="text-info" title="Donate address in footer, todo">{{ tx.multiout }} recipients</span>
+{#              refact it#}
+              <span class="text-info" title="
+{% if tx.subtype == 1 %}
+  {% for r in tx.attachment.recipients %}
+{{ r.0|num2rs }} - {{ r.1|burst_amount|rounding:4|intcomma }}
+  {% endfor %}
+{% elif tx.subtype == 2 %}
+  {% with tx.amountNQT|div:tx.multiout as amount %}
+    {% for r in tx.attachment.recipients %}
+{{ r|num2rs }} - {{ amount|burst_amount|rounding:4|intcomma }}
+    {% endfor %}
+  {% endwith %}
+{% endif %}">{{ tx.multiout }} recipients</span>
             {% endif %}
           {% else %}
             {{ tx.tx_name }}

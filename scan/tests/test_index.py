@@ -10,6 +10,10 @@ class IndexViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Latest Blocks")
         self.assertContains(response, "View All Transactions")
+        self.assertContains(response, "Pending transactions")
+        self.assertContains(response, "BURST-D372-C2DU-HMKK-CQLHA")
+        self.assertContains(response, "BurstScan")
         self.assertQuerysetEqual(response.context['blocks'], [])
         self.assertQuerysetEqual(response.context['txs'], [])
-
+        # TODO: mock
+        # self.assertQuerysetEqual(response.context['txs_pending'], [])

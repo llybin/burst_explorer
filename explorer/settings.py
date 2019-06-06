@@ -161,7 +161,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': '/tmp/django_cache',
+        'LOCATION': os.getenv('FILE_CACHE_PATH', '/tmp/burst_explorer_cache'),
         'TIMEOUT': 604800,
         # 'OPTIONS': {
         #     'MAX_ENTRIES': 100000
@@ -175,6 +175,9 @@ ACCOUNTS_NAME_FORCE = [
     3463450404564580757,
     6368006909961888739,
 ]
+
+# UA-XXXXXXXXX-X
+GOOGLE_TRACKING_ID = os.getenv('GOOGLE_TRACKING_ID')
 
 BRS_NODE = 'https://wallet.burst.devtrue.net'
 
