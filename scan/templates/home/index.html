@@ -26,7 +26,7 @@
               <div class="text-left">
                 <h6 class="text-uppercase text-secondary mb-0">Burst price</h6>
                 <span class="text-info small">
-                  ${{ information.exchange.price_usd|rounding:4|intcomma }} @ {{ information.exchange.price_btc }} BTC ({{ information.exchange.percent_change_24h }} %)
+                  ${{ burst_info.exchange.price_usd|rounding:4|intcomma }} @ {{ burst_info.exchange.price_btc }} BTC ({{ burst_info.exchange.percent_change_24h|stringformat:"+d" }}%)
                 </span>
               </div>
             </div>
@@ -34,7 +34,7 @@
             <div class="media align-items-center">
               <div class="text-left">
                 <h6 class="text-uppercase text-secondary mb-0">Market cap</h6>
-                <span class="text-info small">${{ information.exchange.market_cap_usd|floatformat:0|intcomma }}</span>
+                <span class="text-info small">${{ burst_info.exchange.market_cap_usd|floatformat:0|intcomma }}</span>
               </div>
             </div>
           </div>

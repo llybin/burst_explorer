@@ -10,7 +10,6 @@ from java_wallet.models import Transaction, Block, Account
 from scan.helpers import get_last_height, get_account_name
 from scan.views.blocks import fill_data_block
 from scan.views.transactions import fill_data_transaction
-from scan.information import get_exchange_info
 
 
 def get_pending_txs():
@@ -57,16 +56,11 @@ def index(request):
     for b in blocks:
         fill_data_block(b)
 
-    information = {
-        'exchange': get_exchange_info()
-    }
-
     context = {
         'last_height': get_last_height(),
         'txs': txs,
         'blocks': blocks,
         'txs_pending': get_pending_txs(),
-        'information': information,
     }
 
     return render(request, 'home/index.html', context)

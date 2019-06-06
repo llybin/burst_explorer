@@ -5,6 +5,7 @@ from django import template
 from burst.libs.reed_solomon import ReedSolomon
 from java_wallet.fields import get_desc_tx_type
 from java_wallet.models import Block, Transaction
+from scan.information import get_exchange_info
 
 register = template.Library()
 
@@ -27,6 +28,12 @@ def block_reward_fee(block: Block) -> float:
 @register.filter
 def burst_amount(value: int) -> float:
     return value / 10 ** 8
+
+
+@register.filter
+def in_usd(value: float) -> float:
+    info = get_exchange_info()
+    return value * info['price_usd']
 
 
 @register.filter

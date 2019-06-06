@@ -10,7 +10,7 @@
       {% for r in tx.recipients %}
         <tr>
           <td>{% include "account_link.html" with account_id=r.recipient_id account_name=' ' oneline=oneline %}</td>
-          <td>{{ r.amount|burst_amount|intcomma }} Burst</td>
+          <td>{{ r.amount|burst_amount|intcomma }} Burst <span class="text-info">(${{ r.amount|burst_amount|in_usd|rounding:4|intcomma }})</span></td>
         </tr>
       {% endfor %}
       </tbody>

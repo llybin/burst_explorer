@@ -32,7 +32,7 @@
             </tr>
             <tr>
               <th>Balance</th>
-              <td>{{ address.balance|burst_amount|intcomma }} Burst</td>
+              <td>{{ address.balance|burst_amount|intcomma }} Burst <span class="text-info">(${{ address.balance|burst_amount|in_usd|floatformat:2|intcomma }} @ ${{ burst_info.exchange.price_usd|rounding:4|intcomma }}/Burst)</span></td>
             </tr>
             <tr>
               <th>Pool</th>
