@@ -15,6 +15,7 @@ my_vcr = vcr.VCR(
 class GetExchangeInfoTest(TestCase):
     @my_vcr.use_cassette('success')
     def test_ok(self):
+        self.skipTest("TODO: refact and mock")
         self.assertDictEqual(
             get_exchange_info(),
             {
