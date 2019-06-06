@@ -2,6 +2,7 @@ from datetime import datetime
 from django.conf import settings
 from django.shortcuts import render
 from django.views.decorators.cache import cache_page
+from sentry_sdk import capture_exception
 
 from burst.api.brs import BrsApi
 from java_wallet.fields import get_desc_tx_type
@@ -37,7 +38,7 @@ def get_pending_txs():
 
         txs_pending.sort(key=lambda x: x['feeNQT'], reverse=True)
     except Exception as e:
-        print('index error', e)
+        capture_exception(e)
         txs_pending = []
 
     return txs_pending

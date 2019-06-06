@@ -1,9 +1,14 @@
+import logging
+
 from django.db.models import Q
 
 from burst.libs.multiout import MultiOutPack
 from java_wallet.models import Transaction
 from scan.helpers import get_last_height
 from scan.models import MultiOut
+
+
+logger = logging.getLogger(__name__)
 
 
 def group_list(lst: list or tuple, n: int):
@@ -14,7 +19,7 @@ def group_list(lst: list or tuple, n: int):
 
 
 def aggregate_multiouts():
-    print('Start')
+    logger.info('Start')
 
     last_aggr_height = MultiOut.objects.order_by('-height').values_list(
         'height', flat=True).first()
@@ -30,7 +35,7 @@ def aggregate_multiouts():
         txs = txs.filter(height__gt=last_aggr_height)
 
     for tx in txs.iterator():
-        print('Aggregating height #', tx.height, "transaction #", tx.id)
+        logger.info('Aggregating height #', tx.height, "transaction #", tx.id)
         if tx.subtype == 1:
             data = MultiOutPack().unpack_multi_out(tx.attachment_bytes)
             for r, amount in group_list(data, 2):
@@ -58,4 +63,4 @@ def aggregate_multiouts():
                     tx_timestamp=tx.timestamp,
                 )
 
-    print('Done')
+    logger.info('Done')
