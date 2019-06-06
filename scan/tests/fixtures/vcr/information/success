@@ -1,0 +1,54 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.22.0
+    method: GET
+    uri: https://api.coinmarketcap.com/v1/ticker/burst/
+  response:
+    body:
+      string: "[\n    {\n        \"id\": \"burst\", \n        \"name\": \"Burst\",
+        \n        \"symbol\": \"BURST\", \n        \"rank\": \"437\", \n        \"price_usd\":
+        \"0.002973448\", \n        \"price_btc\": \"0.00000038\", \n        \"24h_volume_usd\":
+        \"38229.8232334\", \n        \"market_cap_usd\": \"6078590.0\", \n        \"available_supply\":
+        \"2044290023.0\", \n        \"total_supply\": \"2044290023.0\", \n        \"max_supply\":
+        \"2158812800.0\", \n        \"percent_change_1h\": \"-3.81\", \n        \"percent_change_24h\":
+        \"-5.14\", \n        \"percent_change_7d\": \"-4.53\", \n        \"last_updated\":
+        \"1559812981\"\n    }\n]"
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      CF-Cache-Status:
+      - EXPIRED
+      CF-RAY:
+      - 4e295512b869c8cf-BKK
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 06 Jun 2019 09:24:16 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cfduid=d0a3be99993d738165c8a1f23e516dc341559813056; expires=Fri, 05-Jun-20
+        09:24:16 GMT; path=/; domain=.coinmarketcap.com; HttpOnly; Secure
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      content-length:
+      - '554'
+    status:
+      code: 200
+      message: OK
+version: 1

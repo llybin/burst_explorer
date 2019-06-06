@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 
+{% load humanize %}
+{% load burst_tags %}
+
 {% block content %}
   <div class="card-deck mb-3 text-center">
     <div class="card mb-4 shadow-sm bg-primary">
@@ -17,7 +20,38 @@
   <div class="card-deck mb-3 text-center">
     <div class="card mb-4 shadow-sm">
       <div class="card-body">
-        Last height: {{ last_height }}
+        <div class="row mx-gutters-md-1">
+          <div class="col-md-6 col-lg-4 u-ver-divider u-ver-divider--none-md">
+            <div class="media align-items-center">
+              <div class="text-left">
+                <h6 class="text-uppercase text-secondary mb-0">Burst price</h6>
+                <span class="text-info small">
+                  ${{ information.exchange.price_usd|rounding:4|intcomma }} @ {{ information.exchange.price_btc }} BTC ({{ information.exchange.percent_change_24h }} %)
+                </span>
+              </div>
+            </div>
+            <hr class="hr-space-lg">
+            <div class="media align-items-center">
+              <div class="text-left">
+                <h6 class="text-uppercase text-secondary mb-0">Market cap</h6>
+                <span class="text-info small">${{ information.exchange.market_cap_usd|floatformat:0|intcomma }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4 u-ver-divider u-ver-divider--none-lg">
+            <div class="media align-items-center">
+              <div class="text-left">
+                <h6 class="text-uppercase text-secondary mb-0">Latest block</h6>
+                <span class="text-info small">{{ last_height }}</span>
+              </div>
+            </div>
+            <hr class="hr-space-lg">
+            <div class="media align-items-center">
+
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
