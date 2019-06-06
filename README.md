@@ -25,6 +25,8 @@ See additional info about set up DB [here](java_wallet)
 
 Configure your .env:
 
+See [url-schema](https://github.com/kennethreitz/dj-database-url#url-schema) for set up.
+
 ``` console
 DEBUG=False
 SECRET_KEY= set up

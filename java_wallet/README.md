@@ -2,7 +2,20 @@
 
 [https://github.com/burst-apps-team/burstcoin](https://github.com/burst-apps-team/burstcoin)
 
-## Upgrade DB schema, new wallet version
+## Production and development
+
+Add indexes in your wallet DB for speedups:
+
+``` sql
+CREATE INDEX height ON transaction(height);
+CREATE INDEX timestamp ON transaction(timestamp);
+CREATE INDEX height ON asset(height);
+```
+
+
+## Development
+
+### Upgrade DB schema, new wallet version
 
 Replace init-mysql.sql from [init-mysql.sql](https://github.com/burst-apps-team/burstcoin/blob/develop/init-mysql.sql)
 
@@ -45,13 +58,3 @@ manage.py makemigrations java_wallet
 ```
 
 Do changes in code if needed.
-
-## Production and development
-
-Add indexes in your wallet DB for speedups:
-
-``` sql
-CREATE INDEX height ON transaction(height);
-CREATE INDEX timestamp ON transaction(timestamp);
-CREATE INDEX height ON asset(height);
-```
