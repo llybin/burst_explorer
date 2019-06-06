@@ -12,7 +12,6 @@ CREATE INDEX timestamp ON transaction(timestamp);
 CREATE INDEX height ON asset(height);
 ```
 
-
 ## Development
 
 ### Upgrade DB schema, new wallet version

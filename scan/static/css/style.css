@@ -18,11 +18,10 @@ body, html {
 }
 
 .wrapper {
-    height: auto !important;
     height: 100%;
     margin: 0 auto -80px;
     min-height: 100%;
-    background-color: #f8f9fa !important
+    background-color: #f8f9fa;
 }
 
 .table > tbody > tr:first-child > th,

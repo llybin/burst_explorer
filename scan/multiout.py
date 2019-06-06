@@ -35,7 +35,7 @@ def aggregate_multiouts():
         txs = txs.filter(height__gt=last_aggr_height)
 
     for tx in txs.iterator():
-        logger.info('Aggregating height #', tx.height, "transaction #", tx.id)
+        logger.info('Aggregating height #%s transaction #%s', tx.height, tx.id)
         if tx.subtype == 1:
             data = MultiOutPack().unpack_multi_out(tx.attachment_bytes)
             for r, amount in group_list(data, 2):
