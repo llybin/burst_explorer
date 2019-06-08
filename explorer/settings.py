@@ -11,12 +11,14 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import simplejson as json
 
-import dj_database_url
 import sentry_sdk
 from sentry_sdk.integrations.celery import CeleryIntegration
 from sentry_sdk.integrations.django import DjangoIntegration
+from dotenv import load_dotenv
 
+load_dotenv()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -26,7 +28,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY', 'l42wty32hl$*6=lsy33%0%)cps87@@!vfns!ucu-#*%$x_@min')
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', False)
@@ -91,35 +93,24 @@ WSGI_APPLICATION = 'explorer.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db_default.sqlite3'),
+        'ENGINE': os.getenv('DB_DEFAULT_ENGINE'),
+        'NAME': os.getenv('DB_DEFAULT_NAME'),
+        'HOST': os.getenv('DB_DEFAULT_HOST'),
+        'USER': os.getenv('DB_DEFAULT_USER'),
+        'PASSWORD': os.getenv('DB_DEFAULT_PASSWORD'),
+        'OPTIONS': json.loads(os.getenv('DB_DEFAULT_OPTIONS')),
     },
     'java_wallet': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db_wallet.sqlite3'),
+        'ENGINE': os.getenv('DB_JAVA_WALLET_ENGINE'),
+        'NAME': os.getenv('DB_JAVA_WALLET_NAME'),
+        'HOST': os.getenv('DB_JAVA_WALLET_HOST'),
+        'USER': os.getenv('DB_JAVA_WALLET_USER'),
+        'PASSWORD': os.getenv('DB_JAVA_WALLET_PASSWORD'),
+        'OPTIONS': json.loads(os.getenv('DB_JAVA_WALLET_OPTIONS')),
     },
 }
 
 DATABASE_ROUTERS = ['java_wallet.db_router.DBRouter', 'scan.db_router.DBRouter']
-
-
-def setup_db(database: dict, env_name_url: str) -> dict:
-    db_url = os.getenv(env_name_url)
-
-    if db_url:
-        database = dj_database_url.parse(db_url)
-
-    if 'mysql' in database['ENGINE']:
-        database['OPTIONS'] = {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-            'charset': 'utf8mb4',
-        }
-
-    return database
-
-
-DATABASES['default'] = setup_db(DATABASES['default'], 'DB_DEFAULT_URL')
-DATABASES['java_wallet'] = setup_db(DATABASES['java_wallet'], 'DB_JAVA_WALLET_URL')
 
 
 # Password validation
@@ -164,7 +155,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': os.getenv('FILE_CACHE_PATH', '/tmp/burst_explorer_cache'),
+        'LOCATION': os.getenv('FILE_CACHE_PATH'),
         'TIMEOUT': 604800,
         # 'OPTIONS': {
         #     'MAX_ENTRIES': 100000
@@ -216,7 +207,6 @@ LOGGING = {
     }
 }
 
-
 ACCOUNTS_NAME_FORCE = [
     3011184961392690771,
     1606939141091290673,
@@ -241,6 +231,3 @@ BRS_BOOTSTRAP_PEERS = [
     'https://wallet.burst.devtrue.net',
     'http://wallet.burstcoin.network:8125',
 ]
-
-# debug_toolbar
-# INTERNAL_IPS = ['127.0.0.1']

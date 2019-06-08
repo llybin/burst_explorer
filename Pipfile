@@ -12,7 +12,7 @@ vcrpy = "==2.0.1"
 [packages]
 celery = {version = "==4.3.0",extras = ["redis"]}
 django = "==2.2.1"
-dj-database-url = "==0.5.0"
+python-dotenv = "==0.10.3"
 mysqlclient = "==1.4.2.post1"
 requests = "==2.22.0"
 jsonschema = "==3.0.1"

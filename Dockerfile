@@ -12,7 +12,7 @@ RUN apt-get update \
 
 RUN pip install pipenv==2018.11.26
 COPY Pipfile Pipfile.lock ./
-RUN pipenv install --system --dev
+RUN pipenv install --system --dev --deploy
 
 COPY . .
 

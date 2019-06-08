@@ -11,6 +11,14 @@
 
 ## How to run
 
+`cp .env.default .env`
+
+Configure your .env:
+
+See [DB ENGINES](https://docs.djangoproject.com/en/2.1/ref/settings/#engine)
+
+DB_JAVA_WALLET required read-only access.
+
 See additional info about set up DB [here](java_wallet)
 
 ### Development
@@ -18,18 +26,3 @@ See additional info about set up DB [here](java_wallet)
 `docker-compose up service`
 
 `docker-compose up autotests`
-
-### Production
-
-`cp .env.default .env`
-
-Configure your .env:
-
-See [url-schema](https://github.com/kennethreitz/dj-database-url#url-schema) for set up.
-
-``` console
-DEBUG=False
-SECRET_KEY= set up
-DB_DEFAULT_URL= set up
-DB_JAVA_WALLET_URL= set up READONLY access
-```
