@@ -5,13 +5,10 @@ EXPOSE 5000 9001
 ENV PYTHONUNBUFFERED 1
 ENV PIP_NO_CACHE_DIR 1
 
-#RUN addgroup --system app && adduser --system --shell /bin/false --ingroup app app
-
 RUN apk update && apk upgrade && apk add --no-cache bash
 
 WORKDIR /app
 
-#COPY --chown=app:app . .
 COPY . .
 
 RUN set -ex \
@@ -33,8 +30,6 @@ RUN set -ex \
     )" \
     && apk add --virtual .python-rundeps $runDeps \
     && apk del .build-deps
-
-#USER app
 
 ENTRYPOINT ["/app/docker-entrypoint.sh"]
 
