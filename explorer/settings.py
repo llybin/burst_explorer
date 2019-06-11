@@ -33,6 +33,8 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', False)
 
+INTERNAL_IPS = os.getenv('DEBUG_TOOLBAR_INTERNAL_IPS')
+
 ALLOWED_HOSTS = ['*']
 
 

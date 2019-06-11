@@ -1,19 +1,41 @@
-FROM python:3.6.8
+FROM python:3.6.8-alpine
 
-ENV PYTHONDONTWRITEBYTECODE 1
+EXPOSE 5000 9001
+
 ENV PYTHONUNBUFFERED 1
+ENV PIP_NO_CACHE_DIR 1
 
-WORKDIR /code
+#RUN addgroup --system app && adduser --system --shell /bin/false --ingroup app app
 
-RUN apt-get update \
-    && apt-get -y install --no-install-recommends libssl-dev python3-dev default-libmysqlclient-dev \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apk update && apk upgrade && apk add --no-cache bash
 
-RUN pip install pipenv==2018.11.26
-COPY Pipfile Pipfile.lock ./
-RUN pipenv install --system --dev --deploy
+WORKDIR /app
 
+#COPY --chown=app:app . .
 COPY . .
 
-CMD [ "python manage.py runserver 0.0.0.0:8000" ]
+RUN set -ex \
+    && apk update \
+    && apk upgrade \
+    && apk add --no-cache --virtual .build-deps \
+    gcc \
+    musl-dev \
+    mariadb-dev \
+    linux-headers \
+    && pip install pipenv==2018.11.26 uWSGI==2.0.18 supervisor==4.0.3 \
+    && pipenv install --system --dev --deploy \
+    && runDeps="$( \
+            scanelf --needed --nobanner --recursive /usr/local \
+                    | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
+                    | sort -u \
+                    | xargs -r apk info --installed \
+                    | sort -u \
+    )" \
+    && apk add --virtual .python-rundeps $runDeps \
+    && apk del .build-deps
+
+#USER app
+
+ENTRYPOINT ["/app/docker-entrypoint.sh"]
+
+CMD ["/usr/local/bin/supervisord", "-c", "supervisord.conf"]

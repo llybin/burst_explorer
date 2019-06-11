@@ -25,6 +25,7 @@ def aggregate_multiouts():
         'height', flat=True).first()
 
     if last_aggr_height == get_last_height():
+        logger.info('Done')
         return
 
     txs = Transaction.objects.using('java_wallet').filter(
