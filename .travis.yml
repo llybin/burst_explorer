@@ -8,7 +8,7 @@ env:
 
 script:
   - cp .env.default .env
-  - docker-compose run autotests coverage run python manage.py test -v2
+  - docker-compose run autotests coverage run ./manage.py test -v2
   - docker-compose run autotests coverage report
   - docker-compose run autotests coverage xml
 
