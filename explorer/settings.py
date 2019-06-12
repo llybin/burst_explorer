@@ -156,12 +156,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': os.getenv('FILE_CACHE_PATH'),
-        'TIMEOUT': 604800,
-        # 'OPTIONS': {
-        #     'MAX_ENTRIES': 100000
-        # }
+        'BACKEND': os.getenv('CACHE_BACKEND'),
+        'LOCATION': os.getenv('CACHE_LOCATION'),
+        'TIMEOUT': os.getenv('CACHE_TIMEOUT'),
+        'OPTIONS': json.loads(os.getenv('CACHE_OPTIONS')),
     }
 }
 
