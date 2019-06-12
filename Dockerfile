@@ -5,7 +5,7 @@ EXPOSE 5000 9001
 ENV PYTHONUNBUFFERED 1
 ENV PIP_NO_CACHE_DIR 1
 
-RUN apk update && apk upgrade && apk add --no-cache bash pcre libxml2
+RUN apk update && apk upgrade && apk add --no-cache bash pcre libxml2 mariadb-connector-c
 
 WORKDIR /app
 
