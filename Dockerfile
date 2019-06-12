@@ -5,7 +5,7 @@ EXPOSE 5000 9001
 ENV PYTHONUNBUFFERED 1
 ENV PIP_NO_CACHE_DIR 1
 
-RUN apk update && apk upgrade && apk add --no-cache bash
+RUN apk update && apk upgrade && apk add --no-cache bash pcre libxml2
 
 WORKDIR /app
 
@@ -16,8 +16,14 @@ RUN set -ex \
     && apk upgrade \
     && apk add --no-cache --virtual .build-deps \
     gcc \
-    musl-dev \
     mariadb-dev \
+    libc-dev \
+    musl-dev \
+    pcre-dev \
+    zlib-dev \
+    jpeg-dev \
+    libffi-dev \
+    libxml2-dev \
     linux-headers \
     && pip install pipenv==2018.11.26 uWSGI==2.0.18 supervisor==4.0.3 \
     && pipenv install --system --dev --deploy \
@@ -31,6 +37,4 @@ RUN set -ex \
     && apk add --virtual .python-rundeps $runDeps \
     && apk del .build-deps
 
-ENTRYPOINT ["/app/docker-entrypoint.sh"]
-
-CMD ["/usr/local/bin/supervisord", "-c", "supervisord.conf"]
+CMD ["/app/docker-entrypoint.sh"]

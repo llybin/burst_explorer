@@ -23,8 +23,13 @@ def get_exchange_info() -> JSONType:
             data['percent_change_24h'] = float(data['percent_change_24h'])
         except (RequestException, ValueError, IndexError) as e:
             capture_exception(e)
-            return {}
+            return {
+                'price_usd': 0,
+                '24h_volume_usd': 0,
+                'market_cap_usd': 0,
+                'percent_change_24h': 0,
+            }
 
-    cache.set(key, data, 300)
+    cache.set(key, data, 600)
 
     return data

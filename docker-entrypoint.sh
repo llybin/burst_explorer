@@ -14,16 +14,24 @@ fi
 
 if [[ "$DJANGO_COLLECTSTATIC" = "on" ]]; then
     echo "Collect static files"
-    python manage.py collectstatic --noinput
+    python manage.py collectstatic --no-input
 fi
 
 if [[ "$DJANGO_MIGRATE" = "on" ]]; then
     echo "Apply database migrations"
-    python manage.py migrate java_wallet --database java_wallet
-    python manage.py migrate
+    python manage.py migrate java_wallet --database java_wallet --no-input
+    python manage.py migrate --no-input
 fi
 
-if [[ "$START_CMD" = "on" ]]; then
+if [[ "$START_SERVER" = "on" ]]; then
     echo "Starting CMD"
-    exec "$@"
+    if [[ "$APP_ENV" = "DEV" ]]; then
+        export DJANGO_SERVER_APP="python manage.py runserver 0.0.0.0:5000"
+    elif [[ "$APP_ENV" = "PROD" ]]; then
+        export DJANGO_SERVER_APP="/usr/local/bin/uwsgi --ini /app/wsgi.ini"
+    else
+        echo "Unknown APP_ENV: $APP_ENV"
+        exit
+    fi
+    /usr/local/bin/supervisord -c supervisord.conf
 fi

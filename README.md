@@ -15,14 +15,10 @@
 
 Configure your .env:
 
-See [DB ENGINES](https://docs.djangoproject.com/en/2.1/ref/settings/#engine)
+See [DB ENGINES](https://docs.djangoproject.com/en/2.2/ref/settings/#engine)
 
 DB_JAVA_WALLET required read-only access.
 
 See additional info about set up DB [here](java_wallet)
 
-### Development
-
-`docker-compose up service`
-
-`docker-compose up autotests`
+`docker-compose up`

@@ -6,27 +6,12 @@ services:
       dockerfile: Dockerfile
     stdin_open: true
     tty: true
-    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
     ports:
-      - "8000:8000"
+      - "5000:5000"
     volumes:
       - .:/app
     environment:
       DJANGO_MIGRATE: "on"
-      START_CMD: "on"
-    env_file:
-      - .env
-
-  autotests:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    stdin_open: true
-    tty: true
-    command: ["python", "manage.py", "test", "-v2", "--no-input"]
-    volumes:
-      - .:/app
-    environment:
-      START_CMD: "on"
+      START_SERVER: "on"
     env_file:
       - .env
