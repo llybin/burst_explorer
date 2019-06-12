@@ -1,6 +1,7 @@
 import logging
 
 from django.db.models import Q
+from django.db import transaction
 
 from burst.libs.multiout import MultiOutPack
 from java_wallet.models import Transaction
@@ -18,6 +19,7 @@ def group_list(lst: list or tuple, n: int):
             yield tuple(val)
 
 
+@transaction.atomic
 def aggregate_multiouts():
     logger.info('Start')
 
