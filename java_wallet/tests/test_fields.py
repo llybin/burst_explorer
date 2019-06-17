@@ -63,7 +63,7 @@ class TimestampFieldTest(TestCase):
 
 class GetTxDescByTypes(TestCase):
     def test_ok(self):
-        self.assertEqual(get_desc_tx_type(0, 1), "Multiout Payment")
+        self.assertEqual(get_desc_tx_type(0, 1), "MultiOut Payment")
 
     def test_unknown(self):
-        self.assertEqual(get_desc_tx_type(15, 88), "Unknown type")
+        self.assertEqual(get_desc_tx_type(15, 88), "Unknown")

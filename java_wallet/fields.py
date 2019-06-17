@@ -51,4 +51,4 @@ def get_desc_tx_type(tx_type: int, tx_subtype: int) -> str:
 
     else:
         logging.warning("Unknown transaction type: %d-%d", tx_type, tx_subtype)
-        return _("Unknown type")
+        return _("Unknown")
