@@ -225,7 +225,9 @@ if SENTRY_DSN:
 # UA-XXXXXXXXX-X
 GOOGLE_TRACKING_ID = os.getenv('GOOGLE_TRACKING_ID')
 
-BRS_NODE = 'https://wallet.burst.devtrue.net'
+BRS_NODE = os.getenv('BRS_NODE')
+
+WALLET_URL = os.getenv('WALLET_URL')
 
 BRS_BOOTSTRAP_PEERS = [
     'https://wallet.burst.devtrue.net',
@@ -234,3 +236,5 @@ BRS_BOOTSTRAP_PEERS = [
 
 # for fork solving
 AGGR_STORE_BLOCK_SIGNATURE = 3600 * 24 * 7
+
+TEST_NET = os.getenv('TEST_NET', False)
