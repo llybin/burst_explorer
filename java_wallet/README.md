@@ -7,16 +7,15 @@
 Add indexes in your wallet DB for speedups:
 
 ``` sql
-CREATE INDEX height ON transaction(height);
-CREATE INDEX timestamp ON transaction(timestamp);
-CREATE INDEX height ON asset(height);
+CREATE INDEX transaction_height_timestamp ON transaction(height, timestamp);
+CREATE INDEX asset_height ON asset(height);
 ```
 
 ## Development
 
 ### Upgrade DB schema, new wallet version
 
-Replace init-mysql.sql from [init-mysql.sql](https://github.com/burst-apps-team/burstcoin/blob/develop/init-mysql.sql)
+Replace init-mysql.sql from [init-mysql.sql](https://github.com/burst-apps-team/burstcoin/blob/master/init-mysql.sql)
 
 Generate new models:
 

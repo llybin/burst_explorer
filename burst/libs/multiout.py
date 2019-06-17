@@ -7,7 +7,7 @@ class UnpackError(Exception):
     pass
 
 
-class MultiOutPack(object):
+class MultiOutPack:
     @staticmethod
     def _unpack_header(data: bytes) -> (int, int):
         headers = struct.unpack("2c", data)

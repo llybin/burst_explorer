@@ -25,7 +25,7 @@ class ReedSolomonError(Exception):
     pass
 
 
-class ReedSolomon(object):
+class ReedSolomon:
     @staticmethod
     def gf_mul(a: int, b: int) -> int:
         if a == 0 or b == 0:

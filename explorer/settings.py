@@ -231,3 +231,6 @@ BRS_BOOTSTRAP_PEERS = [
     'https://wallet.burst.devtrue.net',
     'http://wallet.burstcoin.network:8125',
 ]
+
+# for fork solving
+AGGR_STORE_BLOCK_SIGNATURE = 3600 * 24 * 7

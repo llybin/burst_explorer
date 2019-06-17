@@ -19,7 +19,7 @@ class MultiOutListView(ListView):
     context_object_name = 'mos'
     paginator_class = CachingPaginator
     paginate_by = 25
-    ordering = '-height'
+    ordering = ('-height', '-tx_timestamp')
 
     def get_queryset(self):
         qs = super().get_queryset()

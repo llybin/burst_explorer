@@ -11,7 +11,7 @@ from burst.api.typing import JSONType
 from burst.api.brs import queries
 
 
-class BrsApi(object):
+class BrsApi:
     """ The BrsApi class provides convenient access to Brs's API.
     """
     endpoint = 'burst'

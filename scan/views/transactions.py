@@ -27,7 +27,7 @@ class TxListView(ListView):
     context_object_name = 'txs'
     paginator_class = CachingPaginator
     paginate_by = 25
-    ordering = '-height'
+    ordering = ('-height', '-timestamp')
 
     def get_queryset(self):
         qs = super().get_queryset()

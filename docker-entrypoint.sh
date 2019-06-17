@@ -2,6 +2,8 @@
 
 set -e
 
+source .env
+
 if [[ ! -z "$DB_DEFAULT_HOST" ]]; then
     echo "Wait until DB_DEFAULT is definitely ready"
     ./wait-for-it.sh "$DB_DEFAULT_HOST:$DB_DEFAULT_PORT" -- echo "DB_DEFAULT is up - continuing"
