@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="{% static 'favicon.ico' %}" rel="icon">
-    <title>BurstCoin {% if test_net %}TestNet {% endif %}Blockchain Explorer</title>
+    <title>BurstCoin {% if test_net is True %}TestNet {% endif %}Blockchain Explorer</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/style.css' %}?v=6">
@@ -16,7 +16,11 @@
       <header>
         <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
           <a href="/"><img alt="BURST" src="{% static 'img/burst-logo.svg' %}" height="32px"></a>
-          <h5 class="my-0 mr-md-auto font-weight-normal text-danger">Explorer{% if test_net %} TestNet{% endif %}</h5>
+          {% if test_net is True %}
+            <h5 class="my-0 mr-md-auto font-weight-normal text-danger">Explorer TestNet</h5>
+          {% else %}
+            <h5 class="my-0 mr-md-auto font-weight-normal">Explorer</h5>
+          {% endif %}
           <nav class="my-2 my-md-0 mr-md-3">
             <a class="p-2 text-dark" href="/">Home</a>
             <a class="p-2 text-dark" href="{% url 'blocks' %}">Blocks</a>
@@ -42,7 +46,7 @@
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="https://telegram.me/ExchangeRatesBot" target="_blank">Telegram ExchangeRatesBot</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="{{ wallet_url }}" target="_blank">Online {% if test_net %}TestNet {% endif %}Wallet</a>
+              <a class="dropdown-item" href="{{ wallet_url }}" target="_blank">Online {% if test_net is True %}TestNet {% endif %}Wallet</a>
             </div>
           </nav>
           {% if request.path != '/' %}
@@ -72,7 +76,7 @@
       <div class="container text-center">
         Developed by <a href="https://github.com/llybin/burst_explorer" target="_blank">Lev Lybin</a>
         <br>
-        {% if not test_net %}
+        {% if test_net is not True %}
           Donations:
           <a href="{% url 'address-detail' 11834991772770337952 %}">BURST-D372-C2DU-HMKK-CQLHA</a> |
           <a href="{% url 'asset-detail' 14686983107863035136 %}">BurstScan ❤️ Asset</a>

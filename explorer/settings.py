@@ -237,4 +237,4 @@ BRS_BOOTSTRAP_PEERS = [
 # for fork solving
 AGGR_STORE_BLOCK_SIGNATURE = 3600 * 24 * 7
 
-TEST_NET = os.getenv('TEST_NET', False)
+TEST_NET = os.getenv('TEST_NET')
