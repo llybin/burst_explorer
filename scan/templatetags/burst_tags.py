@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django import template
 
@@ -59,8 +59,12 @@ def num2rs(value: str or int) -> str:
 
 
 @register.simple_tag()
-def block_generation_time(block: Block) -> datetime:
-    return block.timestamp - block.previous_block.timestamp
+def block_generation_time(block: Block) -> timedelta:
+    if block.previous_block:
+        return block.timestamp - block.previous_block.timestamp
+    else:
+        # first block
+        return timedelta(0)
 
 
 @register.filter
