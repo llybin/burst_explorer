@@ -22,10 +22,10 @@
         <td><a href="{% url 'block-detail' mo.height %}">{{ mo.height }}</a></td>
         <td class="text-nowrap">{{ mo.tx_timestamp|naturaltime }}</td>
         <td>
-          {% if mo.tx_type == 1 %}
-            Multiout Payment
-          {% elif mo.tx_type == 2 %}
-            MultioutSame Payment
+          {% if mo.tx_subtype == 1 %}
+            MultiOut Payment
+          {% elif mo.tx_subtype == 2 %}
+            MultiOutSame Payment
           {% else %}
             Unknown
           {% endif %}
