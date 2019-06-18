@@ -47,7 +47,7 @@ class BrsApi:
         url = '{}/{}'.format(self.node_url, self.endpoint)
 
         try:
-            response = self._session.get(url, params=query.params)
+            response = self._session.get(url, params=query.params, timeout=query.timeout)
             response.raise_for_status()
         except RequestException as e:
             raise APIException('network', e)

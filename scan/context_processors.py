@@ -1,6 +1,6 @@
 from django.conf import settings
 
-from scan.information import get_exchange_info
+from scan.helpers import get_exchange_info
 
 
 def settings_context_processor(request):

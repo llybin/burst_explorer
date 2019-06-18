@@ -14,6 +14,7 @@ class QueryBase(abc.ABC):
     _params = {}
     _required_params = set()
     _optional_params = set()
+    timeout = 1
 
     @property
     @abc.abstractmethod
@@ -166,8 +167,8 @@ class GetState(QueryBase):
             "requestProcessingTime": {"type": "number"},
         },
     }
+    timeout = 10
 
 
 class GetUnconfirmedTransactions(QueryBase):
     _request_type = 'getUnconfirmedTransactions'
-    # TODO:

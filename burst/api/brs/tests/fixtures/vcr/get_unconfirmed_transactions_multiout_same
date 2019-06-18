@@ -1,0 +1,40 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.22.0
+    method: GET
+    uri: https://wallet.burst.devtrue.net/burst?requestType=getUnconfirmedTransactions
+  response:
+    body:
+      string: '{"unconfirmedTransactions":[{"type":0,"subtype":2,"timestamp":153138073,"deadline":1440,"senderPublicKey":"603631d84654e2097310b721552c4a5ed9dc7eca5ea8cfd3b437f79546a32776","amountNQT":"400000000","feeNQT":"735000","signature":"0eb48eec5130c497fe46ee0c27bd075dad012d81541b4f4ec1aa8a8e42211d06197eb54747ea680a32ad042de622b6c0eea002372d64331c73e617ece320c052","signatureHash":"c95757e7ac3460e55f88d6bbf24b9922e9e2980ab67a8bb7d541e10d1e5a87d8","fullHash":"2c019032c782af1c4092da64325574fea496f1b0b4d7acdf3ee84d75c4057151","transaction":"2067014546044748076","attachment":{"version.MultiSameOutCreation":1,"recipients":["820256820168033388","8087908814943479341"]},"sender":"820256820168033388","senderRS":"BURST-C35E-9FMD-NUDP-25KSQ","height":2147483647,"version":1,"ecBlockId":"12109381587560828069","ecBlockHeight":633157}],"requestProcessingTime":1}'
+    headers:
+      Cache-Control:
+      - no-cache, no-store, must-revalidate, private
+      Connection:
+      - keep-alive
+      Content-Type:
+      - text/plain;charset=utf-8
+      Date:
+      - Tue, 18 Jun 2019 12:21:51 GMT
+      Expires:
+      - Thu, 01 Jan 1970 00:00:00 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - nginx/1.17.0
+      Strict-Transport-Security:
+      - max-age=15768000
+      Transfer-Encoding:
+      - chunked
+    status:
+      code: 200
+      message: OK
+version: 1

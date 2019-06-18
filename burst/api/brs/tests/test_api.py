@@ -244,7 +244,7 @@ class GetUnconfirmedTransactionsTest(TestCase):
                     "recipientRS": "BURST-R7C6-HU8Q-F9DR-5LDAW",
                     "amountNQT": "38540648977",
                     "feeNQT": "100000000",
-                    "signature": "bc91e2534080efe239ef9696f8d4cab6229ef15a7d8e141c46d2ebbfa9e6110e890e200a37f5f30c3c58564bdb2be8f0ac3c29de11acdf8dfa6a114ea492a05c",
+                    "signature": "bc91e2534080efe239ef9696f8d4cab6229ef15a7d8e141c46d2ebbfa9e6110e890e200a37f5f30c3c58564bdb2be8f0ac3c29de11acdf8dfa6a114ea492a05c",  # NOQA
                     "signatureHash": "218d9b7057d14e0c63a73a40945592c489f07c061ff54af04fbac4dcdc1c238d",
                     "fullHash": "d233bcd327759b34c6e5d696928e02bd0b567383f282b2c434d9a7b47acc708d",
                     "transaction": "3790752325278905298",
@@ -257,9 +257,34 @@ class GetUnconfirmedTransactionsTest(TestCase):
                 }
             ])
 
-    # TODO:
-    # @my_vcr.use_cassette('get_unconfirmed_transactions_multiout_same')
-    # def test_multiout_same(self):
-    #     self.assertListEqual(
-    #         BrsApi('https://wallet.burst.devtrue.net').get_unconfirmed_transactions(),
-    #         [])
+    @my_vcr.use_cassette('get_unconfirmed_transactions_multiout_same')
+    def test_multiout_same(self):
+        self.assertListEqual(
+            BrsApi('https://wallet.burst.devtrue.net').get_unconfirmed_transactions(),
+            [
+                {
+                    "type": 0,
+                    "subtype": 2,
+                    "timestamp": 153138073,
+                    "deadline": 1440,
+                    "senderPublicKey": "603631d84654e2097310b721552c4a5ed9dc7eca5ea8cfd3b437f79546a32776",
+                    "amountNQT": "400000000",
+                    "feeNQT": "735000",
+                    "signature": "0eb48eec5130c497fe46ee0c27bd075dad012d81541b4f4ec1aa8a8e42211d06197eb54747ea680a32ad042de622b6c0eea002372d64331c73e617ece320c052",  # NOQA
+                    "signatureHash": "c95757e7ac3460e55f88d6bbf24b9922e9e2980ab67a8bb7d541e10d1e5a87d8",
+                    "fullHash": "2c019032c782af1c4092da64325574fea496f1b0b4d7acdf3ee84d75c4057151",
+                    "transaction": "2067014546044748076",
+                    "attachment": {
+                        "version.MultiSameOutCreation": 1,
+                        "recipients": [
+                            "820256820168033388",
+                            "8087908814943479341"
+                        ]},
+                    "sender": "820256820168033388",
+                    "senderRS": "BURST-C35E-9FMD-NUDP-25KSQ",
+                    "height": 2147483647,
+                    "version": 1,
+                    "ecBlockId": "12109381587560828069",
+                    "ecBlockHeight": 633157
+                }
+            ])
