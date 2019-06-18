@@ -69,7 +69,7 @@ def delete_greater_height_cmd(height: int) -> None:
     delete_greater_height(height)
 
 
-def aggregate_greater_height(height: int):
+def aggregate_greater_height(height: int) -> None:
     _last_aggr_height = None
 
     txs = Transaction.objects.using('java_wallet').filter(
