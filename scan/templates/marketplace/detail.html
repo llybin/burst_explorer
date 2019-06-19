@@ -5,7 +5,7 @@
 
 {% block content %}
 
-  <h5 class="p-2">Market Place Goods #{{ good.id }} details</h5>
+  <h5 class="p-2">Goods Details</h5>
 
   <div class="card-deck mb-3">
     <div class="card mb-4 shadow-sm">
@@ -16,7 +16,10 @@
             <tbody>
             <tr>
               <th style="width: 160px;">ID</th>
-              <td>{{ good.id }}</td>
+              <td>
+                {{ good.id }}
+                <a class="btn btn-sm btn-icon btn-soft-secondary rounded-circle copy-btn" href="#" data-clipboard-text="{{ good.id }}"><i class="far fa-copy"></i></a>
+              </td>
             </tr>
             <tr>
               <th>Name</th>

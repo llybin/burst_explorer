@@ -5,7 +5,7 @@
 
 {% block content %}
 
-  <h5 class="p-2">Multiout
+  <h5 class="p-2">MultiOut
     {% if 'block' in request.GET %}
       <small class="text-muted">For block #<a href="{% url 'block-detail' request.GET.block %}">{{ request.GET.block }}</a></small>
     {% elif 'a' in request.GET %}

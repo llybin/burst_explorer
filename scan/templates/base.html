@@ -89,6 +89,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js" integrity="sha256-9MzwK2kJKBmsJFdccXoIDDtsbWFh8bjYK/C7UjB1Ay0=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
     {% if google_tracking_id %}
       <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -101,6 +102,27 @@
         gtag('config', '{{ google_tracking_id }}');
       </script>
     {% endif %}
+
+    <script>
+      clipboard = new ClipboardJS('.copy-btn');
+
+      $('.copy-btn').tooltip({
+        title: 'Copy to clipboard',
+      });
+
+      $(function () {
+        $('[data-toggle="modal"]').tooltip()
+      });
+
+      clipboard.on('success', function(e) {
+        $(e.trigger)
+          .attr('data-original-title', 'Copied!')
+          .tooltip('show')
+          .blur()
+          .attr('data-original-title', 'Copy to clipboard')
+      });
+
+    </script>
 
     {% block scripts %}{% endblock %}
   </body>
