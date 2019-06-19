@@ -38,8 +38,8 @@
             {{ tx.tx_name }}
           {% endif %}
         </td>
-        <td class="text-nowrap">{{ tx.amountNQT|burst_amount|rounding:4|intcomma }} Burst</td>
-        <td class="text-nowrap">{{ tx.feeNQT|burst_amount|rounding:4|intcomma }} Burst</td>
+        <td class="text-nowrap" title="Amount">{{ tx.amountNQT|burst_amount|rounding:4|intcomma }} Burst</td>
+        <td class="text-nowrap" title="Fee">{{ tx.feeNQT|burst_amount|rounding:4|intcomma }} Burst</td>
       </tr>
     {% empty %}
       <div class="text-secondary" style="display: flex;flex-direction: column;justify-content: center;height: 90%;">

@@ -56,6 +56,10 @@
               <td>{{ blk.total_amount|burst_amount|intcomma }} Burst <span class="text-info">(${{ blk.total_amount|burst_amount|in_usd|rounding:4|intcomma }})</span></td>
             </tr>
             <tr>
+              <th>Total Fee</th>
+              <td>{{ blk.total_fee|burst_amount|intcomma }} Burst <span class="text-info">(${{ blk.total_fee|burst_amount|in_usd|rounding:4|intcomma }})</span></td>
+            </tr>
+            <tr>
               <th>Mined by</th>
               <td>
                 {% include "account_link.html" with account_id=blk.generator_id account_name=blk.generator_name oneline=True %}
@@ -96,8 +100,12 @@
               <td>{{ blk.nonce }}</td>
             </tr>
             <tr class="collapse show_more_info">
-              <th>ATs</th>
-              <td>{{ blk.ats|bin2hex }}</td>
+              <th>Payload Length</th>
+              <td>{{ blk.payload_length }}</td>
+            </tr>
+            <tr class="collapse show_more_info">
+              <th>Payload Hash</th>
+              <td class="text-monospace" style="word-wrap: break-word; max-width: 250px">{{ blk.payload_hash|bin2hex }}</td>
             </tr>
             <tr class="collapse show_more_info">
               <th>Cumulative Difficulty</th>
@@ -114,6 +122,13 @@
             <tr class="collapse show_more_info">
               <th>Block Signature</th>
               <td class="text-monospace" style="word-wrap: break-word; max-width: 250px">{{ blk.block_signature|bin2hex }}</td>
+            </tr>
+            <tr class="collapse show_more_info">
+              <th>ATs</th>
+              <td>
+                <textarea id="ats" class="form-control" spellcheck="false" rows="5" disabled>{{ blk.ats|bin2hex }}</textarea>
+                <label for="ats"></label>
+              </td>
             </tr>
             </tbody>
           </table>

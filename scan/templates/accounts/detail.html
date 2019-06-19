@@ -38,6 +38,10 @@
           <table class="table small table-sm">
             <tbody>
             <tr>
+              <th>Address</th>
+              <td>{{ address.id|num2rs }}</td>
+            </tr>
+            <tr>
               <th style="width: 160px;">Name</th>
               <td style="word-wrap: break-word; max-width: 250px">{% if address.name %}{{ address.name }}{% endif %}</td>
             </tr>
@@ -46,16 +50,20 @@
               <td style="word-wrap: break-word; max-width: 250px">{% if address.description %}{{ address.description }}{% endif %}</td>
             </tr>
             <tr>
-              <th>Address</th>
-              <td>{{ address.id|num2rs }}</td>
+              <th>Balance</th>
+              <td>{{ address.balance|burst_amount|intcomma }} Burst <span class="text-info">(${{ address.balance|burst_amount|in_usd|floatformat:2|intcomma }} @ ${{ burst_info.exchange.price_usd|rounding:4|intcomma }}/Burst)</span></td>
             </tr>
             <tr>
               <th>Public Key</th>
-              <td class="text-monospace" style="word-wrap: break-word; max-width: 250px">{{ address.public_key|bin2hex }}</td>
+              <td style="word-wrap: break-word; max-width: 250px">
+                {% if address.key_height %}
+                  <span class="text-monospace">{{ address.public_key|bin2hex }}</span> in <a href="{% url 'block-detail' address.key_height %}">{{ address.key_height }}</a>
+                {% endif %}
+              </td>
             </tr>
             <tr>
-              <th>Balance</th>
-              <td>{{ address.balance|burst_amount|intcomma }} Burst <span class="text-info">(${{ address.balance|burst_amount|in_usd|floatformat:2|intcomma }} @ ${{ burst_info.exchange.price_usd|rounding:4|intcomma }}/Burst)</span></td>
+              <th>Creation Block</th>
+              <td><a href="{% url 'block-detail' address.creation_height %}">{{ address.creation_height }}</a></td>
             </tr>
             <tr>
               <th>Pool</th>
