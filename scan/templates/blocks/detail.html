@@ -17,10 +17,10 @@
             <tr>
               <th style="width: 160px;">Block Height</th>
               <td>
-                <div class="d-flex flex-column flex-md-row align-items-center">
-                  <span class="my-0 font-weight-bold	">{{ blk.height }}</span>&nbsp;&nbsp;
-                  <nav aria-label="Block navigation">
-                    <ul class="pagination">
+                <div class="d-flex flex-column flex-md-row">
+                  <span class="mr-2 my-auto font-weight-bold">{{ blk.height }}</span>
+                  <nav class="my-auto" aria-label="Block navigation">
+                    <ul class="pagination my-auto small">
                       {% if blk.previous_block %}
                         <li class="page-item"><a class="page-link" href="{% url 'block-detail' blk.previous_block.height %}">Previous</a></li>
                       {% else %}
