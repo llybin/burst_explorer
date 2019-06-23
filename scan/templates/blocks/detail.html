@@ -17,14 +17,14 @@
             <tr>
               <th style="width: 160px;">Block Height</th>
               <td>
-                <div class="d-flex flex-column flex-md-row">
-                  <span class="mr-2 my-auto font-weight-bold">{{ blk.height }}</span>
-                  <nav class="my-auto" aria-label="Block navigation">
-                    <ul class="pagination my-auto small">
+                <div>
+                  <span class="d-inline-block mr-2 my-auto font-weight-bold">{{ blk.height }}</span>
+                  <nav class="d-inline-block my-auto" aria-label="Block navigation">
+                    <ul class="pagination my-auto">
                       {% if blk.previous_block %}
-                        <li class="page-item"><a class="page-link" href="{% url 'block-detail' blk.previous_block.height %}">Previous</a></li>
+                        <li class="page-item"><a class="page-link" href="{% url 'block-detail' blk.previous_block.height %}">Prev</a></li>
                       {% else %}
-                        <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                        <li class="page-item disabled"><a class="page-link" href="#">Prev</a></li>
                       {% endif %}
                       {% if blk.next_block %}
                         <li class="page-item"><a class="page-link" href="{% url 'block-detail' blk.next_block.height %}">Next</a></li>
