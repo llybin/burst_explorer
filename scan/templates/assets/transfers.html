@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% load humanize %}
+{% load burst_tags %}
+
+{% block content %}
+
+  <h5 class="p-2">Asset Transfers
+    {% if assets_transfers %}
+      {% with assets_transfers|first as asset %}
+        <small class="text-muted">For asset <a href="{% url 'asset-detail' asset.asset_id %}">{{ asset.name }}</a></small>
+      {% endwith %}
+    {% endif %}
+  </h5>
+
+  <div class="card-deck mb-3">
+    <div class="card mb-4 shadow-sm">
+      <div class="card-body">
+
+        <div class="d-flex flex-column flex-md-row align-items-center">
+          <small class="my-0 mr-md-auto text-muted">
+            More than > {{ assets_transfers_cnt|intcomma }} transfers found<br>
+            <small>(Showing the last 100k records)</small>
+          </small>
+          {% include "paginator.html" %}
+        </div>
+
+        {% include "assets/transfers_list.html" with asset_specific=1 %}
+
+        {% include "paginator.html" %}
+
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

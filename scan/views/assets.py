@@ -40,6 +40,68 @@ class AssetListView(ListView):
         return context
 
 
+class AssetTradesListView(ListView):
+    model = Trade
+    queryset = Trade.objects.using('java_wallet').all()
+    template_name = 'assets/trades.html'
+    context_object_name = 'assets_trades'
+    paginator_class = CachingPaginator
+    paginate_by = 25
+    ordering = '-height'
+    slug_field = 'asset_id'
+    slug_url_kwarg = 'id'
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        qs = qs.filter(asset_id=self.kwargs.get(self.slug_url_kwarg))
+        return qs[:100000]
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        obj = context[self.context_object_name]
+
+        for trade in obj:
+            fill_data_asset_trade(trade)
+
+        context['assets_trades_cnt'] = Trade.objects.using('java_wallet').filter(
+            asset_id=self.kwargs.get(self.slug_url_kwarg)
+        ).count()
+
+        return context
+
+
+class AssetTransfersListView(ListView):
+    model = AssetTransfer
+    queryset = AssetTransfer.objects.using('java_wallet').all()
+    template_name = 'assets/transfers.html'
+    context_object_name = 'assets_transfers'
+    paginator_class = CachingPaginator
+    paginate_by = 25
+    ordering = '-height'
+    slug_field = 'asset_id'
+    slug_url_kwarg = 'id'
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        qs = qs.filter(asset_id=self.kwargs.get(self.slug_url_kwarg))
+        return qs[:100000]
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        obj = context[self.context_object_name]
+
+        for transfer in obj:
+            fill_data_asset_transfer(transfer)
+
+        context['assets_transfers_cnt'] = AssetTransfer.objects.using('java_wallet').filter(
+            asset_id=self.kwargs.get(self.slug_url_kwarg)
+        ).count()
+
+        return context
+
+
 class AssetDetailView(IntSlugDetailView):
     model = Asset
     queryset = Asset.objects.using('java_wallet').all()

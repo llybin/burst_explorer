@@ -21,7 +21,7 @@ from django.urls import path, include
 from scan.views.index import index
 from scan.views.accounts import AccountsListView, AddressDetailView
 from scan.views.blocks import BlockListView, BlockDetailView
-from scan.views.assets import AssetListView, AssetDetailView
+from scan.views.assets import AssetListView, AssetDetailView, AssetTradesListView, AssetTransfersListView
 from scan.views.ats import AtListView, AtDetailView
 from scan.views.transactions import TxListView, TxDetailView
 from scan.views.multiout import MultiOutListView
@@ -40,6 +40,8 @@ urlpatterns = [
     path('address/<str:id>', AddressDetailView.as_view(), name='address-detail'),
     path('assets/', AssetListView.as_view(), name='assets'),
     path('asset/<str:id>', AssetDetailView.as_view(), name='asset-detail'),
+    path('asset/<str:id>/trades', AssetTradesListView.as_view(), name='asset-trades'),
+    path('asset/<str:id>/transfers', AssetTransfersListView.as_view(), name='asset-transfers'),
     path('mps/', MarketPlaceListView.as_view(), name='mps'),
     path('mp/<str:id>', MarketPlaceDetailView.as_view(), name='mp-detail'),
     path('ats/', AtListView.as_view(), name='ats'),

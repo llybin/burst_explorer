@@ -70,26 +70,26 @@
               <p class="small p-1" style="margin-top: 10px">
                 Latest {{ assets_trades.count }} from a total of
                 {% if assets_trades_cnt > 0 %}
-                  {{ assets_trades_cnt|intcomma }}
+                  <a href="{% url 'asset-trades' asset.id %}">{{ assets_trades_cnt|intcomma }}</a>
                 {% else %}
                   0
                 {% endif %}
                 assets trades found
               </p>
-              {% include "assets/trades_list.html" with filtered_account=asset.account_id asset_specific=1 %}
+              {% include "assets/trades_list.html" with asset_specific=1 %}
             </div>
 
             <div class="tab-pane fade" id="nav-asset-transfer" role="tabpanel" aria-labelledby="nav-asset-transfer-tab">
               <p class="small p-1" style="margin-top: 10px">
                 Latest {{ assets_transfers.count }} from a total of
                 {% if assets_transfers_cnt > 0 %}
-                  {{ assets_transfers_cnt|intcomma }}
+                  <a href="{% url 'asset-transfers' asset.id %}">{{ assets_transfers_cnt|intcomma }}</a>
                 {% else %}
                   0
                 {% endif %}
                 assets transfers found
               </p>
-              {% include "assets/transfers_list.html" with filtered_account=asset.account_id  asset_specific=1 %}
+              {% include "assets/transfers_list.html" with asset_specific=1 %}
             </div>
           </div>
 
