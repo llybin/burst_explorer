@@ -139,7 +139,7 @@
               <p class="small p-1" style="margin-top: 10px">
                 Latest {{ assets_trades.count }} from a total of
                 {% if assets_trades_cnt > 0 %}
-                  {{ assets_trades_cnt|intcomma }}
+                  <a href="{% url 'asset-trades' %}?a={{ address.id }}">{{ assets_trades_cnt|intcomma }}</a>
                 {% else %}
                   0
                 {% endif %}
@@ -152,7 +152,7 @@
               <p class="small p-1" style="margin-top: 10px">
                 Latest {{ assets_transfers.count }} from a total of
                 {% if assets_transfers_cnt > 0 %}
-                  {{ assets_transfers_cnt|intcomma }}
+                  <a href="{% url 'asset-transfers' %}?a={{ address.id }}">{{ assets_transfers_cnt|intcomma }}</a>
                 {% else %}
                   0
                 {% endif %}

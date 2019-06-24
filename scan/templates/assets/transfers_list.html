@@ -12,6 +12,7 @@
       <th scope="col">Block</th>
       <th scope="col">Timestamp</th>
       <th scope="col">From</th>
+      <th scope="col"></th>
       <th scope="col">To</th>
       <th scope="col">Quantity</th>
     </tr>
@@ -27,6 +28,13 @@
         <td class="text-nowrap">{{ asset.timestamp|naturaltime }}</td>
         <td class="text-nowrap">
           {% include "account_link.html" with account_id=asset.sender_id account_name=asset.sender_name %}
+        </td>
+        <td>
+          {% if filtered_account|slugify == asset.sender_id|slugify %}
+            <span class="text-center font-weight-bold rounded-pill" style="background-color: rgb(255, 214, 214)!important; color: rgb(140, 45, 80); line-height: 1.6; font-size: .61rem; width: 100%!important; display: inline-block; padding: .2rem .5rem;">OUT</span>
+          {% elif filtered_account|slugify == asset.recipient_id|slugify %}
+            <span class="text-center font-weight-bold rounded-pill" style="background-color: rgb(222, 249, 210)!important; color: rgb(35, 118, 64); line-height: 1.6; font-size: .61rem; width: 100%!important; display: inline-block; padding: .2rem .5rem;">IN</span>
+          {% endif %}
         </td>
         <td class="text-nowrap">
           {% include "account_link.html" with account_id=asset.recipient_id account_name=asset.recipient_name %}

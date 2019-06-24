@@ -53,6 +53,7 @@ class TxListView(ListView):
         for t in obj:
             fill_data_transaction(t, list_page=True)
 
+        # TODO: needed only if no filtering
         context['txs_cnt'] = get_txs_count()
 
         return context

@@ -63,6 +63,7 @@
             <div class="nav nav-tabs small" id="nav-tab" role="tablist">
               <a class="nav-item nav-link active" id="nav-asset-trades-tab" data-toggle="tab" href="#nav-asset-trades" role="tab" aria-controls="nav-asset-trades" aria-selected="false">{{ assets_trades_cnt|intcomma }} Asset trades</a>
               <a class="nav-item nav-link" id="nav-asset-transfer-tab" data-toggle="tab" href="#nav-asset-transfer" role="tab" aria-controls="nav-asset-transfer" aria-selected="false">{{ assets_transfers_cnt|intcomma }} Asset transfers</a>
+              <a class="nav-item nav-link" id="nav-asset-holders-tab" data-toggle="tab" href="#nav-asset-holders" role="tab" aria-controls="nav-asset-holders" aria-selected="false">{{ assets_holders_cnt|intcomma }} Asset holders</a>
             </div>
           </nav>
           <div class="tab-content" id="nav-tabContent">
@@ -70,7 +71,7 @@
               <p class="small p-1" style="margin-top: 10px">
                 Latest {{ assets_trades.count }} from a total of
                 {% if assets_trades_cnt > 0 %}
-                  <a href="{% url 'asset-trades' asset.id %}">{{ assets_trades_cnt|intcomma }}</a>
+                  <a href="{% url 'asset-trades' %}?asset={{ asset.id }}">{{ assets_trades_cnt|intcomma }}</a>
                 {% else %}
                   0
                 {% endif %}
@@ -83,7 +84,7 @@
               <p class="small p-1" style="margin-top: 10px">
                 Latest {{ assets_transfers.count }} from a total of
                 {% if assets_transfers_cnt > 0 %}
-                  <a href="{% url 'asset-transfers' asset.id %}">{{ assets_transfers_cnt|intcomma }}</a>
+                  <a href="{% url 'asset-transfers' %}?asset={{ asset.id }}">{{ assets_transfers_cnt|intcomma }}</a>
                 {% else %}
                   0
                 {% endif %}

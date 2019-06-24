@@ -6,10 +6,10 @@
 {% block content %}
 
   <h5 class="p-2">Asset Trades
-    {% if assets_trades %}
-      {% with assets_trades|first as asset %}
-        <small class="text-muted">For asset <a href="{% url 'asset-detail' asset.asset_id %}">{{ asset.name }}</a></small>
-      {% endwith %}
+    {% if 'asset' in request.GET %}
+      <small class="text-muted">For asset #<a href="{% url 'asset-detail' request.GET.asset %}">{{ request.GET.asset }}</a></small>
+    {% elif 'a' in request.GET %}
+      <small class="text-muted">For address #<a href="{% url 'address-detail' request.GET.a %}">{{ request.GET.a }}</a></small>
     {% endif %}
   </h5>
 
@@ -19,13 +19,23 @@
 
         <div class="d-flex flex-column flex-md-row align-items-center">
           <small class="my-0 mr-md-auto text-muted">
-            More than > {{ assets_trades_cnt|intcomma }} trades found<br>
-            <small>(Showing the last 100k records)</small>
+            {% if 'a' not in request.GET and assets_trades_cnt > paginator.count %}
+              More than > {{ assets_trades_cnt|intcomma }} trades found<br>
+              <small>(Showing the last 100k records)</small>
+            {% else %}
+              A total of
+              {% if assets_trades %}
+                {{ paginator.count|intcomma }}
+              {% else %}
+                0
+              {% endif %}
+              trades found
+            {% endif %}
           </small>
           {% include "paginator.html" %}
         </div>
 
-        {% include "assets/trades_list.html" with asset_specific=1 %}
+        {% include "assets/trades_list.html" with asset_specific=1 filtered_account=request.GET.a %}
 
         {% include "paginator.html" %}
 

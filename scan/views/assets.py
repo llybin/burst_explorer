@@ -1,6 +1,8 @@
+from django.db.models import Q
+from django.http import Http404
 from django.views.generic import ListView
 
-from java_wallet.models import Asset, AssetTransfer, Trade
+from java_wallet.models import Asset, AssetTransfer, Trade, AccountAsset
 from scan.caching_paginator import CachingPaginator
 from scan.helpers import get_account_name, get_asset_details
 from scan.views.base import IntSlugDetailView
@@ -48,13 +50,23 @@ class AssetTradesListView(ListView):
     paginator_class = CachingPaginator
     paginate_by = 25
     ordering = '-height'
-    slug_field = 'asset_id'
-    slug_url_kwarg = 'id'
 
     def get_queryset(self):
         qs = super().get_queryset()
-        qs = qs.filter(asset_id=self.kwargs.get(self.slug_url_kwarg))
-        return qs[:100000]
+
+        if self.request.GET.get('asset'):
+            qs = qs.filter(asset_id=self.request.GET.get('asset'))
+            qs = qs[:100000]
+
+        elif self.request.GET.get('a'):
+            qs = qs.filter(
+                Q(buyer_id=self.request.GET.get('a')) | Q(seller_id=self.request.GET.get('a'))
+            )
+
+        else:
+            raise Http404()
+
+        return qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -64,9 +76,18 @@ class AssetTradesListView(ListView):
         for trade in obj:
             fill_data_asset_trade(trade)
 
-        context['assets_trades_cnt'] = Trade.objects.using('java_wallet').filter(
-            asset_id=self.kwargs.get(self.slug_url_kwarg)
-        ).count()
+        if self.request.GET.get('asset'):
+            context['assets_trades_cnt'] = Trade.objects.using('java_wallet').filter(
+                asset_id=self.request.GET.get('asset')
+            ).count()
+
+        elif self.request.GET.get('a'):
+            context['assets_trades_cnt'] = Trade.objects.using('java_wallet').filter(
+                Q(buyer_id=self.request.GET.get('a')) | Q(seller_id=self.request.GET.get('a'))
+            ).count()
+
+        else:
+            context['assets_trades_cnt'] = 0
 
         return context
 
@@ -79,13 +100,23 @@ class AssetTransfersListView(ListView):
     paginator_class = CachingPaginator
     paginate_by = 25
     ordering = '-height'
-    slug_field = 'asset_id'
-    slug_url_kwarg = 'id'
 
     def get_queryset(self):
         qs = super().get_queryset()
-        qs = qs.filter(asset_id=self.kwargs.get(self.slug_url_kwarg))
-        return qs[:100000]
+
+        if self.request.GET.get('asset'):
+            qs = qs.filter(asset_id=self.request.GET.get('asset'))
+            qs = qs[:100000]
+
+        elif self.request.GET.get('a'):
+            qs = qs.filter(
+                Q(sender_id=self.request.GET.get('a')) | Q(recipient_id=self.request.GET.get('a'))
+            )
+
+        else:
+            raise Http404()
+
+        return qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -95,9 +126,18 @@ class AssetTransfersListView(ListView):
         for transfer in obj:
             fill_data_asset_transfer(transfer)
 
-        context['assets_transfers_cnt'] = AssetTransfer.objects.using('java_wallet').filter(
-            asset_id=self.kwargs.get(self.slug_url_kwarg)
-        ).count()
+        if self.request.GET.get('asset'):
+            context['assets_transfers_cnt'] = AssetTransfer.objects.using('java_wallet').filter(
+                asset_id=self.request.GET.get('asset')
+            ).count()
+
+        elif self.request.GET.get('a'):
+            context['assets_transfers_cnt'] = AssetTransfer.objects.using('java_wallet').filter(
+                Q(sender_id=self.request.GET.get('a')) | Q(recipient_id=self.request.GET.get('a'))
+            ).count()
+
+        else:
+            context['assets_transfers_cnt'] = 0
 
         return context
 
