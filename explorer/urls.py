@@ -26,7 +26,7 @@ from scan.views.ats import AtListView, AtDetailView
 from scan.views.transactions import TxListView, TxDetailView
 from scan.views.multiout import MultiOutListView
 from scan.views.search import search_view
-from scan.views.marketplace import MarketPlaceListView, MarketPlaceDetailView
+from scan.views.marketplace import MarketPlaceListView, MarketPlaceDetailView, MarketPlacePurchasesListView
 
 
 urlpatterns = [
@@ -42,6 +42,7 @@ urlpatterns = [
     path('asset/transfers', AssetTransfersListView.as_view(), name='asset-transfers'),
     path('assets/', AssetListView.as_view(), name='assets'),
     path('asset/<str:id>', AssetDetailView.as_view(), name='asset-detail'),
+    path('mps/purchases', MarketPlacePurchasesListView.as_view(), name='mps-purchases'),
     path('mps/', MarketPlaceListView.as_view(), name='mps'),
     path('mp/<str:id>', MarketPlaceDetailView.as_view(), name='mp-detail'),
     path('ats/', AtListView.as_view(), name='ats'),

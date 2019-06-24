@@ -1,34 +1,42 @@
+{% extends 'base.html' %}
+
 {% load humanize %}
 {% load burst_tags %}
 
-<div class="table-responsive">
-  <table class="table table-hover small table-sm">
-    <thead>
-    <tr>
-      <th scope="col">Block</th>
-      <th scope="col">Timestamp</th>
-      <th scope="col">Seller</th>
-      <th scope="col">Buyer</th>
-      <th scope="col">Quantity</th>
-      <th scope="col">Price</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for purchase in purchases %}
-      <tr>
-        <td><a href="{% url 'block-detail' purchase.height %}">{{ purchase.height }}</a></td>
-        <td class="text-nowrap">{{ purchase.timestamp|naturaltime }}</td>
-        <td class="text-nowrap">
-          {% include "account_link.html" with account_id=purchase.seller_id account_name=purchase.seller_name %}
-        </td>
-        <td class="text-nowrap">
-          {% include "account_link.html" with account_id=purchase.buyer_id account_name=purchase.buyer_name %}
-        </td>
-        <td>{{ purchase.quantity|intcomma }}
-        </td>
-        <td class="text-nowrap">{{ purchase.price|burst_amount|intcomma }} Burst</td>
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table>
-</div>
+{% block content %}
+
+  <h5 class="p-2">Purchases
+    <small class="text-muted">For goods #<a href="{% url 'mp-detail' request.GET.g %}">{{ request.GET.g }}</a></small>
+  </h5>
+
+  <div class="card-deck mb-3">
+    <div class="card mb-4 shadow-sm">
+      <div class="card-body">
+
+        <div class="d-flex flex-column flex-md-row align-items-center">
+          <small class="my-0 mr-md-auto text-muted">
+            {% if purchases_cnt > paginator.count %}
+              More than > {{ purchases_cnt|intcomma }} purchases found<br>
+              <small>(Showing the last 100k records)</small>
+            {% else %}
+              A total of
+              {% if purchases %}
+                {{ paginator.count|intcomma }}
+              {% else %}
+                0
+              {% endif %}
+              purchases found
+            {% endif %}
+          </small>
+          {% include "paginator.html" %}
+        </div>
+
+        {% include "marketplace/purchases_list.html" %}
+
+        {% include "paginator.html" %}
+
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

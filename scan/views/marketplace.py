@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.views.generic import ListView
 
 from java_wallet.models import Goods, Purchase
@@ -22,6 +23,43 @@ class MarketPlaceListView(ListView):
 
         for t in obj:
             t.seller_name = get_account_name(t.seller_id)
+
+        return context
+
+
+class MarketPlacePurchasesListView(ListView):
+    model = Purchase
+    queryset = Purchase.objects.using('java_wallet').all()
+    template_name = 'marketplace/purchases.html'
+    context_object_name = 'purchases'
+    paginator_class = CachingPaginator
+    paginate_by = 25
+    ordering = '-height'
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+
+        if self.request.GET.get('g'):
+            qs = qs.filter(goods_id=self.request.GET.get('g'))
+            qs = qs[:100000]
+
+        else:
+            raise Http404()
+
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        obj = context[self.context_object_name]
+
+        for purchase in obj:
+            purchase.seller_name = get_account_name(purchase.seller_id)
+            purchase.buyer_name = get_account_name(purchase.buyer_id)
+
+        context['purchases_cnt'] = Purchase.objects.using('java_wallet').filter(
+            goods_id=self.request.GET.get('g')
+        ).count()
 
         return context
 

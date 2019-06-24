@@ -2,7 +2,7 @@ from django.db.models import Q
 from django.http import Http404
 from django.views.generic import ListView
 
-from java_wallet.models import Asset, AssetTransfer, Trade, AccountAsset
+from java_wallet.models import Asset, AssetTransfer, Trade
 from scan.caching_paginator import CachingPaginator
 from scan.helpers import get_account_name, get_asset_details
 from scan.views.base import IntSlugDetailView
