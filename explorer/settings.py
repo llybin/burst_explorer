@@ -36,7 +36,7 @@ DEBUG = os.getenv('DEBUG', False)
 INTERNAL_IPS = os.getenv('DEBUG_TOOLBAR_INTERNAL_IPS')
 
 ALLOWED_HOSTS = ['*']
-
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Application definition
 
@@ -48,6 +48,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'corsheaders',
+    'rest_framework',
+    'api',
     'scan',
     'java_wallet',
 ]
@@ -58,6 +61,7 @@ if DEBUG:
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -161,6 +165,11 @@ CACHES = {
         'TIMEOUT': os.getenv('CACHE_TIMEOUT'),
         'OPTIONS': json.loads(os.getenv('CACHE_OPTIONS')),
     }
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 25
 }
 
 LOGGING = {

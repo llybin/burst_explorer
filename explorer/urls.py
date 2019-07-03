@@ -49,6 +49,7 @@ urlpatterns = [
     path('at/<str:id>', AtDetailView.as_view(), name='at-detail'),
     path('search/', search_view, name='search'),
     path('admin/', admin.site.urls),
+    path('api/', include(('api.urls', 'api'), namespace='api')),
 ]
 
 if settings.DEBUG:
