@@ -17,7 +17,7 @@ class MultiOut(models.Model):
 
     id = models.BigAutoField(primary_key=True)
     height = models.IntegerField()
-    tx_id = PositiveBigIntegerField(db_index=True)
+    tx_id = PositiveBigIntegerField()
     sender_id = PositiveBigIntegerField(db_index=True)
     recipient_id = PositiveBigIntegerField(db_index=True)
     amount = PositiveBigIntegerField()
@@ -27,3 +27,4 @@ class MultiOut(models.Model):
 
     class Meta:
         index_together = ["height", "tx_timestamp"]
+        unique_together = ["tx_id", "recipient_id"]

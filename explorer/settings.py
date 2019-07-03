@@ -36,7 +36,10 @@ DEBUG = os.getenv('DEBUG', False)
 INTERNAL_IPS = os.getenv('DEBUG_TOOLBAR_INTERNAL_IPS')
 
 ALLOWED_HOSTS = ['*']
+
 CORS_ORIGIN_ALLOW_ALL = True
+
+AUTH_USER_MODEL = 'cabinet.User'
 
 # Application definition
 
@@ -51,6 +54,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'api',
+    'cabinet',
     'scan',
     'java_wallet',
 ]
