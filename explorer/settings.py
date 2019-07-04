@@ -248,6 +248,8 @@ BRS_BOOTSTRAP_PEERS = [
     'burst.megash.it:443',
     'burst-fi.megash.it:443',
     'wallet.smit.pro:443',
+    'wallet.burst-alliance.org',
+    'phoenix.burst-alliance.org',
 ]
 
 # for fork solving
