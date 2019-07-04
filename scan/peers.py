@@ -67,7 +67,7 @@ def explore_node(node: str):
         for peer in peers:
             peer_detail = node_api.get_peer(peer)
             peer = peer.replace('[', '').replace(']', '')  # ipv6
-            logger.info('Peer: %s, state: %d', peer, peer_detail['state'])
+            logger.debug('Peer: %s, state: %d', peer, peer_detail['state'])
             # NON_CONNECTED, CONNECTED, DISCONNECTED
             if peer_detail['state'] == 1:
                 peer_obj = PeerMonitor.objects.filter(address=peer).first()
@@ -86,10 +86,10 @@ def explore_node(node: str):
                 if form.is_valid():
                     form.save()
                 else:
-                    logger.warning('Not valid data: %r', form.errors)
+                    logger.info('Not valid data: %r', form.errors)
 
     except BurstException:
-        logger.warning("Can't connect to node: %s", node)
+        logger.info("Can't connect to node: %s", node)
 
 
 @lock_decorator(key='peer_monitor', expire=60, auto_renewal=True)
