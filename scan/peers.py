@@ -39,7 +39,7 @@ class PeerMonitorForm(forms.ModelForm):
 
 
 def node_with_port(node: str) -> str:
-    ports = [8125, 80, 443, 8124, 2083, 8080, 8000, 5000, 6876]
+    ports = [8125, 80, 443, 8124, 2083, 8080, 8000, 5000]
 
     if ':' not in node:
         for x in ports:
@@ -77,6 +77,7 @@ def explore_node(node: str):
                     country_code=get_country_by_ip(peer),
                     announced_address=peer_detail['announcedAddress'].replace('[', '').replace(']', ''),
                     application=peer_detail['application'],
+                    platform=peer_detail['platform'],
                     version=normalize_version(peer_detail['version']),
                     proofs_online=peer_obj.proofs_online + 1 if peer_obj else 1
                 ), instance=peer_obj)
@@ -110,7 +111,5 @@ def peer_cmd():
     PeerMonitor.objects.filter(
         proofs_online=0
     ).update(downtime=F('downtime') + 1)
-
-    # 100 - (downtime / lifetime) * 100
 
     logger.info('Done')

@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% load humanize %}
+{% load network_tags %}
+
+{% block content %}
+
+  <h5 class="p-2">Nodes</h5>
+
+  <div class="card-deck mb-3">
+    <div class="card mb-4 shadow-sm">
+      <div class="card-body">
+        <p>Online now: {{ online_now }} <span class="small">(checked {{ last_check.modified_at|naturaltime }})</span></p>
+        <p>Versions:
+            <ul>
+                {% for version in versions %}
+                    <li>{{ version.version }} - {{ version.cnt }}</li>
+                {% endfor %}
+            </ul>
+        </p>
+
+        <p>Countries:
+            <ul>
+                {% for country in countries %}
+                    <li>{{ country.country_code }} - {{ country.cnt }}</li>
+                {% endfor %}
+            </ul>
+        </p>
+
+        <div class="d-flex flex-column flex-md-row align-items-center">
+          <small class="my-0 mr-md-auto text-muted">
+              A total of {{ paginator.count|intcomma }} nodes found
+          </small>
+          {% include "paginator.html" %}
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-hover small table-sm">
+            <thead>
+            <tr>
+              <th scope="col">Address</th>
+              <th scope="col">Country</th>
+              <th scope="col">Version</th>
+              <th scope="col">Announced Address</th>
+              <th scope="col">Platform</th>
+              <th scope="col">Application</th>
+              <th scope="col">Availability</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for node in nodes %}
+              <tr>
+                <td>{{ node.address }}</td>
+                <td>{{ node.country_code }}</td>
+                <td>{{ node.version }}</td>
+                <td>{{ node.announced_address }}</td>
+                <td>{{ node.platform }}</td>
+                <td>{{ node.application }}</td>
+                <td>{{ node|availability|floatformat:2 }} %</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        {% include "paginator.html" %}
+
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
