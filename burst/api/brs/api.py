@@ -28,7 +28,7 @@ class BrsApi:
         try:
             validate(node_address)
         except ValidationError:
-            raise ClientException('Not valid address: %s', node_address)
+            raise ClientException('Not valid address')
 
         self.node_url = node_address
         self._session = requests.session()

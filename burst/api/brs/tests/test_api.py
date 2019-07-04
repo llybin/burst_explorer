@@ -114,13 +114,8 @@ class GetPeerTest(TestCase):
 
     @my_vcr.use_cassette('get_peer_error')
     def test_error(self):
-        self.assertDictEqual(
-            BrsApi('https://wallet.burst.devtrue.net').get_peer('178.48.21.1451'),
-            {
-                "errorCode": 5,
-                "errorDescription": "Unknown peer",
-                "requestProcessingTime": 2
-            })
+        with self.assertRaises(APIException):
+            BrsApi('https://wallet.burst.devtrue.net').get_peer('178.48.21.1451')
 
 
 class GetBlockChainStatusTest(TestCase):

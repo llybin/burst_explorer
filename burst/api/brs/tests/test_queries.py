@@ -134,4 +134,7 @@ class TestQueryValidateResponseTest(TestCase):
 class GetPeersTest(TestCase):
     def test_ok(self):
         self.assertEqual(GetPeers().request_type, 'getPeers')
-        self.assertTrue(GetPeers().validate_response({"peers": ["8.8.8.8"]}))
+        self.assertTrue(GetPeers().validate_response({
+            "peers": ["8.8.8.8"],
+            "requestProcessingTime": 0,
+        }))
