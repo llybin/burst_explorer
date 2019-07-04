@@ -77,7 +77,7 @@ def explore_node(node: str):
                 form = PeerMonitorForm(dict(
                     address=peer,
                     country_code=get_country_by_ip(peer),
-                    announced_address=peer_detail['announcedAddress'],
+                    announced_address=peer_detail['announcedAddress'].replace('[', '').replace(']', ''),
                     application=peer_detail['application'],
                     version=normalize_version(peer_detail['version']),
                     proofs_online=peer_obj.proofs_online + 1 if peer_obj else 1
@@ -92,7 +92,7 @@ def explore_node(node: str):
         logger.warning("Can't connect to node: %s", node)
 
 
-@lock_decorator(key='peer_monitor', expire=300, auto_renewal=True)
+@lock_decorator(key='peer_monitor', expire=60, auto_renewal=True)
 @transaction.atomic
 def peer_cmd():
     logger.info('Start')

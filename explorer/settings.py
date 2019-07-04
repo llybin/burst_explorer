@@ -245,6 +245,9 @@ WALLET_URL = os.getenv('WALLET_URL')
 BRS_BOOTSTRAP_PEERS = [
     'wallet.burst.devtrue.net:443',
     'wallet.burstcoin.network:8125',
+    'burst.megash.it:443',
+    'burst-fi.megash.it:443',
+    'wallet.smit.pro:443',
 ]
 
 # for fork solving
