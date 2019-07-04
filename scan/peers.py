@@ -103,6 +103,9 @@ def peer_cmd():
         explore_node(node)
 
     for node in PeerMonitor.objects.values_list('announced_address', flat=True):
+        for x in settings.BRS_BOOTSTRAP_PEERS:
+            if x in node:
+                continue
         explore_node(node)
 
     PeerMonitor.objects.update(lifetime=F('lifetime') + 1)
