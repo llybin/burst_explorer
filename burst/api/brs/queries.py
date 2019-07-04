@@ -77,7 +77,8 @@ class GetPeers(QueryBase):
             "peers": {"type": "array"},
             "requestProcessingTime": {"type": "number"},
         },
-        "required": ["peers"]
+        "additionalProperties": False,
+        "minProperties": 2
     }
 
 
@@ -99,6 +100,8 @@ class GetPeer(QueryBase):
             "lastUpdated": {"type": "number"},
             "requestProcessingTime": {"type": "number"},
         },
+        "additionalProperties": False,
+        "minProperties": 11
     }
 
 
@@ -118,6 +121,8 @@ class GetBlockChainStatus(QueryBase):
             "isScanning": {"type": "boolean"},
             "requestProcessingTime": {"type": "number"},
         },
+        "additionalProperties": False,
+        "minProperties": 10
     }
 
 
@@ -131,6 +136,8 @@ class GetMiningInfo(QueryBase):
             "baseTarget": {"type": "string"},
             "requestProcessingTime": {"type": "number"},
         },
+        "additionalProperties": False,
+        "minProperties": 4
     }
 
 

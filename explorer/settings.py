@@ -243,8 +243,8 @@ BRS_NODE = os.getenv('BRS_NODE')
 WALLET_URL = os.getenv('WALLET_URL')
 
 BRS_BOOTSTRAP_PEERS = [
-    'https://wallet.burst.devtrue.net',
-    'http://wallet.burstcoin.network:8125',
+    'wallet.burst.devtrue.net:443',
+    'wallet.burstcoin.network:8125',
 ]
 
 # for fork solving
