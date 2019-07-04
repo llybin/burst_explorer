@@ -65,8 +65,8 @@ def explore_node(node: str):
         node_api = BrsApi(node_with_port(node))
         peers = node_api.get_peers()
         for peer in peers:
-            peer = peer.replace('[', '').replace(']', '')  # ipv6
             peer_detail = node_api.get_peer(peer)
+            peer = peer.replace('[', '').replace(']', '')  # ipv6
             logger.info('Peer: %s, state: %d', peer, peer_detail['state'])
             # NON_CONNECTED, CONNECTED, DISCONNECTED
             if peer_detail['state'] == 1:
@@ -102,8 +102,8 @@ def peer_cmd():
     for node in settings.BRS_BOOTSTRAP_PEERS:
         explore_node(node)
 
-    # for node in PeerMonitor.objects.values_list('announced_address', flat=True):
-    #     explore_node(node)
+    for node in PeerMonitor.objects.values_list('announced_address', flat=True):
+        explore_node(node)
 
     PeerMonitor.objects.update(lifetime=F('lifetime') + 1)
     PeerMonitor.objects.filter(
