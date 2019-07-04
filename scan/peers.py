@@ -39,11 +39,12 @@ class PeerMonitorForm(forms.ModelForm):
 
 
 def node_with_port(node: str) -> str:
-    ports = {8125, 8124, 2083, 80, 443, 8080, 8000, 5000, 6876}
+    ports = [8125, 80, 443, 8124, 2083, 8080, 8000, 5000, 6876]
 
     if ':' not in node:
         for x in ports:
-            _node = 'http{}://{}:{}'.format('http' if x != 443 else 'https', node, x)
+            _node = 'http{}://{}:{}'.format('' if x != 443 else 's', node, x)
+            print(_node)
             try:
                 BrsApi(_node).get_peers()
                 logger.info('Port found: %d', x)
@@ -51,9 +52,6 @@ def node_with_port(node: str) -> str:
                 break
             except BurstException:
                 continue
-
-    elif ':443' in node and 'https' not in node:
-        node = 'https://{}'.format(node)
 
     return node
 
