@@ -57,6 +57,9 @@ class BrsApi:
         except ValueError as e:
             raise APIException('malformed_json', e)
 
+        if 'errorCode' in json_response:
+            raise APIException(json_response)
+
         query.validate_response(json_response)
 
         return json_response
