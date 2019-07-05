@@ -8,7 +8,7 @@ from django.core.exceptions import ValidationError
 
 from burst.api.exceptions import APIException, ClientException
 from burst.api.typing import JSONType
-from burst.api.brs import queries
+from burst.api.brs.v1 import queries
 
 
 class BrsApi:

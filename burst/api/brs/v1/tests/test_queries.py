@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from burst.api.exceptions import ClientException, APIException
-from burst.api.brs.queries import (
+from burst.api.brs.v1.queries import (
     QueryBase,
     GetPeers,
 )
