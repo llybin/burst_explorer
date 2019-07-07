@@ -46,7 +46,7 @@ class GetExchangeInfoTest(TestCase):
         )
 
     @my_vcr.use_cassette('coinmarketcap_many_requests')
-    def test_test_net(self):
+    def test_many_requests_error(self):
         self.assertDictEqual(
             get_exchange_info(_refresh=True),
             {

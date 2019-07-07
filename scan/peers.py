@@ -111,7 +111,7 @@ def explore_node(address: str, updates: dict):
     try:
         peers = P2PApi(address).get_peers()
     except BurstException:
-        logger.debug("Can't connect to node:", address)
+        logger.debug("Can't connect to node: %s", address)
         return
 
     pool = ThreadPool(50)

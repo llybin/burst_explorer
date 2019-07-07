@@ -19,7 +19,8 @@ class PendingTxsSerializer(serializers.Serializer):
     def get_timestamp(data):
         return datetime.fromtimestamp(data['timestamp'] + BLOCK_CHAIN_START_AT)
 
-    def get_recipients(self, data):
+    @staticmethod
+    def get_recipients(data):
         result = []
 
         if data['subtype'] == TxSubtypePayment.MULTI_OUT:
