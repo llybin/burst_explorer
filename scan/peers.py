@@ -41,6 +41,10 @@ def get_host_by_name(peer: str) -> str or None:
         peer = 'http://{}'.format(peer)
     hostname = urlparse(peer).hostname
 
+    # ipv6
+    if ':' in hostname:
+        return hostname
+
     try:
         return socket.gethostbyname(hostname)
     except socket.gaierror:
@@ -183,7 +187,7 @@ def peer_cmd():
             PeerMonitor.State.STUCK,
         ]
     ).update(downtime=F('downtime') + 1)
-    # TODO: delete lifetime - downtime > 30*24*4
+    # TODO: delete lifetime - downtime > 30*24*12
     PeerMonitor.objects.update(availability=100 - (F('downtime') / F('lifetime') * 100))
 
     logger.info('Done')

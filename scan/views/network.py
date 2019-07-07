@@ -22,7 +22,7 @@ class PeerMonitorListView(ListView):
 
         context['countries'] = PeerMonitor.objects.filter(
             state=PeerMonitor.State.ONLINE
-        ).values('country_code').annotate(cnt=Count('country_code')).order_by('-cnt')
+        ).values('country_code').annotate(cnt=Count('country_code')).order_by('-cnt', 'country_code')
 
         context['last_check'] = PeerMonitor.objects.values('modified_at').order_by('-modified_at').first()
 
