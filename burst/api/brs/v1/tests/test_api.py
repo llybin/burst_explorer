@@ -4,7 +4,7 @@ import vcr
 
 from burst.api.exceptions import ClientException, APIException
 from burst.api.brs.v1.queries import QueryBase
-from burst.api.brs import BrsApi
+from burst.api.brs.v1 import BrsApi
 
 my_vcr = vcr.VCR(
     cassette_library_dir='burst/api/brs/v1/tests/fixtures/vcr',
@@ -15,6 +15,7 @@ my_vcr = vcr.VCR(
 
 class TestQuery(QueryBase):
     _request_type = 'Test'
+    _http_method = 'GET'
 
 
 class BrsApiTest(TestCase):
@@ -48,23 +49,23 @@ class BrsApiTest(TestCase):
 
     def test_request_get_fail_network(self):
         with self.assertRaises(APIException):
-            BrsApi('http://127.0.0.2:1234')._request_get(TestQuery())
+            BrsApi('http://127.0.0.2:1234')._request(TestQuery())
 
     @my_vcr.use_cassette('test_query_malformed_json')
     def test_request_get_malformed_json(self):
         with self.assertRaises(APIException):
-            BrsApi('https://wallet.burst.devtrue.net')._request_get(TestQuery())
+            BrsApi('https://wallet.burst.devtrue.net')._request(TestQuery())
 
     @my_vcr.use_cassette('test_query_malformed_data')
     def test_request_get_malformed_data(self):
         class Temp(TestQuery):
-            _json_schema = {
+            _response_json_schema = {
                 "type": "array",
                 "items": {"type": "string"}
             }
 
         with self.assertRaises(APIException):
-            BrsApi('https://wallet.burst.devtrue.net')._request_get(Temp())
+            BrsApi('https://wallet.burst.devtrue.net')._request(Temp())
 
 
 class GetPeersTest(TestCase):

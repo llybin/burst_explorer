@@ -11,7 +11,7 @@ interactions:
       User-Agent:
       - python-requests/2.22.0
     method: GET
-    uri: https://wallet.burst.devtrue.net/burst?requestType=getPeer&peer=178.48.21.1451
+    uri: https://wallet.burst.devtrue.net:8125/burst?requestType=getPeer&peer=178.48.21.1451
   response:
     body:
       string: '{"errorCode":5,"errorDescription":"Unknown peer","requestProcessingTime":2}'

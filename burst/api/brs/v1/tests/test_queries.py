@@ -11,11 +11,12 @@ class QueryBaseTest(TestCase):
     def test_abc(self):
         self.assertEqual(
             getattr(QueryBase, '__abstractmethods__'),
-            frozenset({'_request_type'}))
+            frozenset({'_request_type', '_http_method'}))
 
 
 class TestQuery(QueryBase):
     _request_type = 'Test'
+    _http_method = 'GET'
 
 
 class TestQueryTest(TestCase):
@@ -110,7 +111,7 @@ class TestQueryValidateResponseTest(TestCase):
 
     def test_ok(self):
         class Temp(TestQuery):
-            _json_schema = {
+            _response_json_schema = {
                 "type": "array",
                 "items": {"type": "string"}
             }
@@ -119,7 +120,7 @@ class TestQueryValidateResponseTest(TestCase):
 
     def test_fail(self):
         class Temp(TestQuery):
-            _json_schema = {
+            _response_json_schema = {
                 "type": "array",
                 "items": {"type": "string"}
             }

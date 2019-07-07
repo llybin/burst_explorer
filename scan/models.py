@@ -31,23 +31,36 @@ class MultiOut(models.Model):
 
 
 class PeerMonitor(models.Model):
-    address = models.GenericIPAddressField(primary_key=True)
-    country_code = models.CharField(max_length=2, blank=True)
-    # get_peer
-    announced_address = models.CharField(max_length=259, blank=True)  # 253 + len(':65535')
+    class State:
+        ONLINE = 1
+        UNREACHABLE = 2
+        SYNC = 3
+        STUCK = 4
+        FORKED = 5
+
+    STATE_CHOICES = (
+        (State.ONLINE, _("online")),
+        (State.UNREACHABLE, _("unreachable")),
+        (State.SYNC, _("in sync")),
+        (State.STUCK, _("stuck")),
+        (State.FORKED, _("forked")),
+    )
+
+    ip = models.GenericIPAddressField(primary_key=True)
+    announced_address = models.CharField(max_length=255, db_index=True)
     platform = models.CharField(max_length=255, blank=True)
-    # get_peer and get_block_chain_status
     application = models.CharField(max_length=255, blank=True)
     version = models.CharField(max_length=255, blank=True)
-    # get_block_chain_status
-    last_block = models.CharField(max_length=20, blank=True)
-    number_blocks = models.PositiveIntegerField(default=0, blank=True)
-    last_blockchain_feeder = models.GenericIPAddressField(null=True, blank=True)
-    last_blockchain_feeder_height = models.PositiveIntegerField(default=0, blank=True)
 
-    proofs_online = models.PositiveIntegerField(default=0, blank=True)
+    height = models.PositiveIntegerField(db_index=True, blank=True)
+    cumulative_difficulty = models.CharField(max_length=255, blank=True)
+
+    country_code = models.CharField(max_length=2, blank=True)
+    state = models.PositiveSmallIntegerField(choices=STATE_CHOICES, db_index=True)
     downtime = models.PositiveIntegerField(default=0, blank=True)
     lifetime = models.PositiveIntegerField(default=0, blank=True)
+    # computed, optimization
+    availability = models.FloatField(default=0, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)

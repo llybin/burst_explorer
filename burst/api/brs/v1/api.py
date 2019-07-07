@@ -1,5 +1,7 @@
-""" BRS: https://github.com/burst-apps-team/burstcoin/
+""" https://github.com/burst-apps-team/burstcoin/tree/develop/src/brs/http
 """
+
+from urllib.parse import urlparse
 
 import requests
 from requests.exceptions import RequestException
@@ -11,10 +13,10 @@ from burst.api.typing import JSONType
 from burst.api.brs.v1 import queries
 
 
-class BrsApi:
-    """ The BrsApi class provides convenient access to Brs's API.
-    """
+class BrsApiBase:
     endpoint = 'burst'
+    headers = None
+    _default_port = 8125  # TODO: settings testnet
     _session = None
 
     def __init__(self, node_address: str) -> None:
@@ -30,6 +32,11 @@ class BrsApi:
         except ValidationError:
             raise ClientException('Not valid address')
 
+        parsed_url = urlparse(node_address)
+
+        if not parsed_url.port and not parsed_url.query:
+            node_address = '{}:{}'.format(node_address, self._default_port)
+
         self.node_url = node_address
         self._session = requests.session()
 
@@ -42,12 +49,20 @@ class BrsApi:
         """ Destructor """
         self._close_session()
 
-    def _request_get(self, query: queries.QueryBase) -> JSONType:
+    def _request(self, query: queries.QueryBase) -> JSONType:
         """ Make HTTP request using requests module """
         url = '{}/{}'.format(self.node_url, self.endpoint)
 
         try:
-            response = self._session.get(url, params=query.params, timeout=query.timeout)
+            response = self._session.request(
+                query.http_method,
+                url,
+                headers=self.headers,
+                json=query.params if query.http_method == 'POST' else None,
+                params=query.params if query.http_method == 'GET' else None,
+                timeout=query.timeout,
+                verify=False
+            )
             response.raise_for_status()
         except RequestException as e:
             raise APIException('network', e)
@@ -57,27 +72,29 @@ class BrsApi:
         except ValueError as e:
             raise APIException('malformed_json', e)
 
-        if 'errorCode' in json_response:
-            raise APIException(json_response)
-
         query.validate_response(json_response)
 
         return json_response
 
+
+class BrsApi(BrsApiBase):
+    """ The BrsApi class provides convenient access to Brs API.
+    """
+
     def get_peers(self) -> list:
-        return self._request_get(queries.GetPeers())['peers']
+        return self._request(queries.GetPeers())['peers']
 
     def get_peer(self, peer_ip_address: str) -> dict:
-        return self._request_get(queries.GetPeer({'peer': peer_ip_address}))
+        return self._request(queries.GetPeer({'peer': peer_ip_address}))
 
     def get_block_chain_status(self) -> dict:
-        return self._request_get(queries.GetBlockChainStatus())
+        return self._request(queries.GetBlockChainStatus())
 
     def get_mining_info(self) -> dict:
-        return self._request_get(queries.GetMiningInfo())
+        return self._request(queries.GetMiningInfo())
 
     def get_state(self) -> dict:
-        return self._request_get(queries.GetState())
+        return self._request(queries.GetState())
 
     def get_unconfirmed_transactions(self) -> list:
-        return self._request_get(queries.GetUnconfirmedTransactions())['unconfirmedTransactions']
+        return self._request(queries.GetUnconfirmedTransactions())['unconfirmedTransactions']

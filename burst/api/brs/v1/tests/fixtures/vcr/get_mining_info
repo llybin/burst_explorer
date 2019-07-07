@@ -11,7 +11,7 @@ interactions:
       User-Agent:
       - python-requests/2.22.0
     method: GET
-    uri: https://wallet.burst.devtrue.net/burst?requestType=getMiningInfo
+    uri: https://wallet.burst.devtrue.net:8125/burst?requestType=getMiningInfo
   response:
     body:
       string: '{"height":"628451","generationSignature":"f25a6d8b694382fddfef15057e969cd3db6dee8c982f392a7ca4785f0507f9cb","baseTarget":"68942","requestProcessingTime":0}'

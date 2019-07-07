@@ -10,7 +10,8 @@ from burst.api.exceptions import ClientException, APIException
 
 class QueryBase(abc.ABC):
     _request_type_field = 'requestType'
-    _json_schema = None
+    _error_field = 'errorCode'
+    _response_json_schema = None
     _params = {}
     _required_params = set()
     _optional_params = set()
@@ -19,6 +20,11 @@ class QueryBase(abc.ABC):
     @property
     @abc.abstractmethod
     def _request_type(self):
+        pass
+
+    @property
+    @abc.abstractmethod
+    def _http_method(self):
         pass
 
     def __init__(self, params: dict = None) -> None:
@@ -32,6 +38,10 @@ class QueryBase(abc.ABC):
     @property
     def request_type(self) -> str:
         return self._request_type
+
+    @property
+    def http_method(self) -> str:
+        return self._http_method
 
     @property
     def params(self) -> dict:
@@ -58,11 +68,15 @@ class QueryBase(abc.ABC):
             raise ClientException('Unknown params: {}'.format(unknown_params))
 
     def validate_response(self, data) -> bool:
-        if not self._json_schema:
+        # TODO: return true or raise
+        if not self._response_json_schema:
             return True
 
+        if self._error_field in data:
+            raise APIException(data)
+
         try:
-            validate(data, self._json_schema)
+            validate(data, self._response_json_schema)
         except ValidationError as e:
             raise APIException('malformed_data', e)
         else:
@@ -71,21 +85,25 @@ class QueryBase(abc.ABC):
 
 class GetPeers(QueryBase):
     _request_type = 'getPeers'
-    _json_schema = {
+    _http_method = 'GET'
+    _response_json_schema = {
         "type": "object",
         "properties": {
             "peers": {"type": "array"},
             "requestProcessingTime": {"type": "number"},
         },
-        "additionalProperties": False,
-        "minProperties": 2
+        "required": [
+            "peers",
+            "requestProcessingTime"
+        ]
     }
 
 
 class GetPeer(QueryBase):
     _request_type = 'getPeer'
+    _http_method = 'GET'
     _required_params = {'peer'}
-    _json_schema = {
+    _response_json_schema = {
         "type": "object",
         "properties": {
             "state": {"type": "number"},
@@ -100,14 +118,26 @@ class GetPeer(QueryBase):
             "lastUpdated": {"type": "number"},
             "requestProcessingTime": {"type": "number"},
         },
-        "additionalProperties": False,
-        "minProperties": 11
+        "required": [
+            "state",
+            "announcedAddress",
+            "shareAddress",
+            "downloadedVolume",
+            "uploadedVolume",
+            "application",
+            "version",
+            "platform",
+            "blacklisted",
+            "lastUpdated",
+            "requestProcessingTime"
+        ]
     }
 
 
 class GetBlockChainStatus(QueryBase):
     _request_type = 'getBlockchainStatus'
-    _json_schema = {
+    _http_method = 'GET'
+    _response_json_schema = {
         "type": "object",
         "properties": {
             "application": {"type": "string"},
@@ -121,14 +151,25 @@ class GetBlockChainStatus(QueryBase):
             "isScanning": {"type": "boolean"},
             "requestProcessingTime": {"type": "number"},
         },
-        "additionalProperties": False,
-        "minProperties": 10
+        "required": [
+            "application",
+            "version",
+            "time",
+            "lastBlock",
+            "cumulativeDifficulty",
+            "numberOfBlocks",
+            "lastBlockchainFeeder",
+            "lastBlockchainFeederHeight",
+            "isScanning",
+            "requestProcessingTime"
+        ]
     }
 
 
 class GetMiningInfo(QueryBase):
     _request_type = 'getMiningInfo'
-    _json_schema = {
+    _http_method = 'GET'
+    _response_json_schema = {
         "type": "object",
         "properties": {
             "height": {"type": "string"},
@@ -136,14 +177,19 @@ class GetMiningInfo(QueryBase):
             "baseTarget": {"type": "string"},
             "requestProcessingTime": {"type": "number"},
         },
-        "additionalProperties": False,
-        "minProperties": 4
+        "required": [
+            "height",
+            "generationSignature",
+            "baseTarget",
+            "requestProcessingTime"
+        ]
     }
 
 
 class GetState(QueryBase):
     _request_type = 'getState'
-    _json_schema = {
+    _http_method = 'GET'
+    _response_json_schema = {
         "type": "object",
         "properties": {
             "application": {"type": "string"},
@@ -173,9 +219,51 @@ class GetState(QueryBase):
             "freeMemory": {"type": "number"},
             "requestProcessingTime": {"type": "number"},
         },
+        "required": [
+            "application",
+            "version",
+            "time",
+            "lastBlock",
+            "cumulativeDifficulty",
+            "totalEffectiveBalanceNXT",
+            "numberOfBlocks",
+            "numberOfTransactions",
+            "numberOfAccounts",
+            "numberOfAssets",
+            "numberOfOrders",
+            "numberOfAskOrders",
+            "numberOfBidOrders",
+            "numberOfTrades",
+            "numberOfTransfers",
+            "numberOfAliases",
+            "numberOfPeers",
+            "numberOfUnlockedAccounts",
+            "lastBlockchainFeeder",
+            "lastBlockchainFeederHeight",
+            "isScanning",
+            "availableProcessors",
+            "maxMemory",
+            "totalMemory",
+            "freeMemory",
+            "requestProcessingTime",
+        ]
     }
     timeout = 10
 
 
 class GetUnconfirmedTransactions(QueryBase):
     _request_type = 'getUnconfirmedTransactions'
+    _http_method = 'GET'
+    _response_json_schema = {
+        "type": "object",
+        "properties": {
+            "unconfirmedTransactions": {"type": "array"},
+            "requestProcessingTime": {"type": "number"},
+        },
+        "required": [
+            "unconfirmedTransactions",
+            "requestProcessingTime"
+        ]
+    }
+    # TODO: validate each
+    # {"type":0,"subtype":0,"timestamp":154715780,"deadline":1000,"senderPublicKey":"447db598ab0b8b128516b3a70b9d87ea4cdb460fb4c550167cbfceda865fb03d","recipient":"13493329130306648054","amountNQT":10000000,"feeNQT":735000,"ecBlockHeight":639673,"ecBlockId":"3483458127310479448","signature":"9de1f780425b7bc95d63982196ab3349dcfb4fb1297a1ab88db411693eb14b02d1046a048aba0210294448d21d9978ce9b69b4bf27faefbba4c93c49a2ff3a4a","attachment":{},"version":1}

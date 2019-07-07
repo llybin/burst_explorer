@@ -1,4 +1,9 @@
 import logging
+import random
+import socket
+from functools import lru_cache
+from urllib.parse import urlparse
+from multiprocessing.dummy import Pool as ThreadPool
 
 import requests
 from cache_memoize import cache_memoize
@@ -8,10 +13,11 @@ from django.db.models import F
 from django import forms
 from requests.exceptions import RequestException
 
-from burst.api.brs import BrsApi
+from burst.api.brs.p2p import P2PApi
 from burst.api.exceptions import BurstException
 from scan.decorators import lock_decorator
 from scan.models import PeerMonitor
+from scan.helpers import get_last_height
 
 
 logger = logging.getLogger(__name__)
@@ -23,13 +29,22 @@ def get_country_by_ip(ip: str) -> str:
         response = requests.get('http://www.geoplugin.net/json.gp?ip={}'.format(ip))
         response.raise_for_status()
         json_response = response.json()
-        return json_response['geoplugin_countryCode'] or ''
+        return json_response['geoplugin_countryCode'] or '??'
     except (RequestException, ValueError, KeyError):
-        return ''
+        return '??'
 
 
-def normalize_version(version: str) -> str or None:
-    return None if version in ['v0.0.0', ''] else version
+@lru_cache(maxsize=None)
+def get_host_by_name(peer: str) -> str or None:
+    # truncating port if exists
+    if not peer.startswith('http'):
+        peer = 'http://{}'.format(peer)
+    hostname = urlparse(peer).hostname
+
+    try:
+        return socket.gethostbyname(hostname)
+    except socket.gaierror:
+        return None
 
 
 class PeerMonitorForm(forms.ModelForm):
@@ -38,57 +53,67 @@ class PeerMonitorForm(forms.ModelForm):
         fields = '__all__'
 
 
-def node_with_port(node: str) -> str:
-    ports = [8125, 80, 443, 8124, 2083, 8080, 8000, 5000]
-
-    if ':' not in node:
-        for x in ports:
-            _node = 'http{}://{}:{}'.format('' if x != 443 else 's', node, x)
-            print(_node)
-            try:
-                BrsApi(_node).get_peers()
-                logger.info('Port found: %d', x)
-                node = _node
-                break
-            except BurstException:
-                continue
-
-    return node
+def is_good_version(version: str) -> bool:
+    version = version.replace('v', '')
+    try:
+        major, minor, patch = version.split('.')
+        if int(major) < 2:
+            return False
+        if int(minor) < 3:
+            return False
+        return True
+    except ValueError:
+        return False
 
 
-def explore_node(node: str):
-    logger.info('Node: %s', node)
+def explore_peer(address: str, updates: dict):
+    logger.debug('Peer: %s', address)
+
+    ip = get_host_by_name(address)
+    if not ip:
+        logger.debug("Can't resolve peer: %s", address)
+        return
+
+    if ip in updates:
+        return
 
     try:
-        node_api = BrsApi(node_with_port(node))
-        peers = node_api.get_peers()
-        for peer in peers:
-            peer_detail = node_api.get_peer(peer)
-            peer = peer.replace('[', '').replace(']', '')  # ipv6
-            logger.debug('Peer: %s, state: %d', peer, peer_detail['state'])
-            # NON_CONNECTED, CONNECTED, DISCONNECTED
-            if peer_detail['state'] == 1:
-                peer_obj = PeerMonitor.objects.filter(address=peer).first()
-                if not peer_obj:
-                    logger.info('Found new peer: %s', peer)
-
-                form = PeerMonitorForm(dict(
-                    address=peer,
-                    country_code=get_country_by_ip(peer),
-                    announced_address=peer_detail['announcedAddress'].replace('[', '').replace(']', ''),
-                    application=peer_detail['application'],
-                    platform=peer_detail['platform'],
-                    version=normalize_version(peer_detail['version']),
-                    proofs_online=peer_obj.proofs_online + 1 if peer_obj else 1
-                ), instance=peer_obj)
-
-                if form.is_valid():
-                    form.save()
-                else:
-                    logger.info('Not valid data: %r', form.errors)
-
+        peer_info = P2PApi(address).get_info()
+        if not is_good_version(peer_info['version']):
+            logger.debug("Old version: %s", peer_info['version'])
+            updates[ip] = None
+            return
+        peer_info.update(P2PApi(address).get_cumulative_difficulty())
     except BurstException:
-        logger.info("Can't connect to node: %s", node)
+        logger.debug("Can't connect to peer: %s", address)
+        updates[ip] = None
+        return
+
+    updates[ip] = dict(
+        ip=ip,
+        country_code=get_country_by_ip(ip),
+        announced_address=peer_info['announcedAddress'],
+        application=peer_info['application'],
+        platform=peer_info['platform'],
+        version=peer_info['version'],
+        height=peer_info['blockchainHeight'],
+        cumulative_difficulty=peer_info['cumulativeDifficulty'],
+    )
+
+
+def explore_node(address: str, updates: dict):
+    logger.debug('Node: %s', address)
+
+    try:
+        peers = P2PApi(address).get_peers()
+    except BurstException:
+        logger.debug("Can't connect to node:", address)
+        return
+
+    pool = ThreadPool(50)
+    pool.map(lambda peer: explore_peer(peer, updates), peers)
+    pool.close()
+    pool.join()
 
 
 @lock_decorator(key='peer_monitor', expire=60, auto_renewal=True)
@@ -96,20 +121,69 @@ def explore_node(node: str):
 def peer_cmd():
     logger.info('Start')
 
-    PeerMonitor.objects.update(proofs_online=0)
+    # set all peers unreachable, if will no update - peer will be unreachable
+    PeerMonitor.objects.update(state=PeerMonitor.State.UNREACHABLE)
 
-    for node in settings.BRS_BOOTSTRAP_PEERS:
-        explore_node(node)
+    # get all addresses and mix it, never will large
+    addresses = list(PeerMonitor.objects.values_list(
+        'announced_address', flat=True
+    ).distinct())
+    # add well-known peers
+    for peer in settings.BRS_BOOTSTRAP_PEERS:
+        if peer not in addresses:
+            addresses.append(peer)
+    # mix it
+    random.shuffle(addresses)
 
-    for node in PeerMonitor.objects.values_list('announced_address', flat=True):
-        for x in settings.BRS_BOOTSTRAP_PEERS:
-            if x in node:
-                continue
-        explore_node(node)
+    # explore every peer and collect updates
+    updates = {}
+    pool = ThreadPool(50)
+    pool.map(lambda address: explore_node(address, updates), addresses)
+    pool.close()
+    pool.join()
+
+    last_height = get_last_height()
+    logger.info('Last height: %d', last_height)
+
+    # calculate state and apply updates
+    for update in updates.values():
+        if not update:
+            continue
+
+        logger.debug('Update: %r', update)
+
+        peer_obj = PeerMonitor.objects.filter(ip=update['ip']).first()
+        if not peer_obj:
+            logger.info('Found new peer: %s', update['announced_address'])
+
+        # state
+        if update['height'] == last_height:
+            # TODO: if eq cumulative_difficulty - online else forked
+            update['state'] = PeerMonitor.State.ONLINE
+        elif update['height'] > last_height:
+            update['state'] = PeerMonitor.State.FORKED
+        else:
+            if peer_obj and peer_obj.height == update['height']:
+                update['state'] = PeerMonitor.State.STUCK
+            else:
+                # TODO: if eq cumulative_difficulty of height - sync else forked
+                update['state'] = PeerMonitor.State.SYNC
+
+        form = PeerMonitorForm(update, instance=peer_obj)
+
+        if form.is_valid():
+            form.save()
+        else:
+            logger.info('Not valid data: %r - %r', form.errors, update)
 
     PeerMonitor.objects.update(lifetime=F('lifetime') + 1)
     PeerMonitor.objects.filter(
-        proofs_online=0
+        state__in=[
+            PeerMonitor.State.UNREACHABLE,
+            PeerMonitor.State.STUCK,
+        ]
     ).update(downtime=F('downtime') + 1)
+    # TODO: delete lifetime - downtime > 30*24*4
+    PeerMonitor.objects.update(availability=100 - (F('downtime') / F('lifetime') * 100))
 
     logger.info('Done')

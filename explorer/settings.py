@@ -238,6 +238,9 @@ if SENTRY_DSN:
 # UA-XXXXXXXXX-X
 GOOGLE_TRACKING_ID = os.getenv('GOOGLE_TRACKING_ID')
 
+DEFAULT_P2P_PORT = 8123
+DEFAULT_API_PORT = 8125
+
 BRS_NODE = os.getenv('BRS_NODE')
 
 WALLET_URL = os.getenv('WALLET_URL')
@@ -245,8 +248,6 @@ WALLET_URL = os.getenv('WALLET_URL')
 BRS_BOOTSTRAP_PEERS = [
     'wallet.burst.devtrue.net',
     'wallet.burstcoin.network',
-    'burst.megash.it',
-    'burst-fi.megash.it',
     'wallet.smit.pro',
     'wallet.burst-alliance.org',
     'phoenix.burst-alliance.org',

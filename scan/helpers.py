@@ -7,7 +7,7 @@ from django.db.models import Sum
 from requests import RequestException
 from sentry_sdk import capture_exception
 
-from burst.api.brs import BrsApi
+from burst.api.brs.v1 import BrsApi
 from java_wallet.fields import get_desc_tx_type
 
 from java_wallet.constants import TxSubtypePayment, BLOCK_CHAIN_START_AT
