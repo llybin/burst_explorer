@@ -7,10 +7,11 @@ from urllib.parse import urlparse
 
 import requests
 from cache_memoize import cache_memoize
+from django import forms
 from django.conf import settings
 from django.db import transaction
 from django.db.models import F
-from django import forms
+from django.utils import timezone
 from requests.exceptions import RequestException
 
 from burst.api.brs.p2p import P2PApi
@@ -204,6 +205,9 @@ def peer_cmd():
         ]
     ).update(downtime=F('downtime') + 1)
     # TODO: delete lifetime - downtime > 30*24*12
-    PeerMonitor.objects.update(availability=100 - (F('downtime') / F('lifetime') * 100))
-
+    # TODO: last available time?
+    PeerMonitor.objects.update(
+        availability=100 - (F('downtime') / F('lifetime') * 100),
+        modified_at=timezone.now()
+    )
     logger.info('Done')

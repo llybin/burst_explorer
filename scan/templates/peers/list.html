@@ -2,6 +2,53 @@
 
 {% load humanize %}
 
+{% block scripts %}
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    google.charts.load('current', {
+      'packages':['geochart'],
+      // Note: you will need to get a mapsApiKey for your project.
+      // See: https://developers.google.com/chart/interactive/docs/basic_load_libs#load-settings
+      'mapsApiKey': 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'
+    });
+    google.charts.setOnLoadCallback(drawRegionsMap);
+
+    function drawRegionsMap() {
+      var data = google.visualization.arrayToDataTable([
+        ['Country', 'Popularity'],
+        {% for country in countries %}['{{ country.country_code }}', {{ country.cnt }}],{% endfor %}
+      ]);
+
+      var options = {};
+
+      var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
+
+      chart.draw(data, options);
+    }
+  </script>
+
+  <script type="text/javascript">
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+
+      var data = google.visualization.arrayToDataTable([
+        ['Version', 'Count'],
+        {% for version in versions %}['{{ version.version }}', {{ version.cnt }}],{% endfor %}
+      ]);
+
+      var options = {
+        title: 'Versions'
+      };
+
+      var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+      chart.draw(data, options);
+    }
+  </script>
+{% endblock %}
+
 {% block content %}
 
   <h5 class="p-2">Peers</h5>
@@ -10,21 +57,10 @@
     <div class="card mb-4 shadow-sm">
       <div class="card-body">
         <p>Online now: {{ online_now }} <span class="small">(checked {{ last_check.modified_at|naturaltime }})</span></p>
-        <p>Versions:
-            <ul>
-                {% for version in versions %}
-                    <li>{{ version.version }} - {{ version.cnt }}</li>
-                {% endfor %}
-            </ul>
-        </p>
 
-        <p>Countries:
-            <ul>
-                {% for country in countries %}
-                    <li>{{ country.country_code }} - {{ country.cnt }}</li>
-                {% endfor %}
-            </ul>
-        </p>
+        <div id="regions_div"></div>
+
+        <div id="piechart"></div>
 
         <div class="d-flex flex-column flex-md-row align-items-center">
           <small class="my-0 mr-md-auto text-muted">

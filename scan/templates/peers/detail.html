@@ -14,28 +14,12 @@
           <table class="table small table-sm">
             <tbody>
             <tr>
-              <th style="width: 160px;">IP</th>
-              <td>{{ peer.ip }}</td>
-            </tr>
-            <tr>
-              <th>Country</th>
-              <td>{{ peer.country_code }}</td>
-            </tr>
-            <tr>
-              <th>Version</th>
-              <td>{{ peer.version }}</td>
-            </tr>
-            <tr>
-              <th>Announced Address</th>
+              <th style="width: 160px;">Announced Address</th>
               <td>{{ peer.announced_address }}</td>
             </tr>
             <tr>
-              <th>Platform</th>
-              <td>{{ peer.platform }}</td>
-            </tr>
-            <tr>
-              <th>Application</th>
-              <td>{{ peer.application }}</td>
+              <th>State</th>
+              <td>{{ peer.get_state_display }}</td>
             </tr>
             <tr>
               <th>Height</th>
@@ -46,8 +30,20 @@
               <td>{{ peer.availability|floatformat:2 }} %</td>
             </tr>
             <tr>
-              <th>State</th>
-              <td>{{ peer.get_state_display }}</td>
+              <th>Version</th>
+              <td>{{ peer.version }}</td>
+            </tr>
+            <tr>
+              <th>Country</th>
+              <td>{{ peer.country_code }}</td>
+            </tr>
+            <tr>
+              <th>Application</th>
+              <td>{{ peer.application }}</td>
+            </tr>
+            <tr>
+              <th>Platform</th>
+              <td>{{ peer.platform }}</td>
             </tr>
             <tr>
               <th>Found</th>

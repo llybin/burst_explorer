@@ -27,7 +27,7 @@ from scan.views.transactions import TxListView, TxDetailView
 from scan.views.multiout import MultiOutListView
 from scan.views.search import search_view
 from scan.views.marketplace import MarketPlaceListView, MarketPlaceDetailView, MarketPlacePurchasesListView
-from scan.views.network import PeerMonitorListView, PeerMonitorDetailView
+from scan.views.peers import PeerMonitorListView, PeerMonitorDetailView
 
 
 urlpatterns = [
