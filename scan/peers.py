@@ -15,6 +15,7 @@ from django.db.models import F, DurationField, ExpressionWrapper
 from django.db.models.functions import Now
 from django.utils import timezone
 from requests.exceptions import RequestException
+from sentry_sdk import capture_message
 
 from java_wallet.models import Block
 from burst.api.brs.p2p import P2PApi
@@ -197,13 +198,19 @@ def peer_cmd():
 
     addresses = get_nodes_list()
 
-    # set all peers unreachable, if will no update - peer will be unreachable
-    PeerMonitor.objects.update(state=PeerMonitor.State.UNREACHABLE)
-
     # explore every peer and collect updates
     updates = {}
     with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
         executor.map(lambda address: explore_node(address, updates), addresses)
+
+    # if much offline presumably local server problem
+    if len(updates) < len(addresses) / 4:
+        logger.warning('Peers update was rejected: %d - %d', len(updates), len(addresses))
+        capture_message('Peers update was rejected.')
+        return
+
+    # set all peers unreachable, if will no update - peer will be unreachable
+    PeerMonitor.objects.update(state=PeerMonitor.State.UNREACHABLE)
 
     # calculate state and apply updates
     for update in updates.values():
