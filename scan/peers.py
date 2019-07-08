@@ -151,6 +151,10 @@ def get_nodes_list() -> list:
 @lock_decorator(key='peer_monitor', expire=60, auto_renewal=True)
 @transaction.atomic
 def peer_cmd():
+    # tmp disable ipv6
+    from urllib3.util import connection
+    connection.allowed_gai_family = lambda: socket.AF_INET
+
     logger.info('Start')
 
     addresses = get_nodes_list()
