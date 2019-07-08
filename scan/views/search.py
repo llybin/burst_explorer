@@ -46,9 +46,13 @@ def search_view(request):
             pass
 
     else:
-        exists = PeerMonitor.objects.filter(ip=query).exists()
-        if exists:
-            redirect_url = '/peer/{}'.format(query)
+        peer = PeerMonitor.objects.filter(
+            announced_address__icontains=query
+        ).values('announced_address').order_by(
+            '-height'
+        ).first()
+        if peer:
+            redirect_url = '/peer/{}'.format(peer['announced_address'])
 
     if redirect_url:
         return redirect(redirect_url)

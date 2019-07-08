@@ -26,19 +26,7 @@ from scan.models import PeerMonitor
 logger = logging.getLogger(__name__)
 
 
-@cache_memoize(60*60*24*7)
-def get_country_by_ip(ip: str) -> str:
-    try:
-        response = requests.get('http://www.geoplugin.net/json.gp?ip={}'.format(ip))
-        response.raise_for_status()
-        json_response = response.json()
-        return json_response['geoplugin_countryCode'] or '??'
-    except (RequestException, ValueError, KeyError):
-        return '??'
-
-
-@lru_cache(maxsize=None)
-def get_host_by_name(peer: str) -> str or None:
+def get_ip_by_domain(peer: str) -> str or None:
     # truncating port if exists
     if not peer.startswith('http'):
         peer = 'http://{}'.format(peer)
@@ -53,6 +41,17 @@ def get_host_by_name(peer: str) -> str or None:
     except socket.gaierror as e:
         logger.debug("Can't resolve host: %s - %r", peer, e)
         return None
+
+
+@cache_memoize(60*60*24*7)
+def get_country_by_ip(ip: str) -> str:
+    try:
+        response = requests.get('http://www.geoplugin.net/json.gp?ip={}'.format(ip))
+        response.raise_for_status()
+        json_response = response.json()
+        return json_response['geoplugin_countryCode'] or '??'
+    except (RequestException, ValueError, KeyError):
+        return '??'
 
 
 class PeerMonitorForm(forms.ModelForm):
@@ -99,30 +98,27 @@ def get_block_cumulative_difficulty(height: int) -> str:
 def explore_peer(address: str, updates: dict):
     logger.debug('Peer: %s', address)
 
-    ip = get_host_by_name(address)
-    if not ip:
-        return
-
-    if ip in updates:
+    if address in updates:
         return
 
     try:
         peer_info = P2PApi(address).get_info()
         if not is_good_version(peer_info['version']):
             logger.debug("Old version: %s", peer_info['version'])
-            updates[ip] = None
+            updates[address] = None
             return
         peer_info.update(P2PApi(address).get_cumulative_difficulty())
     except BurstException:
         logger.debug("Can't connect to peer: %s", address)
-        updates[ip] = None
+        updates[address] = None
         return
 
-    updates[ip] = {
+    ip = get_ip_by_domain(address)
+
+    updates[address] = {
         '_data': get_last_cumulative_difficulty(),
-        'ip': ip,
-        'country_code': get_country_by_ip(ip),
         'announced_address': peer_info['announcedAddress'],
+        'country_code': get_country_by_ip(ip) if ip else '??',
         'application': peer_info['application'],
         'platform': peer_info['platform'],
         'version': peer_info['version'],
@@ -148,7 +144,7 @@ def explore_node(address: str, updates: dict):
 
 def get_nodes_list() -> list:
     # first check UNREACHABLE because more chance they are still offline
-    # and 2 sec timeout connection in worker
+    # and timeout connection in worker
     addresses_offline = list(PeerMonitor.objects.values_list(
         'announced_address', flat=True
     ).filter(
@@ -216,7 +212,7 @@ def peer_cmd():
 
         logger.debug('Update: %r', update)
 
-        peer_obj = PeerMonitor.objects.filter(ip=update['ip']).first()
+        peer_obj = PeerMonitor.objects.filter(announced_address=update['announced_address']).first()
         if not peer_obj:
             logger.info('Found new peer: %s', update['announced_address'])
 

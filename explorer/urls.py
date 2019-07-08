@@ -51,7 +51,7 @@ urlpatterns = [
     path('search/', search_view, name='search'),
     path('peers/', PeerMonitorListView.as_view(), name='peers'),
     path('peers-charts/', peers_charts_view, name='peers-charts'),
-    path('peer/<str:ip>', PeerMonitorDetailView.as_view(), name='peer-detail'),
+    path('peer/<str:address>', PeerMonitorDetailView.as_view(), name='peer-detail'),
     path('admin/', admin.site.urls),
     path('api/', include(('api.urls', 'api'), namespace='api')),
 ]

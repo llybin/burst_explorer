@@ -15,7 +15,7 @@
 
     function drawRegionsMap() {
       var data = google.visualization.arrayToDataTable([
-        ['Country', 'Popularity'],
+        ['Country', 'Peers'],
         {% for country in countries %}['{{ country.country_code }}', {{ country.cnt }}],{% endfor %}
       ]);
 
@@ -67,6 +67,12 @@
 
       chart.draw(data, options);
     }
+  </script>
+
+  <script>
+    setTimeout(function(){
+       document.location.reload();
+    }, 30000);
   </script>
 {% endblock %}
 

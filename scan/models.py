@@ -46,8 +46,7 @@ class PeerMonitor(models.Model):
         (State.FORKED, _("forked")),
     )
 
-    ip = models.GenericIPAddressField(primary_key=True)
-    announced_address = models.CharField(max_length=255, db_index=True)
+    announced_address = models.CharField(primary_key=True, max_length=255)
     platform = models.CharField(max_length=255, blank=True)
     application = models.CharField(max_length=255, blank=True)
     version = models.CharField(max_length=255, blank=True)

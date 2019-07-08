@@ -43,7 +43,7 @@ class PeerMonitorListView(ListView):
     template_name = 'peers/list.html'
     context_object_name = 'peers'
     paginate_by = 25
-    ordering = ('-height', 'ip')
+    ordering = ('-height', 'announced_address')
 
 
 class PeerMonitorDetailView(DetailView):
@@ -51,5 +51,5 @@ class PeerMonitorDetailView(DetailView):
     queryset = PeerMonitor.objects.all()
     template_name = 'peers/detail.html'
     context_object_name = 'peer'
-    slug_field = 'ip'
-    slug_url_kwarg = 'ip'
+    slug_field = 'announced_address'
+    slug_url_kwarg = 'address'

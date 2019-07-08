@@ -4,7 +4,7 @@
 
 {% block content %}
 
-  <h5 class="p-2">Peer {{ peer.ip }}</h5>
+  <h5 class="p-2">Peer {{ peer.announced_address }}</h5>
 
   <div class="card-deck mb-3">
     <div class="card mb-4 shadow-sm">
@@ -14,11 +14,7 @@
           <table class="table small table-sm">
             <tbody>
             <tr>
-              <th style="width: 160px;">Announced Address</th>
-              <td>{{ peer.announced_address }}</td>
-            </tr>
-            <tr>
-              <th>State</th>
+              <th style="width: 160px;">State</th>
               <td>{{ peer.get_state_display }}</td>
             </tr>
             <tr>

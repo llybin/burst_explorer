@@ -15,7 +15,7 @@ class QueryBase(abc.ABC):
     _params = {}
     _required_params = set()
     _optional_params = set()
-    timeout = 2
+    timeout = 3
 
     @property
     @abc.abstractmethod
