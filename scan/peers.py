@@ -111,6 +111,7 @@ def explore_node(address: str, updates: dict):
 
     try:
         peers = P2PApi(address).get_peers()
+        explore_peer(address, updates)
     except BurstException:
         logger.debug("Can't connect to node: %s", address)
         return
@@ -151,10 +152,6 @@ def get_nodes_list() -> list:
 @lock_decorator(key='peer_monitor', expire=60, auto_renewal=True)
 @transaction.atomic
 def peer_cmd():
-    # tmp disable ipv6
-    from urllib3.util import connection
-    connection.allowed_gai_family = lambda: socket.AF_INET
-
     logger.info('Start')
 
     addresses = get_nodes_list()

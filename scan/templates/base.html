@@ -54,8 +54,12 @@
               <li class="nav-item">
                 <a class="nav-link text-nowrap" href="{% url 'accounts' %}">Top Accounts</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link text-nowrap" href="{% url 'peers' %}">Network</a>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="peers-nav" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Network</a>
+                <div class="dropdown-menu" aria-labelledby="peers-nav">
+                  <a class="dropdown-item" href="{% url 'peers-charts' %}">Charts</a>
+                  <a class="dropdown-item" href="{% url 'peers' %}">Peers list</a>
+                </div>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="more-nav" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More</a>
