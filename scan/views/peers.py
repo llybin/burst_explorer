@@ -20,7 +20,6 @@ def peers_charts_view(request):
     states = PeerMonitor.objects.values(
         'state'
     ).annotate(cnt=Count('state')).order_by('-cnt', 'state')
-
     for state in states:
         state['state'] = PeerMonitor(state=state['state']).get_state_display()
 

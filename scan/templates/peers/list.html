@@ -21,28 +21,22 @@
             <thead>
             <tr>
               <th scope="col">IP</th>
-              <th scope="col">Country</th>
-              <th scope="col">Version</th>
               <th scope="col">Announced Address</th>
-              <th scope="col">Platform</th>
-              <th scope="col">Application</th>
-              <th scope="col">Height</th>
-              <th scope="col">Availability</th>
               <th scope="col">State</th>
+              <th scope="col">Availability</th>
+              <th scope="col">Version</th>
+              <th scope="col">Country</th>
             </tr>
             </thead>
             <tbody>
             {% for peer in peers %}
               <tr>
                 <td><a href="{% url 'peer-detail' peer.ip %}">{{ peer.ip }}</a></td>
-                <td>{{ peer.country_code }}</td>
-                <td>{{ peer.version }}</td>
                 <td>{{ peer.announced_address }}</td>
-                <td>{{ peer.platform }}</td>
-                <td>{{ peer.application }}</td>
-                <td>{{ peer.height }}</td>
-                <td>{{ peer.availability|floatformat:2 }} %</td>
                 <td>{{ peer.get_state_display }}</td>
+                <td>{{ peer.availability|floatformat:2 }}%</td>
+                <td>{{ peer.version }}</td>
+                <td>{{ peer.country_code }}</td>
               </tr>
             {% endfor %}
             </tbody>

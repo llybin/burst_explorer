@@ -27,7 +27,7 @@
             </tr>
             <tr>
               <th>Availability</th>
-              <td>{{ peer.availability|floatformat:2 }} %</td>
+              <td>{{ peer.availability|floatformat:2 }}%</td>
             </tr>
             <tr>
               <th>Version</th>
@@ -48,6 +48,10 @@
             <tr>
               <th>Found</th>
               <td>{{ peer.created_at }}</td>
+            </tr>
+            <tr>
+              <th>Last Online</th>
+              <td>{{ peer.last_online_at }}</td>
             </tr>
             <tr>
               <th>Checked</th>

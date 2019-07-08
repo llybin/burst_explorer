@@ -62,5 +62,7 @@ class PeerMonitor(models.Model):
     # computed, optimization
     availability = models.FloatField(default=0, blank=True)
 
+    last_online_at = models.DateTimeField()
+
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
