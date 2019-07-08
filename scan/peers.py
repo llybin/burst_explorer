@@ -114,10 +114,39 @@ def explore_node(address: str, updates: dict):
         logger.debug("Can't connect to node: %s", address)
         return
 
-    pool = ThreadPool(50)
+    pool = ThreadPool(20)
     pool.map(lambda peer: explore_peer(peer, updates), peers)
     pool.close()
     pool.join()
+
+
+def get_nodes_list() -> list:
+    # first check UNREACHABLE because more chance they are still offline
+    # and 2 sec timeout connection in worker
+    addresses_offline = list(PeerMonitor.objects.values_list(
+        'announced_address', flat=True
+    ).filter(
+        state=PeerMonitor.State.UNREACHABLE
+    ).distinct()) or []
+
+    # get other addresses exclude UNREACHABLE
+    addresses_other = list(PeerMonitor.objects.values_list(
+        'announced_address', flat=True
+    ).exclude(
+        state=PeerMonitor.State.UNREACHABLE
+    ).distinct()) or []
+
+    # add well-known peers
+    for peer in settings.BRS_BOOTSTRAP_PEERS:
+        if peer not in addresses_other:
+            addresses_other.append(peer)
+
+    # mix it
+    random.shuffle(addresses_offline)
+    random.shuffle(addresses_other)
+
+    # first UNREACHABLE
+    return addresses_offline + addresses_other
 
 
 @lock_decorator(key='peer_monitor', expire=60, auto_renewal=True)
@@ -125,23 +154,14 @@ def explore_node(address: str, updates: dict):
 def peer_cmd():
     logger.info('Start')
 
+    addresses = get_nodes_list()
+
     # set all peers unreachable, if will no update - peer will be unreachable
     PeerMonitor.objects.update(state=PeerMonitor.State.UNREACHABLE)
 
-    # get all addresses and mix it, never will large
-    addresses = list(PeerMonitor.objects.values_list(
-        'announced_address', flat=True
-    ).distinct())
-    # add well-known peers
-    for peer in settings.BRS_BOOTSTRAP_PEERS:
-        if peer not in addresses:
-            addresses.append(peer)
-    # mix it
-    random.shuffle(addresses)
-
     # explore every peer and collect updates
     updates = {}
-    pool = ThreadPool(50)
+    pool = ThreadPool(10)
     pool.map(lambda address: explore_node(address, updates), addresses)
     pool.close()
     pool.join()
