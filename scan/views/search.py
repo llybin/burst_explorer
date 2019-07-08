@@ -3,6 +3,7 @@ from django.views.decorators.http import require_http_methods
 
 from java_wallet import models
 from burst.libs.reed_solomon import ReedSolomon, ReedSolomonError
+from scan.models import PeerMonitor
 
 
 SEARCH_BY = [
@@ -43,6 +44,11 @@ def search_view(request):
                 redirect_url = '/address/{}'.format(numeric_id)
         except ReedSolomonError:
             pass
+
+    else:
+        exists = PeerMonitor.objects.filter(ip=query).exists()
+        if exists:
+            redirect_url = '/peer/{}'.format(query)
 
     if redirect_url:
         return redirect(redirect_url)

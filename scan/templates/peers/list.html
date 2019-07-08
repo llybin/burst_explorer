@@ -4,7 +4,7 @@
 
 {% block content %}
 
-  <h5 class="p-2">Nodes</h5>
+  <h5 class="p-2">Peers</h5>
 
   <div class="card-deck mb-3">
     <div class="card mb-4 shadow-sm">
@@ -28,7 +28,7 @@
 
         <div class="d-flex flex-column flex-md-row align-items-center">
           <small class="my-0 mr-md-auto text-muted">
-              A total of {{ paginator.count|intcomma }} nodes found
+              A total of {{ paginator.count|intcomma }} peers found
           </small>
           {% include "paginator.html" %}
         </div>
@@ -49,17 +49,17 @@
             </tr>
             </thead>
             <tbody>
-            {% for node in nodes %}
+            {% for peer in peers %}
               <tr>
-                <td>{{ node.ip }}</td>
-                <td>{{ node.country_code }}</td>
-                <td>{{ node.version }}</td>
-                <td>{{ node.announced_address }}</td>
-                <td>{{ node.platform }}</td>
-                <td>{{ node.application }}</td>
-                <td>{{ node.height }}</td>
-                <td>{{ node.availability|floatformat:2 }} %</td>
-                <td>{{ node.get_state_display }}</td>
+                <td><a href="{% url 'peer-detail' peer.ip %}">{{ peer.ip }}</a></td>
+                <td>{{ peer.country_code }}</td>
+                <td>{{ peer.version }}</td>
+                <td>{{ peer.announced_address }}</td>
+                <td>{{ peer.platform }}</td>
+                <td>{{ peer.application }}</td>
+                <td>{{ peer.height }}</td>
+                <td>{{ peer.availability|floatformat:2 }} %</td>
+                <td>{{ peer.get_state_display }}</td>
               </tr>
             {% endfor %}
             </tbody>

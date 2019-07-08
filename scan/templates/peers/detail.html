@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% load humanize %}
+
+{% block content %}
+
+  <h5 class="p-2">Peer {{ peer.ip }}</h5>
+
+  <div class="card-deck mb-3">
+    <div class="card mb-4 shadow-sm">
+      <div class="card-body">
+
+        <div class="table-responsive">
+          <table class="table small table-sm">
+            <tbody>
+            <tr>
+              <th style="width: 160px;">IP</th>
+              <td>{{ peer.ip }}</td>
+            </tr>
+            <tr>
+              <th>Country</th>
+              <td>{{ peer.country_code }}</td>
+            </tr>
+            <tr>
+              <th>Version</th>
+              <td>{{ peer.version }}</td>
+            </tr>
+            <tr>
+              <th>Announced Address</th>
+              <td>{{ peer.announced_address }}</td>
+            </tr>
+            <tr>
+              <th>Platform</th>
+              <td>{{ peer.platform }}</td>
+            </tr>
+            <tr>
+              <th>Application</th>
+              <td>{{ peer.application }}</td>
+            </tr>
+            <tr>
+              <th>Height</th>
+              <td>{{ peer.height }}</td>
+            </tr>
+            <tr>
+              <th>Availability</th>
+              <td>{{ peer.availability|floatformat:2 }} %</td>
+            </tr>
+            <tr>
+              <th>State</th>
+              <td>{{ peer.get_state_display }}</td>
+            </tr>
+            <tr>
+              <th>Found</th>
+              <td>{{ peer.created_at }}</td>
+            </tr>
+            <tr>
+              <th>Checked</th>
+              <td>{{ peer.modified_at|naturaltime }}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

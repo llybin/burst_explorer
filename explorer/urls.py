@@ -27,7 +27,7 @@ from scan.views.transactions import TxListView, TxDetailView
 from scan.views.multiout import MultiOutListView
 from scan.views.search import search_view
 from scan.views.marketplace import MarketPlaceListView, MarketPlaceDetailView, MarketPlacePurchasesListView
-from scan.views.network import PeerMonitorListView
+from scan.views.network import PeerMonitorListView, PeerMonitorDetailView
 
 
 urlpatterns = [
@@ -49,7 +49,8 @@ urlpatterns = [
     path('ats/', AtListView.as_view(), name='ats'),
     path('at/<str:id>', AtDetailView.as_view(), name='at-detail'),
     path('search/', search_view, name='search'),
-    path('network/', PeerMonitorListView.as_view(), name='network'),
+    path('peers/', PeerMonitorListView.as_view(), name='peers'),
+    path('peer/<str:ip>', PeerMonitorDetailView.as_view(), name='peer-detail'),
     path('admin/', admin.site.urls),
     path('api/', include(('api.urls', 'api'), namespace='api')),
 ]

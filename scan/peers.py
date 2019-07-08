@@ -47,7 +47,8 @@ def get_host_by_name(peer: str) -> str or None:
 
     try:
         return socket.gethostbyname(hostname)
-    except socket.gaierror:
+    except socket.gaierror as e:
+        logger.debug("Can't resolve host: %s - %r", peer, e)
         return None
 
 
@@ -75,7 +76,6 @@ def explore_peer(address: str, updates: dict):
 
     ip = get_host_by_name(address)
     if not ip:
-        logger.debug("Can't resolve peer: %s", address)
         return
 
     if ip in updates:
