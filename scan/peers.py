@@ -1,9 +1,9 @@
+import concurrent.futures
 import logging
 import random
 import socket
 from functools import lru_cache
 from urllib.parse import urlparse
-from multiprocessing.dummy import Pool as ThreadPool
 
 import requests
 from cache_memoize import cache_memoize
@@ -114,10 +114,8 @@ def explore_node(address: str, updates: dict):
         logger.debug("Can't connect to node: %s", address)
         return
 
-    pool = ThreadPool(20)
-    pool.map(lambda peer: explore_peer(peer, updates), peers)
-    pool.close()
-    pool.join()
+    with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
+        executor.map(lambda peer: explore_peer(peer, updates), peers)
 
 
 def get_nodes_list() -> list:
@@ -161,10 +159,8 @@ def peer_cmd():
 
     # explore every peer and collect updates
     updates = {}
-    pool = ThreadPool(10)
-    pool.map(lambda address: explore_node(address, updates), addresses)
-    pool.close()
-    pool.join()
+    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+        executor.map(lambda address: explore_node(address, updates), addresses)
 
     last_height = get_last_height()
     logger.info('Last height: %d', last_height)
