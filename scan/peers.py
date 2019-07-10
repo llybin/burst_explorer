@@ -33,6 +33,9 @@ def get_ip_by_domain(peer: str) -> str or None:
         peer = 'http://{}'.format(peer)
     hostname = urlparse(peer).hostname
 
+    if not hostname:
+        return None
+
     # ipv6
     if ':' in hostname:
         return hostname

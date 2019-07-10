@@ -1,7 +1,10 @@
 import datetime
+from unittest import mock
 
 from django.forms.models import model_to_dict
 from django.test import TestCase
+
+from scan.peers import get_ip_by_domain
 
 
 class PeersChartsViewTests(TestCase):
@@ -73,3 +76,27 @@ class PeerDetailViewTests(TestCase):
              'state': 1,
              'version': 'v2.4.0'
              })
+
+
+class GetIPByDomainTests(TestCase):
+    def test_ok(self):
+        self.assertEqual(get_ip_by_domain('1.1.1.1'), '1.1.1.1')
+        self.assertEqual(get_ip_by_domain('1.1.1.1:8123'), '1.1.1.1')
+        self.assertEqual(get_ip_by_domain('http://1.1.1.1'), '1.1.1.1')
+        with mock.patch('scan.peers.socket.gethostbyname', return_value='2.3.4.5'):
+            self.assertEqual(get_ip_by_domain('devtrue.net'), '2.3.4.5')
+            self.assertEqual(get_ip_by_domain('http://devtrue.net'), '2.3.4.5')
+
+    def test_ipv6(self):
+        self.assertEqual(get_ip_by_domain('[2a02:c207:2016:1984:0:0:0:1]'), '2a02:c207:2016:1984:0:0:0:1')
+        self.assertEqual(get_ip_by_domain('[2a02:c207:2016:1984:0:0:0:1]:8123'), '2a02:c207:2016:1984:0:0:0:1')
+        self.assertEqual(get_ip_by_domain('http://[2a02:c207:2016:1984:0:0:0:1]'), '2a02:c207:2016:1984:0:0:0:1')
+
+    def test_wrong(self):
+        self.assertEqual(get_ip_by_domain(''), None)
+        self.assertEqual(get_ip_by_domain('https://'), None)
+        self.assertEqual(get_ip_by_domain('2a02:c207:2016:1984:0:0:0:1'), None)
+        self.assertEqual(get_ip_by_domain('http://2a02:c207:2016:1984:0:0:0:1'), None)
+
+    def test_short(self):
+        self.assertEqual(get_ip_by_domain('1.0.0'), '1.0.0.0')
