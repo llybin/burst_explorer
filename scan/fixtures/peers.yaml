@@ -1,0 +1,112 @@
+-   model: scan.peermonitor
+    pk: 108.89.89.247
+    fields:
+        platform: BURST-KFN6-RT9J-XEX8-4U8ZK
+        application: BRS
+        version: 2.3.0
+        height: 641085
+        cumulative_difficulty: '64762191462137382682'
+        country_code: US
+        state: 1
+        downtime: 0
+        lifetime: 17
+        availability: 100.0
+        last_online_at: 2019-07-10 16:28:32.211782
+        created_at: 2019-07-08 17:53:01.306813
+        modified_at: 2019-07-10 16:28:42.333593
+-   model: scan.peermonitor
+    pk: burst.sagichdir.net
+    fields:
+        platform: BURST-QKWB-QWSX-8K2F-3NQ9T
+        application: BRS
+        version: v2.4.0
+        height: 641085
+        cumulative_difficulty: '64762191462137382682'
+        country_code: DE
+        state: 1
+        downtime: 0
+        lifetime: 17
+        availability: 100.0
+        last_online_at: 2019-07-10 16:28:33.628425
+        created_at: 2019-07-08 17:53:00.954242
+        modified_at: 2019-07-10 16:28:42.333593
+-   model: scan.peermonitor
+    pk: 149.20.176.129
+    fields:
+        platform: BURST-EQPL-MMAH-2XK5-EA7D6
+        application: BRS
+        version: 2.3.0
+        height: 641085
+        cumulative_difficulty: '64762191462137382682'
+        country_code: US
+        state: 1
+        downtime: 0
+        lifetime: 17
+        availability: 100.0
+        last_online_at: 2019-07-10 16:28:32.210291
+        created_at: 2019-07-08 17:53:01.334430
+        modified_at: 2019-07-10 16:28:42.333593
+-   model: scan.peermonitor
+    pk: 104.14.29.38
+    fields:
+        platform: BURST-5DBB-HEF9-3A57-837HK
+        application: BRS
+        version: 2.3.0
+        height: 641085
+        cumulative_difficulty: '64762191462137382682'
+        country_code: US
+        state: 2
+        downtime: 2
+        lifetime: 17
+        availability: 88.2352942
+        last_online_at: 2019-07-10 16:28:33.181626
+        created_at: 2019-07-08 17:53:01.071243
+        modified_at: 2019-07-10 16:28:42.333593
+-   model: scan.peermonitor
+    pk: 115.31.27.46
+    fields:
+        platform: Q-H2
+        application: BRS
+        version: v2.4.0
+        height: 441363
+        cumulative_difficulty: '11484484310276242494'
+        country_code: JP
+        state: 3
+        downtime: 0
+        lifetime: 15
+        availability: 100.0
+        last_online_at: 2019-07-10 16:28:33.687149
+        created_at: 2019-07-10 16:18:36.704125
+        modified_at: 2019-07-10 16:28:42.333593
+-   model: scan.peermonitor
+    pk: 3.113.1.236
+    fields:
+        platform: Q-H2
+        application: BRS
+        version: 2.3.0
+        height: 314
+        cumulative_difficulty: '316082749440'
+        country_code: JP
+        state: 4
+        downtime: 15
+        lifetime: 17
+        availability: 11.7647059
+        last_online_at: 2019-07-10 16:28:28.967867
+        created_at: 2019-07-08 17:53:01.247087
+        modified_at: 2019-07-10 16:28:42.333593
+-   model: scan.peermonitor
+    pk: 109.233.59.68
+    fields:
+        platform: PC
+        application: BRS
+        version: 2.3.0
+        height: 641085
+        cumulative_difficulty: '1010101010010101010'
+        country_code: RU
+        state: 5
+        downtime: 0
+        lifetime: 17
+        availability: 100.0
+        last_online_at: 2019-07-10 16:28:34.740293
+        created_at: 2019-07-08 17:53:01.122358
+        modified_at: 2019-07-10 16:28:42.333593

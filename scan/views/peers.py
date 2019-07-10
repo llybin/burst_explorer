@@ -11,7 +11,7 @@ def peers_charts_view(request):
     online_now = PeerMonitor.objects.filter(state=PeerMonitor.State.ONLINE).count()
     versions = PeerMonitor.objects.filter(
         state=PeerMonitor.State.ONLINE
-    ).values('version').annotate(cnt=Count('version')).order_by('-cnt')
+    ).values('version').annotate(cnt=Count('version')).order_by('-cnt', '-version')
 
     countries = PeerMonitor.objects.filter(
         state=PeerMonitor.State.ONLINE
