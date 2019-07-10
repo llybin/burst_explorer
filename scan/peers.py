@@ -175,25 +175,27 @@ def get_nodes_list() -> list:
     return addresses_offline + addresses_other
 
 
-def set_state(update: dict, peer_obj: PeerMonitor):
+def get_state(update: dict, peer_obj: PeerMonitor or None) -> int:
     _data = get_last_cumulative_difficulty()
 
     if update['height'] == _data['height']:
         if update['cumulative_difficulty'] == _data['cumulative_difficulty']:
-            update['state'] = PeerMonitor.State.ONLINE
+            state = PeerMonitor.State.ONLINE
         else:
-            update['state'] = PeerMonitor.State.FORKED
+            state = PeerMonitor.State.FORKED
     elif update['height'] > _data['height']:
-        update['state'] = PeerMonitor.State.FORKED
+        state = PeerMonitor.State.FORKED
     else:
         if peer_obj and peer_obj.height == update['height']:
-            update['state'] = PeerMonitor.State.STUCK
+            state = PeerMonitor.State.STUCK
         else:
             _cumulative_difficulty = get_block_cumulative_difficulty(update['height'])
             if update['cumulative_difficulty'] == _cumulative_difficulty:
-                update['state'] = PeerMonitor.State.SYNC
+                state = PeerMonitor.State.SYNC
             else:
-                update['state'] = PeerMonitor.State.FORKED
+                state = PeerMonitor.State.FORKED
+
+    return state
 
 
 def get_count_nodes_online() -> int:
@@ -234,7 +236,7 @@ def peer_cmd():
         if not peer_obj:
             logger.info('Found new peer: %s', update['announced_address'])
 
-        set_state(update, peer_obj)
+        update['state'] = get_state(update, peer_obj)
 
         form = PeerMonitorForm(update, instance=peer_obj)
 

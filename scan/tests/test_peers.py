@@ -6,11 +6,14 @@ from freezegun import freeze_time
 from django.forms.models import model_to_dict
 from django.test import TestCase
 
+from scan.models import PeerMonitor
 from scan.peers import (
     get_ip_by_domain,
     is_good_version,
     get_country_by_ip,
     explore_peer,
+    get_state,
+    get_nodes_list,
 )
 
 my_vcr = vcr.VCR(
@@ -167,3 +170,90 @@ class ExplorePeerTests(TestCase):
         updates = {}
         explore_peer('wallet.burst.devtrue.net', updates)
         self.assertEqual(updates, {'wallet.burst.devtrue.net': None})
+
+
+class PeerSetStateTests(TestCase):
+    def test_online_ok(self):
+        update = {
+            'announced_address': 'wallet.burst.devtrue.net',
+            'application': 'BRS',
+            'country_code': 'FR',
+            'cumulative_difficulty': '64770577730996744870',
+            'height': 641103,
+            'last_online_at': datetime.datetime(2019, 7, 10, 17, 47, 6, 963229),
+            'platform': 'BURST-BTKF-8WT9-L98N-98JH2',
+            'version': 'v2.4.0'
+        }
+
+        with mock.patch('scan.peers.get_last_cumulative_difficulty',
+                        return_value={'height': 641103, 'cumulative_difficulty': '64770577730996744870'}):
+            self.assertEqual(get_state(update, None), PeerMonitor.State.ONLINE)
+
+    def test_eq_height_forked(self):
+        update = {
+            'cumulative_difficulty': '1010101010101',
+            'height': 641103,
+        }
+
+        with mock.patch('scan.peers.get_last_cumulative_difficulty',
+                        return_value={'height': 641103, 'cumulative_difficulty': '64770577730996744870'}):
+            self.assertEqual(get_state(update, None), PeerMonitor.State.FORKED)
+
+    def test_gt_height_forked(self):
+        update = {
+            'cumulative_difficulty': '1010101010101',
+            'height': 641104,
+        }
+
+        with mock.patch('scan.peers.get_last_cumulative_difficulty',
+                        return_value={'height': 641103, 'cumulative_difficulty': '64770577730996744870'}):
+            self.assertEqual(get_state(update, None), PeerMonitor.State.FORKED)
+
+    def test_stuck(self):
+        update = {
+            'cumulative_difficulty': '1010101010101',
+            'height': 641102,
+        }
+        peer_obj = PeerMonitor(height=641102, cumulative_difficulty='1010101010101')
+
+        with mock.patch('scan.peers.get_last_cumulative_difficulty',
+                        return_value={'height': 641103, 'cumulative_difficulty': '64770577730996744870'}):
+            self.assertEqual(get_state(update, peer_obj), PeerMonitor.State.STUCK)
+
+    def test_sync(self):
+        update = {
+            'cumulative_difficulty': '1010101010101',
+            'height': 641102,
+        }
+        peer_obj = PeerMonitor(height=641101, cumulative_difficulty='20202020202020')
+
+        with mock.patch('scan.peers.get_last_cumulative_difficulty',
+                        return_value={'height': 641103, 'cumulative_difficulty': '64770577730996744870'}):
+            with mock.patch('scan.peers.get_block_cumulative_difficulty', return_value='1010101010101'):
+                self.assertEqual(get_state(update, peer_obj), PeerMonitor.State.SYNC)
+
+    def test_lt_height_forked(self):
+        update = {
+            'cumulative_difficulty': '1010101010101',
+            'height': 641102,
+        }
+        peer_obj = PeerMonitor(height=641101, cumulative_difficulty='20202020202020')
+
+        with mock.patch('scan.peers.get_last_cumulative_difficulty',
+                        return_value={'height': 641103, 'cumulative_difficulty': '64770577730996744870'}):
+            with mock.patch('scan.peers.get_block_cumulative_difficulty', return_value='303030303030303030'):
+                self.assertEqual(get_state(update, peer_obj), PeerMonitor.State.FORKED)
+
+
+class GetNodeListTests(TestCase):
+    fixtures = ['peers']
+
+    def test_ok(self):
+        peers = get_nodes_list()
+        self.assertEqual(len(peers), 12)
+        self.assertEqual(
+            peers[0],
+            PeerMonitor.objects.filter(
+                state=PeerMonitor.State.UNREACHABLE
+            ).values_list('announced_address', flat=True).first()
+        )
