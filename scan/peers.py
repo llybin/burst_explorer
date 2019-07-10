@@ -74,6 +74,7 @@ def is_good_version(version: str) -> bool:
         return False
 
 
+@lru_cache(maxsize=None)
 def get_last_cumulative_difficulty() -> dict:
     result = Block.objects.using('java_wallet').order_by(
         '-height'
@@ -117,7 +118,6 @@ def explore_peer(address: str, updates: dict):
     ip = get_ip_by_domain(address)
 
     updates[address] = {
-        '_data': get_last_cumulative_difficulty(),
         'announced_address': peer_info['announcedAddress'],
         'country_code': get_country_by_ip(ip) if ip else '??',
         'application': peer_info['application'],
@@ -139,7 +139,7 @@ def explore_node(address: str, updates: dict):
         logger.debug("Can't connect to node: %s", address)
         return
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
         executor.map(lambda peer: explore_peer(peer, updates), peers)
 
 
@@ -171,12 +171,14 @@ def get_nodes_list() -> list:
 
 
 def set_state(update: dict, peer_obj: PeerMonitor):
-    if update['height'] == update['_data']['height']:
-        if update['cumulative_difficulty'] == update['_data']['cumulative_difficulty']:
+    _data = get_last_cumulative_difficulty()
+
+    if update['height'] == _data['height']:
+        if update['cumulative_difficulty'] == _data['cumulative_difficulty']:
             update['state'] = PeerMonitor.State.ONLINE
         else:
             update['state'] = PeerMonitor.State.FORKED
-    elif update['height'] > update['_data']['height']:
+    elif update['height'] > _data['height']:
         update['state'] = PeerMonitor.State.FORKED
     else:
         if peer_obj and peer_obj.height == update['height']:
@@ -188,7 +190,11 @@ def set_state(update: dict, peer_obj: PeerMonitor):
             else:
                 update['state'] = PeerMonitor.State.FORKED
 
-    del update['_data']
+
+def get_count_nodes_online() -> int:
+    return PeerMonitor.objects.filter(
+        state=PeerMonitor.State.ONLINE
+    ).count()
 
 
 @lock_decorator(key='peer_monitor', expire=60, auto_renewal=True)
@@ -200,11 +206,11 @@ def peer_cmd():
 
     # explore every peer and collect updates
     updates = {}
-    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=40) as executor:
         executor.map(lambda address: explore_node(address, updates), addresses)
 
-    # if much offline presumably local server problem
-    if len(updates) < len(addresses) / 4:
+    # if more than 25% peers were gone offline in 5min, probably network problem
+    if len(updates) < get_count_nodes_online() * 0.75:
         logger.warning('Peers update was rejected: %d - %d', len(updates), len(addresses))
         capture_message('Peers update was rejected.')
         return
