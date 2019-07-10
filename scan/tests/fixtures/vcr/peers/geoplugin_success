@@ -1,0 +1,48 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.22.0
+    method: GET
+    uri: http://www.geoplugin.net/json.gp?ip=8.8.8.8
+  response:
+    body:
+      string: "{\n  \"geoplugin_request\":\"8.8.8.8\",\n  \"geoplugin_status\":206,\n
+        \ \"geoplugin_delay\":\"1ms\",\n  \"geoplugin_credit\":\"Some of the returned
+        data includes GeoLite data created by MaxMind, available from <a href='http:\\/\\/www.maxmind.com'>http:\\/\\/www.maxmind.com<\\/a>.\",\n
+        \ \"geoplugin_city\":\"\",\n  \"geoplugin_region\":\"\",\n  \"geoplugin_regionCode\":\"\",\n
+        \ \"geoplugin_regionName\":\"\",\n  \"geoplugin_areaCode\":\"\",\n  \"geoplugin_dmaCode\":\"\",\n
+        \ \"geoplugin_countryCode\":\"US\",\n  \"geoplugin_countryName\":\"United
+        States\",\n  \"geoplugin_inEU\":0,\n  \"geoplugin_euVATrate\":false,\n  \"geoplugin_continentCode\":\"NA\",\n
+        \ \"geoplugin_continentName\":\"North America\",\n  \"geoplugin_latitude\":\"37.751\",\n
+        \ \"geoplugin_longitude\":\"-97.822\",\n  \"geoplugin_locationAccuracyRadius\":\"1000\",\n
+        \ \"geoplugin_timezone\":\"\",\n  \"geoplugin_currencyCode\":\"USD\",\n  \"geoplugin_currencySymbol\":\"$\",\n
+        \ \"geoplugin_currencySymbol_UTF8\":\"$\",\n  \"geoplugin_currencyConverter\":1\n}"
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - max-age=0
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '909'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Wed, 10 Jul 2019 17:41:36 GMT
+      Expires:
+      - Wed, 10 Jul 2019 17:41:36 GMT
+      Server:
+      - Apache
+    status:
+      code: 200
+      message: OK
+version: 1

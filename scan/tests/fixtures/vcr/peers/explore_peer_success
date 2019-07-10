@@ -1,0 +1,66 @@
+interactions:
+- request:
+    body: '{"requestType": "getInfo", "protocol": "B1"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '44'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - BRS/2.4.0
+    method: POST
+    uri: http://wallet.burst.devtrue.net:8123/burst
+  response:
+    body:
+      string: '{"announcedAddress":"wallet.burst.devtrue.net","application":"BRS","version":"v2.4.0","platform":"BURST-BTKF-8WT9-L98N-98JH2","shareAddress":true}'
+    headers:
+      Content-Type:
+      - text/plain;charset=utf-8
+      Date:
+      - Wed, 10 Jul 2019 17:47:06 GMT
+      Server:
+      - Jetty(9.4.z-SNAPSHOT)
+      Transfer-Encoding:
+      - chunked
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"requestType": "getCumulativeDifficulty", "protocol": "B1"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '60'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - BRS/2.4.0
+    method: POST
+    uri: http://wallet.burst.devtrue.net:8123/burst
+  response:
+    body:
+      string: '{"cumulativeDifficulty":"64770577730996744870","blockchainHeight":641103}'
+    headers:
+      Content-Type:
+      - text/plain;charset=utf-8
+      Date:
+      - Wed, 10 Jul 2019 17:47:06 GMT
+      Server:
+      - Jetty(9.4.z-SNAPSHOT)
+      Transfer-Encoding:
+      - chunked
+    status:
+      code: 200
+      message: OK
+version: 1

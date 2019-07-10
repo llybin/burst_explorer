@@ -1,10 +1,23 @@
 import datetime
 from unittest import mock
 
+import vcr
+from freezegun import freeze_time
 from django.forms.models import model_to_dict
 from django.test import TestCase
 
-from scan.peers import get_ip_by_domain
+from scan.peers import (
+    get_ip_by_domain,
+    is_good_version,
+    get_country_by_ip,
+    explore_peer,
+)
+
+my_vcr = vcr.VCR(
+    cassette_library_dir='scan/tests/fixtures/vcr/peers',
+    record_mode='once',
+    decode_compressed_response=True,
+)
 
 
 class PeersChartsViewTests(TestCase):
@@ -100,3 +113,57 @@ class GetIPByDomainTests(TestCase):
 
     def test_short(self):
         self.assertEqual(get_ip_by_domain('1.0.0'), '1.0.0.0')
+
+
+class IsGoodVersionTests(TestCase):
+    def test_ok(self):
+        self.assertTrue(is_good_version('2.3.0'))
+        self.assertTrue(is_good_version('2.3.1'))
+        self.assertTrue(is_good_version('2.4.0'))
+        self.assertTrue(is_good_version('v2.4.0'))
+        self.assertFalse(is_good_version('2.2.0'))
+
+    def test_wrong(self):
+        self.assertFalse(is_good_version('vvv'))
+        self.assertFalse(is_good_version(''))
+
+
+class GetCountryByIPTests(TestCase):
+    @my_vcr.use_cassette('geoplugin_success')
+    def test_ok(self):
+        self.assertEqual(get_country_by_ip('8.8.8.8', _refresh=True), 'US')
+
+
+class ExplorePeerTests(TestCase):
+    @freeze_time('2019-07-10 17:47:6.963229', tz_offset=0)
+    @my_vcr.use_cassette('explore_peer_success')
+    def test_ok(self):
+        updates = {}
+        with mock.patch('scan.peers.get_country_by_ip', return_value='FR'):
+            explore_peer('wallet.burst.devtrue.net', updates)
+        self.assertDictEqual(
+            updates,
+            {
+                'wallet.burst.devtrue.net': {
+                    'announced_address': 'wallet.burst.devtrue.net',
+                    'application': 'BRS',
+                    'country_code': 'FR',
+                    'cumulative_difficulty': '64770577730996744870',
+                    'height': 641103,
+                    'last_online_at': datetime.datetime(2019, 7, 10, 17, 47, 6, 963229),
+                    'platform': 'BURST-BTKF-8WT9-L98N-98JH2',
+                    'version': 'v2.4.0'
+                }
+            })
+
+    @my_vcr.use_cassette('explore_peer_old_version')
+    def test_old_version(self):
+        updates = {}
+        explore_peer('wallet.burst.devtrue.net', updates)
+        self.assertEqual(updates, {'wallet.burst.devtrue.net': None})
+
+    @my_vcr.use_cassette('explore_peer_error')
+    def test_error(self):
+        updates = {}
+        explore_peer('wallet.burst.devtrue.net', updates)
+        self.assertEqual(updates, {'wallet.burst.devtrue.net': None})

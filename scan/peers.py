@@ -65,12 +65,14 @@ class PeerMonitorForm(forms.ModelForm):
 
 
 def is_good_version(version: str) -> bool:
+    m_major, m_minor, m_patch = settings.MIN_PEER_VERSION.split('.')
+
     version = version.replace('v', '')
     try:
         major, minor, patch = version.split('.')
-        if int(major) < 2:
+        if int(major) < int(m_major):
             return False
-        if int(minor) < 3:
+        if int(minor) < int(m_minor):
             return False
         return True
     except ValueError:

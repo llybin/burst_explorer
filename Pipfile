@@ -6,6 +6,7 @@ verify_ssl = true
 [dev-packages]
 coverage = "==4.5.3"
 django-debug-toolbar = "==1.11"
+freezegun = "==0.3.12"
 ipython = "==7.5.0"
 vcrpy = "==2.0.1"
 
