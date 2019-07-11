@@ -1,5 +1,6 @@
 """ https://github.com/burst-apps-team/burstcoin/tree/develop/src/brs/peer
 """
+from django.conf import settings
 
 from burst.api.brs.v1.api import BrsApiBase
 from burst.api.brs.p2p import queries
@@ -8,8 +9,8 @@ from burst.api.brs.p2p import queries
 class P2PApi(BrsApiBase):
     """ The P2PApi class provides convenient access to P2P API.
     """
-    headers = {'User-Agent': 'BRS/2.4.0'}
-    _default_port = 8123  # TODO: settings testnet
+    headers = {'User-Agent': 'BRS/{}'.format(settings.BRS_P2P_VERSION)}
+    _default_port = settings.DEFAULT_P2P_PORT
 
     def get_peers(self) -> list:
         return self._request(queries.GetPeers())['peers']

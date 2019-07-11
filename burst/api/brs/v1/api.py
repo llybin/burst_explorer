@@ -5,6 +5,7 @@ from urllib.parse import urlparse
 
 import requests
 from requests.exceptions import RequestException
+from django.conf import settings
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 
@@ -16,7 +17,7 @@ from burst.api.brs.v1 import queries
 class BrsApiBase:
     endpoint = 'burst'
     headers = None
-    _default_port = 8125  # TODO: settings testnet
+    _default_port = settings.DEFAULT_API_PORT
     _session = None
 
     def __init__(self, node_address: str) -> None:

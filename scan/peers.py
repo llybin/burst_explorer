@@ -213,11 +213,11 @@ def peer_cmd():
 
     # explore every peer and collect updates
     updates = {}
-    with concurrent.futures.ThreadPoolExecutor(max_workers=40) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
         executor.map(lambda address: explore_node(address, updates), addresses)
 
-    # if more than 25% peers were gone offline in 5min, probably network problem
-    if len(updates) < get_count_nodes_online() * 0.75:
+    # if more than __% peers were gone offline in __min, probably network problem
+    if len(updates) < get_count_nodes_online() * 0.9:
         logger.warning('Peers update was rejected: %d - %d', len(updates), len(addresses))
         capture_message('Peers update was rejected.')
         return
