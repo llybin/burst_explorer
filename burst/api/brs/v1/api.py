@@ -17,7 +17,7 @@ from burst.api.brs.v1 import queries
 class BrsApiBase:
     endpoint = 'burst'
     headers = None
-    _default_port = settings.DEFAULT_API_PORT
+    _default_port = settings.DEFAULT_API_V1_PORT
     _session = None
 
     def __init__(self, node_address: str) -> None:
