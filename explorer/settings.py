@@ -248,13 +248,7 @@ BRS_NODE = os.getenv('BRS_NODE')
 
 WALLET_URL = os.getenv('WALLET_URL')
 
-BRS_BOOTSTRAP_PEERS = [
-    'wallet.burst.devtrue.net',
-    'wallet.burstcoin.network',
-    'wallet.smit.pro',
-    'wallet.burst-alliance.org',
-    'phoenix.burst-alliance.org',
-]
+BRS_BOOTSTRAP_PEERS = json.loads(os.getenv('BRS_BOOTSTRAP_PEERS'))
 
 # for fork solving
 AGGR_STORE_BLOCK_SIGNATURE = 3600 * 24 * 7
