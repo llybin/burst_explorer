@@ -144,8 +144,12 @@ def explore_node(address: str, updates: dict):
         logger.debug("Can't connect to node: %s", address)
         return
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
-        executor.map(lambda peer: explore_peer(peer, updates), peers)
+    if settings.TEST_NET:
+        for peer in peers:
+            explore_peer(peer, updates)
+    else:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+            executor.map(lambda p: explore_peer(p, updates), peers)
 
 
 def get_nodes_list() -> list:
@@ -213,8 +217,12 @@ def peer_cmd():
 
     # explore every peer and collect updates
     updates = {}
-    with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
-        executor.map(lambda address: explore_node(address, updates), addresses)
+    if settings.TEST_NET:
+        for address in addresses:
+            explore_node(address, updates)
+    else:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
+            executor.map(lambda address: explore_node(address, updates), addresses)
 
     # if more than __% peers were gone offline in __min, probably network problem
     if len(updates) < get_count_nodes_online() * 0.9:
