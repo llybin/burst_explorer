@@ -12,6 +12,7 @@ class BlockListViewTests(TestCase):
         response = self.client.get('/blocks/')
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'blocks found')
+        self.assertContains(response, 'Blockchain Explorer - Blocks</title>')
         self.assertQuerysetEqual(response.context['blocks'], [])
 
 

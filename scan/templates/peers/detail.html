@@ -2,6 +2,8 @@
 
 {% load humanize %}
 
+{% block title %} - Peer {{ peer.announced_address }}{% endblock %}
+
 {% block content %}
 
   <h5 class="p-2">Peer {{ peer.announced_address }}</h5>

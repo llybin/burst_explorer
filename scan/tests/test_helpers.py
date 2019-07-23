@@ -15,7 +15,7 @@ my_vcr = vcr.VCR(
 class GetPendingTxs(TestCase):
     @my_vcr.use_cassette('get_pending_txs')
     def test_ok(self):
-        txs = get_pending_txs(_refresh=True)
+        txs = get_pending_txs()
         self.assertEqual(len(txs), 15)
         self.assertEqual(txs[14]['multiout'], 2)
         self.assertEqual(txs[0]['multiout'], 6)

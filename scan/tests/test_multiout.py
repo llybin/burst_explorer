@@ -18,6 +18,7 @@ class MultiOutListViewTests(TestCase):
         response = self.client.get('/mos/')
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'transactions found')
+        self.assertContains(response, 'Blockchain Explorer - MultiOut</title>')
         self.assertQuerysetEqual(response.context['mos'], [])
 
 

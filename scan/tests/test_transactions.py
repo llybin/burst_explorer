@@ -12,6 +12,7 @@ class TxListViewTests(TestCase):
         response = self.client.get('/txs/')
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'transactions found')
+        self.assertContains(response, 'Blockchain Explorer - Transactions</title>')
         self.assertQuerysetEqual(response.context['txs'], [])
 
 

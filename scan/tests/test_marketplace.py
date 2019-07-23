@@ -12,6 +12,7 @@ class MarketPlaceListViewTests(TestCase):
         response = self.client.get('/mps/')
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'goods found')
+        self.assertContains(response, 'Blockchain Explorer - Market Place</title>')
         self.assertQuerysetEqual(response.context['goods'], [])
 
 

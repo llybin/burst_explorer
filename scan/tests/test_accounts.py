@@ -12,6 +12,7 @@ class AccountListViewTests(TestCase):
         response = self.client.get('/accounts/')
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Top accounts by Burst balance')
+        self.assertContains(response, 'Blockchain Explorer - Top accounts</title>')
         self.assertQuerysetEqual(response.context['accounts'], [])
 
 

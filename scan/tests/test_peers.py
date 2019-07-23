@@ -33,6 +33,7 @@ class PeersChartsViewTests(TestCase):
     def test_ok(self):
         response = self.client.get('/peers-charts/')
         self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Blockchain Explorer - Public Peers Charts</title>')
         self.assertContains(response, 'Online now')
         self.assertEqual(response.context['online_now'], 3)
         self.assertEqual(len(response.context['versions']), 2)
@@ -63,6 +64,7 @@ class PeersListViewTests(TestCase):
         response = self.client.get('/peers/')
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'peers found')
+        self.assertContains(response, 'Blockchain Explorer - Public Peers List</title>')
         self.assertEqual(len(response.context['peers']), 7)
 
 
@@ -77,6 +79,7 @@ class PeerDetailViewTests(TestCase):
         response = self.client.get('/peer/burst.sagichdir.net')
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Last Online')
+        self.assertContains(response, 'Blockchain Explorer - Peer burst.sagichdir.net</title>')
         self.assertDictEqual(
             model_to_dict(response.context['peer']),
             {'announced_address': 'burst.sagichdir.net',

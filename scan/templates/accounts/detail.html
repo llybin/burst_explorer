@@ -3,6 +3,8 @@
 {% load humanize %}
 {% load burst_tags %}
 
+{% block title %} - Account #{{ address.id }}{% endblock %}
+
 {% block scripts %}
   <script>jQuery('#qr_code').qrcode({text: "BURST-{{ address.id|num2rs }}", width: 240, height: 240});</script>
 {% endblock %}

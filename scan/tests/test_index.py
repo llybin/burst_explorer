@@ -8,6 +8,7 @@ class IndexViewTests(TestCase):
     def test_ok(self):
         response = self.client.get(reverse('index'))
         self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Blockchain Explorer</title>')
         self.assertContains(response, "Latest Blocks")
         self.assertContains(response, "Transactions")
         self.assertContains(response, "View all blocks")
