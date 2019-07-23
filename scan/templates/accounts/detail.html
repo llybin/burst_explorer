@@ -5,6 +5,11 @@
 
 {% block title %} - Account #{{ address.id }}{% endblock %}
 
+{% block description %}
+BURST-{{ address.id|num2rs }}
+{% if address.name %}{{ address.name }}{% endif %}
+{% endblock %}
+
 {% block scripts %}
   <script>jQuery('#qr_code').qrcode({text: "BURST-{{ address.id|num2rs }}", width: 240, height: 240});</script>
 {% endblock %}

@@ -5,6 +5,11 @@
 
 {% block title %} - Asset #{{ asset.id }}{% endblock %}
 
+{% block description %}
+{{ asset.name }}{% if asset.id == 14686983107863035136 %}❤️{% endif %}
+{{ asset.description }}
+{% endblock %}
+
 {% block content %}
 
   <h5 class="p-2">Asset Details</h5>

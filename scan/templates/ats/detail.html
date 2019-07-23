@@ -5,6 +5,11 @@
 
 {% block title %} - AT #{{ at.id }}{% endblock %}
 
+{% block description %}
+{{ at.name }}
+{{ at.description }}
+{% endblock %}
+
 {% block content %}
 
   <h5 class="p-2">AT Details</h5>

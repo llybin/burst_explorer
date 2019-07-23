@@ -5,6 +5,11 @@
 
 {% block title %} - Transaction #{{ tx.id }}{% endblock %}
 
+{% block description %}
+{{ tx|tx_type }}
+{{ tx.amount|burst_amount|intcomma }} Burst
+{% endblock %}
+
 {% block content %}
 
   <h5 class="p-2">Transaction Details</h5>

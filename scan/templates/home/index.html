@@ -4,11 +4,11 @@
 {% load burst_tags %}
 
 {% block description %}
-  Burst price: ${{ burst_info.exchange.price_usd|rounding:4|intcomma }} ({{ burst_info.exchange.percent_change_24h|stringformat:"+d" }}%) @ {{ burst_info.exchange.price_btc }} BTC
-  Market cap: ${{ burst_info.exchange.market_cap_usd|floatformat:0|intcomma }}
-  Latest block: {% if blocks %}{%  with blocks|first as last_block %}{{ last_block.height }}{% endwith %}{% endif %}
-  Network Difficult: {% if blocks %}{%  with blocks|first as last_block %}{{ last_block.base_target|net_diff|floatformat:2|intcomma }} TB{% endwith %}{% endif %}
+Latest block: {% if blocks %}{%  with blocks|first as last_block %}{{ last_block.height }}{% endwith %}{% endif %}
+Network Difficult: {% if blocks %}{%  with blocks|first as last_block %}{{ last_block.base_target|net_diff|floatformat:2|intcomma }} TB{% endwith %}{% endif %}
 {% endblock %}
+
+{% block revision %}{{ last_block.height }}{% endblock %}
 
 {% block content %}
   <div class="card-deck mb-3 text-center">
