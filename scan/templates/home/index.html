@@ -44,12 +44,27 @@
             <div class="media align-items-center">
               <div class="text-left">
                 <h6 class="text-uppercase text-secondary mb-0">Latest block</h6>
-                <span class="text-info small">{{ last_height }}</span>
+                {% if blocks %}
+                  {%  with blocks|first as last_block %}
+                    <span class="text-info small">{{ last_block.height }}</span>
+                  {% endwith %}
+                {% else %}
+                  -
+                {% endif %}
               </div>
             </div>
             <hr class="hr-space-lg">
             <div class="media align-items-center">
-
+              <div class="text-left">
+                <h6 class="text-uppercase text-secondary mb-0">Network Difficult</h6>
+                {% if blocks %}
+                  {%  with blocks|first as last_block %}
+                    <span class="text-info small">{{ last_block.base_target|net_diff|floatformat:2|intcomma }} TB</span>
+                  {% endwith %}
+                {% else %}
+                  -
+                {% endif %}
+              </div>
             </div>
           </div>
         </div>

@@ -45,7 +45,7 @@ def rounding(value: float, accuracy: int) -> float:
 def bin2hex(value: bytes) -> str:
     if not value:
         return ''
-    return value.hex()
+    return value.hex().upper()
 
 
 @register.filter
@@ -95,6 +95,11 @@ def mul_decimals(a: int or float, b: int) -> float:
 @register.filter
 def percent(value: int or float, total: int or float) -> int or float:
     return value / total * 100
+
+
+@register.filter
+def net_diff(base_target: int) -> float:
+    return 18325193796. / base_target
 
 
 @register.simple_tag(takes_context=True)

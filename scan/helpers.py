@@ -88,7 +88,6 @@ def get_multiouts_count() -> int:
     return MultiOut.objects.count()
 
 
-@cache_memoize(5)
 def get_last_height() -> int:
     return Block.objects.using('java_wallet').order_by(
         '-height'
@@ -97,7 +96,6 @@ def get_last_height() -> int:
     ).first()
 
 
-@cache_memoize(5)
 def get_pending_txs():
     try:
         txs_pending = BrsApi(settings.BRS_NODE).get_unconfirmed_transactions()

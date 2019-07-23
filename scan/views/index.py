@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.decorators.cache import cache_page
 
 from java_wallet.models import Transaction, Block
-from scan.helpers import get_last_height, get_pending_txs
+from scan.helpers import get_pending_txs
 from scan.views.blocks import fill_data_block
 from scan.views.transactions import fill_data_transaction
 
@@ -20,7 +20,6 @@ def index(request):
         fill_data_block(b)
 
     context = {
-        'last_height': get_last_height(),
         'txs': txs,
         'blocks': blocks,
         'txs_pending': get_pending_txs(),

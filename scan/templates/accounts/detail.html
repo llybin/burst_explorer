@@ -51,7 +51,12 @@
             </tr>
             <tr>
               <th>Balance</th>
-              <td>{{ address.balance|burst_amount|intcomma }} Burst <span class="text-info">(${{ address.balance|burst_amount|in_usd|floatformat:2|intcomma }} @ ${{ burst_info.exchange.price_usd|rounding:4|intcomma }}/Burst)</span></td>
+              <td>
+                {{ address.unconfirmed_balance|burst_amount|intcomma }} Burst <span class="text-info">(${{ address.unconfirmed_balance|burst_amount|in_usd|floatformat:2|intcomma }} @ ${{ burst_info.exchange.price_usd|rounding:4|intcomma }}/Burst)</span>
+                {% if address.unconfirmed_balance != address.balance %}
+                  <i> + {{ address.balance|sub:address.unconfirmed_balance|burst_amount|intcomma }} Burst are locked</i>
+                {% endif %}
+              </td>
             </tr>
             <tr>
               <th>Public Key</th>
