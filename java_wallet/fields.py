@@ -5,7 +5,8 @@ from datetime import datetime
 from django.db import models
 from django.utils.translation import ugettext as _
 
-from java_wallet.constants import TX_TYPES, BLOCK_CHAIN_START_AT
+from burst.constants import BLOCK_CHAIN_START_AT
+from java_wallet.constants import TX_TYPES
 
 
 class PositiveBigIntegerField(models.BigIntegerField):

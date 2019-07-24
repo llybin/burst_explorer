@@ -2,7 +2,7 @@ from datetime import datetime
 
 from rest_framework import serializers
 
-from java_wallet.constants import BLOCK_CHAIN_START_AT, TxSubtypePayment
+from burst.constants import BLOCK_CHAIN_START_AT, TxSubtypePayment
 
 
 class PendingTxsSerializer(serializers.Serializer):

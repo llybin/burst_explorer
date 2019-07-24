@@ -10,7 +10,7 @@ from sentry_sdk import capture_exception
 from burst.api.brs.v1 import BrsApi
 from java_wallet.fields import get_desc_tx_type
 
-from java_wallet.constants import TxSubtypePayment, BLOCK_CHAIN_START_AT
+from burst.constants import BLOCK_CHAIN_START_AT, TxSubtypePayment
 from java_wallet.models import Account, Transaction, RewardRecipAssign, Block, Asset
 from scan.models import MultiOut
 

@@ -115,6 +115,15 @@
               <th>Full Hash</th>
               <td class="text-monospace" style="word-wrap: break-word; max-width: 250px">{{ tx.full_hash|bin2hex }}</td>
             </tr>
+            {% if tx.has_message %}
+            <tr class="collapse show_more_info">
+              <th>Message</th>
+              <td class="text-monospace">
+                <textarea id="attachment" class="form-control" spellcheck="false" rows="5" disabled>{{ tx|tx_message }}</textarea>
+                <label for="attachment"></label>
+              </td>
+            </tr>
+            {% endif %}
             <tr class="collapse show_more_info">
               <th>Attachment</th>
               <td class="text-monospace">

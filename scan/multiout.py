@@ -5,7 +5,7 @@ from django.core.cache import cache
 from django.db import connection, transaction
 
 from burst.libs.multiout import MultiOutPack
-from java_wallet.constants import TxType, TxSubtypePayment
+from burst.constants import TxType, TxSubtypePayment
 from java_wallet.models import Transaction, Block
 from scan.models import MultiOut
 from scan.decorators import lock_decorator

@@ -3,6 +3,8 @@ from datetime import timedelta
 from django import template
 
 from burst.libs.reed_solomon import ReedSolomon
+from burst.constants import MAX_BASE_TARGET
+from burst.libs.transactions import get_message
 from java_wallet.fields import get_desc_tx_type
 from java_wallet.models import Block, Transaction
 from scan.helpers import get_exchange_info
@@ -46,6 +48,13 @@ def bin2hex(value: bytes) -> str:
     if not value:
         return ''
     return value.hex().upper()
+
+
+@register.filter
+def tx_message(tx: Transaction) -> str:
+    if not tx.has_message:
+        return ''
+    return get_message(tx.attachment_bytes)
 
 
 @register.filter
@@ -99,7 +108,7 @@ def percent(value: int or float, total: int or float) -> int or float:
 
 @register.filter
 def net_diff(base_target: int) -> float:
-    return 18325193796. / base_target
+    return MAX_BASE_TARGET / base_target
 
 
 @register.simple_tag(takes_context=True)
