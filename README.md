@@ -5,10 +5,6 @@
 [![Build Status](https://travis-ci.com/llybin/burst_explorer.svg?branch=master)](https://travis-ci.com/llybin/burst_explorer)
 [![GPLv3](https://img.shields.io/badge/license-GPLv3-blue.svg)](LICENSE)
 
-## Donations
-
-**BURST-D372-C2DU-HMKK-CQLHA**
-
 ## How to run
 
 `cp .env.default .env`
