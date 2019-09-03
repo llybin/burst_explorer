@@ -12,17 +12,17 @@ vcrpy = "==2.0.1"
 
 [packages]
 celery = {version = "==4.3.0",extras = ["redis"]}
-django = "==2.2.3"
+django = "==2.2.5"
 django-cache-memoize = "==0.1.6"
-django-cors-headers = "==3.0.2"
+django-cors-headers = "==3.1.0"
 django-redis = "==4.10.0"
 djangorestframework = "==3.9.4"
 jsonschema = "==3.0.1"
-mysqlclient = "==1.4.2.post1"
+mysqlclient = "==1.4.4"
 python-dotenv = "==0.10.3"
 python-redis-lock = {version = "==3.3.1",extras = ["django"]}
 requests = "==2.22.0"
-sentry-sdk = "==0.10.2"
+sentry-sdk = "==0.11.2"
 simplejson = "==3.16.0"
 
 [requires]
