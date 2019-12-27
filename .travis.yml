@@ -3,13 +3,10 @@ language: minimal
 services:
   - docker
 
-env:
-  - COMPOSE_FILE=docker-compose.yml
-  - DJANGO_MIGRATE=off
-  - START_SERVER=off
-
 script:
   - cp .env.default .env
+  - echo "DJANGO_MIGRATE=off" >> .env
+  - echo "START_SERVER=off" >> .env
   - docker-compose run service coverage run ./manage.py test -v2
   - docker-compose run service coverage report
   - docker-compose run service coverage xml
