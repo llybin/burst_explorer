@@ -6,5 +6,5 @@ def get_message(attachment: bytes) -> str:
     """
     header = attachment[:5]
     body = attachment[5:]
-    message_len = 2**8 * header[2] + header[1]
+    message_len = 2 ** 8 * header[2] + header[1]
     return body[:message_len].decode()

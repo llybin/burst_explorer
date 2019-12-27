@@ -1,6 +1,6 @@
-import sys
 import logging
 import struct
+import sys
 
 
 class UnpackError(Exception):

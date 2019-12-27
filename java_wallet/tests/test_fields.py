@@ -2,11 +2,7 @@ from datetime import datetime
 
 from django.test import TestCase
 
-from java_wallet.fields import (
-    PositiveBigIntegerField,
-    TimestampField,
-    get_desc_tx_type,
-)
+from java_wallet.fields import PositiveBigIntegerField, TimestampField, get_desc_tx_type
 
 
 class PositiveBigIntegerFieldTest(TestCase):
@@ -19,13 +15,15 @@ class PositiveBigIntegerFieldTest(TestCase):
     def test_min_max(self):
         self.assertEqual(self.field.formfield().min_value, 0)
 
-        self.assertEqual(self.MAX_UBIGINT, int('1' * 8 * 8, 2))
+        self.assertEqual(self.MAX_UBIGINT, int("1" * 8 * 8, 2))
         self.assertEqual(self.field.formfield().max_value, self.MAX_UBIGINT)
 
     def test_from_db_value(self):
         self.assertEqual(self.field.from_db_value(None, None, None), None)
 
-        self.assertEqual(self.field.from_db_value(self.MAX_UBIGINT, None, None), self.MAX_UBIGINT)
+        self.assertEqual(
+            self.field.from_db_value(self.MAX_UBIGINT, None, None), self.MAX_UBIGINT
+        )
         self.assertEqual(self.field.from_db_value(2, None, None), 2)
         self.assertEqual(self.field.from_db_value(1, None, None), 1)
         self.assertEqual(self.field.from_db_value(0, None, None), 0)
@@ -33,7 +31,7 @@ class PositiveBigIntegerFieldTest(TestCase):
         self.assertEqual(self.field.from_db_value(-2, None, None), self.MAX_UBIGINT - 1)
 
     def test_get_prep_value(self):
-        self.assertEqual(self.field.get_prep_value('1'), 1)
+        self.assertEqual(self.field.get_prep_value("1"), 1)
         self.assertEqual(self.field.get_prep_value(None), None)
 
         self.assertEqual(self.field.get_prep_value(self.MAX_UBIGINT - 1), -2)
@@ -41,9 +39,13 @@ class PositiveBigIntegerFieldTest(TestCase):
         self.assertEqual(self.field.get_prep_value(2), 2)
         self.assertEqual(self.field.get_prep_value(1), 1)
         self.assertEqual(self.field.get_prep_value(0), 0)
-        self.assertEqual(self.field.get_prep_value(self.MAX_BIGINT - 1), self.MAX_BIGINT - 1)
+        self.assertEqual(
+            self.field.get_prep_value(self.MAX_BIGINT - 1), self.MAX_BIGINT - 1
+        )
         self.assertEqual(self.field.get_prep_value(self.MAX_BIGINT), self.MAX_BIGINT)
-        self.assertEqual(self.field.get_prep_value(self.MAX_BIGINT + 1), -1 * self.MAX_BIGINT - 1)
+        self.assertEqual(
+            self.field.get_prep_value(self.MAX_BIGINT + 1), -1 * self.MAX_BIGINT - 1
+        )
 
 
 class TimestampFieldTest(TestCase):
@@ -52,13 +54,13 @@ class TimestampFieldTest(TestCase):
 
     def test_from_db_value(self):
         self.assertEqual(
-            self.field.from_db_value(0, None, None),
-            datetime.fromtimestamp(1407722400))
+            self.field.from_db_value(0, None, None), datetime.fromtimestamp(1407722400)
+        )
 
     def test_get_prep_value(self):
         self.assertEqual(
-            self.field.get_prep_value(datetime.fromtimestamp(1407722400)),
-            0)
+            self.field.get_prep_value(datetime.fromtimestamp(1407722400)), 0
+        )
 
 
 class GetTxDescByTypes(TestCase):

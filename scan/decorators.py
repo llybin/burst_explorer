@@ -6,7 +6,7 @@ from django.core.cache import cache
 def lock_decorator(key=None, expire=None, ident=None, auto_renewal=False):
     def decorator(func):
         def _make_lock_key():
-            return "lock_decorator:{}".format(key or func.__name__)
+            return f"lock_decorator:{key or func.__name__}"
 
         @wraps(func)
         def inner(*args, **kwargs):

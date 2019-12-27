@@ -8,7 +8,7 @@ class CachingPaginator(Paginator):
             self._count = None
 
         if self._count is None:
-            key = "paginator:{}:count".format(hash(self.object_list.query.__str__()))
+            key = f"paginator:{hash(self.object_list.query.__str__())}:count"
             self._count = cache.get(key, -1)
             if self._count == -1:
                 self._count = super().count

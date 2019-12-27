@@ -1,4 +1,4 @@
-FROM python:3.6.8-alpine
+FROM python:3.8.1-alpine
 
 EXPOSE 5000 9001
 
@@ -25,7 +25,7 @@ RUN set -ex \
     libffi-dev \
     libxml2-dev \
     linux-headers \
-    && pip install pipenv==2018.11.26 uWSGI==2.0.18 supervisor==4.0.3 \
+    && pip install pipenv==2018.11.26 uWSGI==2.0.18 supervisor==4.1.0 \
     && pipenv install --system --dev --deploy \
     && runDeps="$( \
             scanelf --needed --nobanner --recursive /usr/local \

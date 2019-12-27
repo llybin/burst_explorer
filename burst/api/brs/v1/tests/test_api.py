@@ -2,85 +2,71 @@ from unittest import TestCase
 
 import vcr
 
-from burst.api.exceptions import ClientException, APIException
-from burst.api.brs.v1.queries import QueryBase
 from burst.api.brs.v1 import BrsApi
+from burst.api.brs.v1.queries import QueryBase
+from burst.api.exceptions import APIException, ClientException
 
 my_vcr = vcr.VCR(
-    cassette_library_dir='burst/api/brs/v1/tests/fixtures/vcr',
-    record_mode='once',
+    cassette_library_dir="burst/api/brs/v1/tests/fixtures/vcr",
+    record_mode="once",
     decode_compressed_response=True,
 )
 
 
 class TestQuery(QueryBase):
-    _request_type = 'Test'
-    _http_method = 'GET'
+    _request_type = "Test"
+    _http_method = "GET"
 
 
 class BrsApiTest(TestCase):
     def test_node_url_ok(self):
-        self.assertEqual(
-            BrsApi('http://127.0.0.1:80').node_url,
-            'http://127.0.0.1:80'
-        )
+        self.assertEqual(BrsApi("http://127.0.0.1:80").node_url, "http://127.0.0.1:80")
 
-        self.assertEqual(
-            BrsApi('127.0.0.1:80').node_url,
-            'http://127.0.0.1:80'
-        )
+        self.assertEqual(BrsApi("127.0.0.1:80").node_url, "http://127.0.0.1:80")
 
     def test_node_url_fail(self):
         with self.assertRaises(ClientException) as em:
-            BrsApi('')
+            BrsApi("")
 
-        self.assertEqual(
-            str(em.exception),
-            "Not valid address"
-        )
+        self.assertEqual(str(em.exception), "Not valid address")
 
         with self.assertRaises(ClientException) as em:
-            BrsApi('127.0')
+            BrsApi("127.0")
 
-        self.assertEqual(
-            str(em.exception),
-            "Not valid address"
-        )
+        self.assertEqual(str(em.exception), "Not valid address")
 
     def test_request_get_fail_network(self):
         with self.assertRaises(APIException):
-            BrsApi('http://127.0.0.2:1234')._request(TestQuery())
+            BrsApi("http://127.0.0.2:1234")._request(TestQuery())
 
-    @my_vcr.use_cassette('test_query_malformed_json')
+    @my_vcr.use_cassette("test_query_malformed_json.yaml")
     def test_request_get_malformed_json(self):
         with self.assertRaises(APIException):
-            BrsApi('https://wallet.burst.devtrue.net')._request(TestQuery())
+            BrsApi("https://wallet.burst.devtrue.net")._request(TestQuery())
 
-    @my_vcr.use_cassette('test_query_malformed_data')
+    @my_vcr.use_cassette("test_query_malformed_data.yaml")
     def test_request_get_malformed_data(self):
         class Temp(TestQuery):
-            _response_json_schema = {
-                "type": "array",
-                "items": {"type": "string"}
-            }
+            _response_json_schema = {"type": "array", "items": {"type": "string"}}
 
         with self.assertRaises(APIException):
-            BrsApi('https://wallet.burst.devtrue.net')._request(Temp())
+            BrsApi("https://wallet.burst.devtrue.net")._request(Temp())
 
 
 class GetPeersTest(TestCase):
-    @my_vcr.use_cassette('get_peers')
+    @my_vcr.use_cassette("get_peers.yaml")
     def test_ok(self):
         self.assertListEqual(
-            BrsApi('https://wallet.burst.devtrue.net').get_peers(),
-            ["68.65.35.34", "[2a01:4f8:bc:aa1:0:0:0:b67c]"])
+            BrsApi("https://wallet.burst.devtrue.net").get_peers(),
+            ["68.65.35.34", "[2a01:4f8:bc:aa1:0:0:0:b67c]"],
+        )
 
 
 class GetPeerTest(TestCase):
-    @my_vcr.use_cassette('get_peer_offline')
+    @my_vcr.use_cassette("get_peer_offline.yaml")
     def test_offline(self):
         self.assertDictEqual(
-            BrsApi('https://wallet.burst.devtrue.net').get_peer('68.65.35.34'),
+            BrsApi("https://wallet.burst.devtrue.net").get_peer("68.65.35.34"),
             {
                 "state": 0,
                 "announcedAddress": "68.65.35.34",
@@ -92,13 +78,14 @@ class GetPeerTest(TestCase):
                 "platform": None,
                 "blacklisted": False,
                 "lastUpdated": 0,
-                "requestProcessingTime": 0
-            })
+                "requestProcessingTime": 0,
+            },
+        )
 
-    @my_vcr.use_cassette('get_peer_online')
+    @my_vcr.use_cassette("get_peer_online.yaml")
     def test_online(self):
         self.assertDictEqual(
-            BrsApi('https://wallet.burst.devtrue.net').get_peer('178.48.21.145'),
+            BrsApi("https://wallet.burst.devtrue.net").get_peer("178.48.21.145"),
             {
                 "state": 0,
                 "announcedAddress": "178.48.21.145",
@@ -110,25 +97,26 @@ class GetPeerTest(TestCase):
                 "platform": "Q-H2",
                 "blacklisted": False,
                 "lastUpdated": 151846101,
-                "requestProcessingTime": 0
-            })
+                "requestProcessingTime": 0,
+            },
+        )
 
-    @my_vcr.use_cassette('get_peer_error')
+    @my_vcr.use_cassette("get_peer_error.yaml")
     def test_error(self):
         with self.assertRaises(APIException) as em:
-            BrsApi('https://wallet.burst.devtrue.net').get_peer('178.48.21.1451')
+            BrsApi("https://wallet.burst.devtrue.net").get_peer("178.48.21.1451")
 
         self.assertEqual(
             str(em.exception),
-            "{'errorCode': 5, 'errorDescription': 'Unknown peer', 'requestProcessingTime': 2}"
+            "{'errorCode': 5, 'errorDescription': 'Unknown peer', 'requestProcessingTime': 2}",
         )
 
 
 class GetBlockChainStatusTest(TestCase):
-    @my_vcr.use_cassette('get_block_chain_status')
+    @my_vcr.use_cassette("get_block_chain_status.yaml")
     def test_ok(self):
         self.assertDictEqual(
-            BrsApi('https://wallet.burst.devtrue.net').get_block_chain_status(),
+            BrsApi("https://wallet.burst.devtrue.net").get_block_chain_status(),
             {
                 "application": "BRS",
                 "version": "v2.3.0",
@@ -139,28 +127,30 @@ class GetBlockChainStatusTest(TestCase):
                 "lastBlockchainFeeder": "75.100.126.227",
                 "lastBlockchainFeederHeight": 628450,
                 "isScanning": False,
-                "requestProcessingTime": 0
-            })
+                "requestProcessingTime": 0,
+            },
+        )
 
 
 class GetMiningInfoTest(TestCase):
-    @my_vcr.use_cassette('get_mining_info')
+    @my_vcr.use_cassette("get_mining_info.yaml")
     def test_ok(self):
         self.assertDictEqual(
-            BrsApi('https://wallet.burst.devtrue.net').get_mining_info(),
+            BrsApi("https://wallet.burst.devtrue.net").get_mining_info(),
             {
                 "height": "628451",
                 "generationSignature": "f25a6d8b694382fddfef15057e969cd3db6dee8c982f392a7ca4785f0507f9cb",
                 "baseTarget": "68942",
-                "requestProcessingTime": 0
-            })
+                "requestProcessingTime": 0,
+            },
+        )
 
 
 class GetStateTest(TestCase):
-    @my_vcr.use_cassette('get_state')
+    @my_vcr.use_cassette("get_state.yaml")
     def test_ok(self):
         self.assertDictEqual(
-            BrsApi('https://wallet.burst.devtrue.net').get_state(),
+            BrsApi("https://wallet.burst.devtrue.net").get_state(),
             {
                 "application": "BRS",
                 "version": "v2.3.0",
@@ -187,15 +177,16 @@ class GetStateTest(TestCase):
                 "maxMemory": 524288000,
                 "totalMemory": 188743680,
                 "freeMemory": 78025328,
-                "requestProcessingTime": 9608
-            })
+                "requestProcessingTime": 9608,
+            },
+        )
 
 
 class GetUnconfirmedTransactionsTest(TestCase):
-    @my_vcr.use_cassette('get_unconfirmed_transactions_multiout')
+    @my_vcr.use_cassette("get_unconfirmed_transactions_multiout.yaml")
     def test_multiout(self):
         self.assertListEqual(
-            BrsApi('https://wallet.burst.devtrue.net').get_unconfirmed_transactions(),
+            BrsApi("https://wallet.burst.devtrue.net").get_unconfirmed_transactions(),
             [
                 {
                     "type": 0,
@@ -218,22 +209,23 @@ class GetUnconfirmedTransactionsTest(TestCase):
                             ["15292335569475861611", "10050574440"],
                             ["15421345662421390096", "10012112866"],
                             ["18248060628606727216", "10123985380"],
-                            ["3581830426445587205", "10792219342"]
-                        ]
+                            ["3581830426445587205", "10792219342"],
+                        ],
                     },
                     "sender": "3606956930919944878",
                     "senderRS": "BURST-VNPG-8ZFT-5DC8-5WM56",
                     "height": 628533,
                     "version": 1,
                     "ecBlockId": "5188876724881306039",
-                    "ecBlockHeight": 628522
+                    "ecBlockHeight": 628522,
                 }
-            ])
+            ],
+        )
 
-    @my_vcr.use_cassette('get_unconfirmed_transactions_single')
+    @my_vcr.use_cassette("get_unconfirmed_transactions_single.yaml")
     def test_single(self):
         self.assertListEqual(
-            BrsApi('https://wallet.burst.devtrue.net').get_unconfirmed_transactions(),
+            BrsApi("https://wallet.burst.devtrue.net").get_unconfirmed_transactions(),
             [
                 {
                     "type": 0,
@@ -254,14 +246,15 @@ class GetUnconfirmedTransactionsTest(TestCase):
                     "height": 628552,
                     "version": 1,
                     "ecBlockId": "8357613288046163076",
-                    "ecBlockHeight": 628544
+                    "ecBlockHeight": 628544,
                 }
-            ])
+            ],
+        )
 
-    @my_vcr.use_cassette('get_unconfirmed_transactions_multiout_same')
+    @my_vcr.use_cassette("get_unconfirmed_transactions_multiout_same.yaml")
     def test_multiout_same(self):
         self.assertListEqual(
-            BrsApi('https://wallet.burst.devtrue.net').get_unconfirmed_transactions(),
+            BrsApi("https://wallet.burst.devtrue.net").get_unconfirmed_transactions(),
             [
                 {
                     "type": 0,
@@ -277,15 +270,14 @@ class GetUnconfirmedTransactionsTest(TestCase):
                     "transaction": "2067014546044748076",
                     "attachment": {
                         "version.MultiSameOutCreation": 1,
-                        "recipients": [
-                            "820256820168033388",
-                            "8087908814943479341"
-                        ]},
+                        "recipients": ["820256820168033388", "8087908814943479341"],
+                    },
                     "sender": "820256820168033388",
                     "senderRS": "BURST-C35E-9FMD-NUDP-25KSQ",
                     "height": 2147483647,
                     "version": 1,
                     "ecBlockId": "12109381587560828069",
-                    "ecBlockHeight": 633157
+                    "ecBlockHeight": 633157,
                 }
-            ])
+            ],
+        )

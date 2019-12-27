@@ -12,12 +12,12 @@ def fill_data(obj):
 
 class AtListView(ListView):
     model = At
-    queryset = At.objects.using('java_wallet').filter(latest=True).all()
-    template_name = 'ats/list.html'
-    context_object_name = 'ats'
+    queryset = At.objects.using("java_wallet").filter(latest=True).all()
+    template_name = "ats/list.html"
+    context_object_name = "ats"
     paginator_class = CachingPaginator
     paginate_by = 25
-    ordering = '-height'
+    ordering = "-height"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -32,11 +32,11 @@ class AtListView(ListView):
 
 class AtDetailView(IntSlugDetailView):
     model = At
-    queryset = At.objects.using('java_wallet').filter(latest=True).all()
-    template_name = 'ats/detail.html'
-    context_object_name = 'at'
-    slug_field = 'id'
-    slug_url_kwarg = 'id'
+    queryset = At.objects.using("java_wallet").filter(latest=True).all()
+    template_name = "ats/detail.html"
+    context_object_name = "at"
+    slug_field = "id"
+    slug_url_kwarg = "id"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

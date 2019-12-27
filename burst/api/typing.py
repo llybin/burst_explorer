@@ -1,4 +1,4 @@
-from typing import Union, Any, List, Dict
+from typing import Any, Dict, List, Union
 
 # define a type for the returned stuff of parsed JSON,
 # at least until the fine folks at https://github.com/python/typing/issues/182 find a solution.

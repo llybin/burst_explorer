@@ -2,8 +2,8 @@ from datetime import timedelta
 
 from django import template
 
-from burst.libs.reed_solomon import ReedSolomon
 from burst.constants import MAX_BASE_TARGET
+from burst.libs.reed_solomon import ReedSolomon
 from burst.libs.transactions import get_message
 from java_wallet.fields import get_desc_tx_type
 from java_wallet.models import Block, Transaction
@@ -35,7 +35,7 @@ def burst_amount(value: int) -> float:
 @register.filter
 def in_usd(value: float) -> float:
     info = get_exchange_info()
-    return value * info['price_usd']
+    return value * info["price_usd"]
 
 
 @register.filter
@@ -46,14 +46,14 @@ def rounding(value: float, accuracy: int) -> float:
 @register.filter
 def bin2hex(value: bytes) -> str:
     if not value:
-        return ''
+        return ""
     return value.hex().upper()
 
 
 @register.filter
 def tx_message(tx: Transaction) -> str:
     if not tx.has_message:
-        return ''
+        return ""
     return get_message(tx.attachment_bytes)
 
 
@@ -114,7 +114,7 @@ def net_diff(base_target: int) -> float:
 @register.simple_tag(takes_context=True)
 def rank_row(context: dict, number: int) -> int:
     start = 0
-    if context['page_obj'].number > 0:
-        start = context['paginator'].per_page * (context['page_obj'].number - 1)
+    if context["page_obj"].number > 0:
+        start = context["paginator"].per_page * (context["page_obj"].number - 1)
 
     return number + start

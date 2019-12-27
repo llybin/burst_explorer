@@ -1,12 +1,22 @@
-from django.db import models
+from django.db.models import (
+    BigAutoField,
+    CharField,
+    DateTimeField,
+    FloatField,
+    IntegerField,
+    Model,
+    PositiveIntegerField,
+    PositiveSmallIntegerField,
+)
 from django.utils.translation import ugettext as _
 
 from java_wallet.fields import PositiveBigIntegerField
 
 
-class MultiOut(models.Model):
+class MultiOut(Model):
     class TxSubtype:
         """java_wallet/constants.py"""
+
         MULTI_OUT = 1
         MULTI_OUT_SAME = 2
 
@@ -15,22 +25,22 @@ class MultiOut(models.Model):
         (TxSubtype.MULTI_OUT_SAME, _("MultiOutSame Payment")),
     )
 
-    id = models.BigAutoField(primary_key=True)
-    height = models.IntegerField()
+    id = BigAutoField(primary_key=True)
+    height = IntegerField()
     tx_id = PositiveBigIntegerField()
     sender_id = PositiveBigIntegerField(db_index=True)
     recipient_id = PositiveBigIntegerField(db_index=True)
     amount = PositiveBigIntegerField()
-    tx_subtype = models.PositiveSmallIntegerField(choices=TX_SUBTYPE_CHOICES)
-    tx_timestamp = models.DateTimeField()
-    created_at = models.DateTimeField(auto_now_add=True)
+    tx_subtype = PositiveSmallIntegerField(choices=TX_SUBTYPE_CHOICES)
+    tx_timestamp = DateTimeField()
+    created_at = DateTimeField(auto_now_add=True)
 
     class Meta:
         index_together = ["height", "tx_timestamp"]
         unique_together = ["tx_id", "recipient_id"]
 
 
-class PeerMonitor(models.Model):
+class PeerMonitor(Model):
     class State:
         ONLINE = 1
         UNREACHABLE = 2
@@ -46,22 +56,22 @@ class PeerMonitor(models.Model):
         (State.FORKED, _("forked")),
     )
 
-    announced_address = models.CharField(primary_key=True, max_length=255)
-    platform = models.CharField(max_length=255, blank=True)
-    application = models.CharField(max_length=255, blank=True)
-    version = models.CharField(max_length=255, blank=True)
+    announced_address = CharField(primary_key=True, max_length=255)
+    platform = CharField(max_length=255, blank=True)
+    application = CharField(max_length=255, blank=True)
+    version = CharField(max_length=255, blank=True)
 
-    height = models.PositiveIntegerField(db_index=True, blank=True)
-    cumulative_difficulty = models.CharField(max_length=255, blank=True)
+    height = PositiveIntegerField(db_index=True, blank=True)
+    cumulative_difficulty = CharField(max_length=255, blank=True)
 
-    country_code = models.CharField(max_length=2, blank=True)
-    state = models.PositiveSmallIntegerField(choices=STATE_CHOICES, db_index=True)
-    downtime = models.PositiveIntegerField(default=0, blank=True)
-    lifetime = models.PositiveIntegerField(default=0, blank=True)
+    country_code = CharField(max_length=2, blank=True)
+    state = PositiveSmallIntegerField(choices=STATE_CHOICES, db_index=True)
+    downtime = PositiveIntegerField(default=0, blank=True)
+    lifetime = PositiveIntegerField(default=0, blank=True)
     # computed, optimization
-    availability = models.FloatField(default=0, blank=True)
+    availability = FloatField(default=0, blank=True)
 
-    last_online_at = models.DateTimeField()
+    last_online_at = DateTimeField()
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    modified_at = models.DateTimeField(auto_now=True)
+    created_at = DateTimeField(auto_now_add=True)
+    modified_at = DateTimeField(auto_now=True)

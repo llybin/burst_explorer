@@ -7,34 +7,31 @@ from burst.api.brs.v1.queries import QueryBase as QueryBaseApiV1
 
 
 class QueryBase(QueryBaseApiV1, abc.ABC):
-    _http_method = 'POST'
-    _error_field = 'error'
-    _protocol_field = 'protocol'
-    _protocol = 'B1'
+    _http_method = "POST"
+    _error_field = "error"
+    _protocol_field = "protocol"
+    _protocol = "B1"
 
     @property
     def params(self) -> dict:
         return {
             self._request_type_field: self._request_type,
             self._protocol_field: self._protocol,
-            **self._params}
+            **self._params,
+        }
 
 
 class GetPeers(QueryBase):
-    _request_type = 'getPeers'
+    _request_type = "getPeers"
     _response_json_schema = {
         "type": "object",
-        "properties": {
-            "peers": {"type": "array"},
-        },
-        "required": [
-            "peers"
-        ]
+        "properties": {"peers": {"type": "array"}},
+        "required": ["peers"],
     }
 
 
 class GetInfo(QueryBase):
-    _request_type = 'getInfo'
+    _request_type = "getInfo"
     _response_json_schema = {
         "type": "object",
         "properties": {
@@ -50,63 +47,60 @@ class GetInfo(QueryBase):
             "version",
             "platform",
             "shareAddress",
-        ]
+        ],
     }
 
 
 class GetCumulativeDifficulty(QueryBase):
-    _request_type = 'getCumulativeDifficulty'
+    _request_type = "getCumulativeDifficulty"
     _response_json_schema = {
         "type": "object",
         "properties": {
             "cumulativeDifficulty": {"type": "string"},
             "blockchainHeight": {"type": "integer"},
         },
-        "required": [
-            "cumulativeDifficulty",
-            "blockchainHeight",
-        ]
+        "required": ["cumulativeDifficulty", "blockchainHeight"],
     }
 
 
 class AddPeers(QueryBase):
-    _request_type = 'addPeers'
+    _request_type = "addPeers"
 
 
 class GetMilestoneBlockIds(QueryBase):
-    _request_type = 'getMilestoneBlockIds'
+    _request_type = "getMilestoneBlockIds"
 
 
 class GetNextBlockIds(QueryBase):
-    _request_type = 'getNextBlockIds'
+    _request_type = "getNextBlockIds"
 
 
 class GetBlocksFromHeight(QueryBase):
-    _request_type = 'getBlocksFromHeight'
+    _request_type = "getBlocksFromHeight"
 
 
 class GetNextBlocks(QueryBase):
-    _request_type = 'getNextBlocks'
+    _request_type = "getNextBlocks"
 
 
 class GetUnconfirmedTransactions(QueryBase):
-    _request_type = 'getUnconfirmedTransactions'
+    _request_type = "getUnconfirmedTransactions"
 
 
 class ProcessBlock(QueryBase):
-    _request_type = 'processBlock'
+    _request_type = "processBlock"
 
 
 class ProcessTransactions(QueryBase):
-    _request_type = 'processTransactions'
+    _request_type = "processTransactions"
 
 
 class GetAccountBalance(QueryBase):
-    _request_type = 'getAccountBalance'
+    _request_type = "getAccountBalance"
 
 
 class GetAccountRecentTransactions(QueryBase):
-    _request_type = 'getAccountRecentTransactions'
+    _request_type = "getAccountRecentTransactions"
 
 
 # TODO: tests

@@ -8,22 +8,22 @@ from scan.multiout import (
 
 
 class MultiOutListViewTests(TestCase):
-    databases = {'default', 'java_wallet'}
+    databases = {"default", "java_wallet"}
 
     def test_slash_redirect(self):
-        response = self.client.get('/mos')
+        response = self.client.get("/mos")
         self.assertEqual(response.status_code, 301)
 
     def test_ok(self):
-        response = self.client.get('/mos/')
+        response = self.client.get("/mos/")
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'transactions found')
-        self.assertContains(response, 'Blockchain Explorer - MultiOut</title>')
-        self.assertQuerysetEqual(response.context['mos'], [])
+        self.assertContains(response, "transactions found")
+        self.assertContains(response, "Blockchain Explorer - MultiOut</title>")
+        self.assertQuerysetEqual(response.context["mos"], [])
 
 
 class MultiOutAggrTests(TestCase):
-    databases = {'default', 'java_wallet'}
+    databases = {"default", "java_wallet"}
 
     def test_aggregate_greater_height(self):
         # just call todo after fixtures
@@ -34,7 +34,4 @@ class MultiOutAggrTests(TestCase):
         self.assertEqual(find_last_actual_aggr_block(0), 0)
 
     def test_group_list(self):
-        self.assertTupleEqual(
-            tuple(group_list([1, 2, 3, 4], 2)),
-            ((1, 2), (3, 4))
-        )
+        self.assertTupleEqual(tuple(group_list([1, 2, 3, 4], 2)), ((1, 2), (3, 4)))

@@ -4,7 +4,7 @@ from django.views.generic import ListView
 from burst.libs.multiout import MultiOutPack
 from java_wallet.models import Transaction
 from scan.caching_paginator import CachingPaginator
-from scan.helpers import get_account_name, get_txs_count, get_last_height
+from scan.helpers import get_account_name, get_last_height, get_txs_count
 from scan.models import MultiOut
 from scan.views.base import IntSlugDetailView
 
@@ -22,22 +22,23 @@ def fill_data_transaction(obj, list_page=True):
 
 class TxListView(ListView):
     model = Transaction
-    queryset = Transaction.objects.using('java_wallet').all()
-    template_name = 'txs/list.html'
-    context_object_name = 'txs'
+    queryset = Transaction.objects.using("java_wallet").all()
+    template_name = "txs/list.html"
+    context_object_name = "txs"
     paginator_class = CachingPaginator
     paginate_by = 25
-    ordering = ('-height', '-timestamp')
+    ordering = ("-height", "-timestamp")
 
     def get_queryset(self):
         qs = super().get_queryset()
 
-        if self.request.GET.get('block'):
-            qs = qs.filter(block__height=self.request.GET.get('block'))
+        if self.request.GET.get("block"):
+            qs = qs.filter(block__height=self.request.GET.get("block"))
 
-        elif self.request.GET.get('a'):
+        elif self.request.GET.get("a"):
             qs = qs.filter(
-                Q(sender_id=self.request.GET.get('a')) | Q(recipient_id=self.request.GET.get('a'))
+                Q(sender_id=self.request.GET.get("a"))
+                | Q(recipient_id=self.request.GET.get("a"))
             )
 
         else:
@@ -54,18 +55,18 @@ class TxListView(ListView):
             fill_data_transaction(t, list_page=True)
 
         # TODO: needed only if no filtering
-        context['txs_cnt'] = get_txs_count()
+        context["txs_cnt"] = get_txs_count()
 
         return context
 
 
 class TxDetailView(IntSlugDetailView):
     model = Transaction
-    queryset = Transaction.objects.using('java_wallet').all()
-    template_name = 'txs/detail.html'
-    context_object_name = 'tx'
-    slug_field = 'id'
-    slug_url_kwarg = 'id'
+    queryset = Transaction.objects.using("java_wallet").all()
+    template_name = "txs/detail.html"
+    context_object_name = "tx"
+    slug_field = "id"
+    slug_url_kwarg = "id"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

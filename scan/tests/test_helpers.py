@@ -6,23 +6,23 @@ from django.test import override_settings
 from scan.helpers import get_exchange_info, get_pending_txs
 
 my_vcr = vcr.VCR(
-    cassette_library_dir='scan/tests/fixtures/vcr/information',
-    record_mode='once',
+    cassette_library_dir="scan/tests/fixtures/vcr/information",
+    record_mode="once",
     decode_compressed_response=True,
 )
 
 
 class GetPendingTxs(TestCase):
-    @my_vcr.use_cassette('get_pending_txs')
+    @my_vcr.use_cassette("get_pending_txs.yaml")
     def test_ok(self):
         txs = get_pending_txs()
         self.assertEqual(len(txs), 15)
-        self.assertEqual(txs[14]['multiout'], 2)
-        self.assertEqual(txs[0]['multiout'], 6)
+        self.assertEqual(txs[14]["multiout"], 2)
+        self.assertEqual(txs[0]["multiout"], 6)
 
 
 class GetExchangeInfoTest(TestCase):
-    @my_vcr.use_cassette('coinmarketcap_success')
+    @my_vcr.use_cassette("coinmarketcap_success.yaml")
     def test_ok(self):
         self.assertDictEqual(
             get_exchange_info(_refresh=True),
@@ -41,20 +41,20 @@ class GetExchangeInfoTest(TestCase):
                 "percent_change_1h": "-3.81",
                 "percent_change_24h": -5.14,
                 "percent_change_7d": "-4.53",
-                "last_updated": "1559812981"
-            }
+                "last_updated": "1559812981",
+            },
         )
 
-    @my_vcr.use_cassette('coinmarketcap_many_requests')
+    @my_vcr.use_cassette("coinmarketcap_many_requests.yaml")
     def test_many_requests_error(self):
         self.assertDictEqual(
             get_exchange_info(_refresh=True),
             {
-                'price_usd': 0,
-                '24h_volume_usd': 0,
-                'market_cap_usd': 0,
-                'percent_change_24h': 0,
-            }
+                "price_usd": 0,
+                "24h_volume_usd": 0,
+                "market_cap_usd": 0,
+                "percent_change_24h": 0,
+            },
         )
 
     @override_settings(TEST_NET=True)
@@ -62,9 +62,9 @@ class GetExchangeInfoTest(TestCase):
         self.assertDictEqual(
             get_exchange_info(_refresh=True),
             {
-                'price_usd': 0,
-                '24h_volume_usd': 0,
-                'market_cap_usd': 0,
-                'percent_change_24h': 0,
-            }
+                "price_usd": 0,
+                "24h_volume_usd": 0,
+                "market_cap_usd": 0,
+                "percent_change_24h": 0,
+            },
         )
