@@ -12,11 +12,8 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
-import sentry_sdk
 import simplejson as json
 from dotenv import load_dotenv
-from sentry_sdk.integrations.celery import CeleryIntegration
-from sentry_sdk.integrations.django import DjangoIntegration
 
 load_dotenv()
 
@@ -213,8 +210,14 @@ ACCOUNTS_NAME_FORCE = [
 SENTRY_DSN = os.getenv("SENTRY_DSN")
 
 if SENTRY_DSN:
-    sentry_sdk.init(
-        dsn=SENTRY_DSN, integrations=[DjangoIntegration(), CeleryIntegration()]
+    from sentry_sdk import init
+    from sentry_sdk.integrations.celery import CeleryIntegration
+    from sentry_sdk.integrations.django import DjangoIntegration
+    from sentry_sdk.integrations.redis import RedisIntegration
+
+    init(
+        dsn=SENTRY_DSN,
+        integrations=[DjangoIntegration(), CeleryIntegration(), RedisIntegration()],
     )
 
 # UA-XXXXXXXXX-X
