@@ -73,7 +73,7 @@ MIDDLEWARE = [
 if DEBUG:
     MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
 
-ROOT_URLCONF = "explorer.urls"
+ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
     {
@@ -92,7 +92,7 @@ TEMPLATES = [
     }
 ]
 
-WSGI_APPLICATION = "explorer.wsgi.application"
+WSGI_APPLICATION = "config.wsgi.application"
 
 
 # Database
