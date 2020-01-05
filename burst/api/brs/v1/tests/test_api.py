@@ -1,12 +1,12 @@
 from unittest import TestCase
 
-import vcr
+from vcr import VCR
 
 from burst.api.brs.v1 import BrsApi
 from burst.api.brs.v1.queries import QueryBase
 from burst.api.exceptions import APIException, ClientException
 
-my_vcr = vcr.VCR(
+my_vcr = VCR(
     cassette_library_dir="burst/api/brs/v1/tests/fixtures/vcr",
     record_mode="once",
     decode_compressed_response=True,

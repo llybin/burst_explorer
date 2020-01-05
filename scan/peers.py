@@ -3,6 +3,7 @@ import random
 import socket
 from concurrent.futures import ThreadPoolExecutor
 from datetime import timedelta
+from distutils.version import LooseVersion
 from functools import lru_cache
 from urllib.parse import urlparse
 
@@ -64,17 +65,14 @@ class PeerMonitorForm(forms.ModelForm):
 
 
 def is_good_version(version: str) -> bool:
-    m_major, m_minor, m_patch = settings.MIN_PEER_VERSION.split(".")
+    if not version:
+        return False
+    if version[0] == "v":
+        version = version[1:]
 
-    version = version.replace("v", "")
     try:
-        major, minor, patch = version.split(".")
-        if int(major) < int(m_major):
-            return False
-        if int(minor) < int(m_minor):
-            return False
-        return True
-    except ValueError:
+        return LooseVersion(version) >= LooseVersion(settings.MIN_PEER_VERSION)
+    except TypeError:
         return False
 
 

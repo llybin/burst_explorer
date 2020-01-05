@@ -10,7 +10,6 @@ freezegun = "==0.3.12"
 vcrpy = "==4.0.2"
 ipython = "*"
 
-
 [packages]
 celery = {version = "==4.4.0",extras = ["redis"]}
 django = "==2.2.9"

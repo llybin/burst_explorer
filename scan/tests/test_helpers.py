@@ -1,11 +1,11 @@
 from unittest import TestCase
 
-import vcr
 from django.test import override_settings
+from vcr import VCR
 
 from scan.helpers import get_exchange_info, get_pending_txs
 
-my_vcr = vcr.VCR(
+my_vcr = VCR(
     cassette_library_dir="scan/tests/fixtures/vcr/information",
     record_mode="once",
     decode_compressed_response=True,

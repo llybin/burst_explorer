@@ -1,10 +1,10 @@
-import datetime
+from datetime import datetime
 from unittest import mock
 
-import vcr
 from django.forms.models import model_to_dict
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from freezegun import freeze_time
+from vcr import VCR
 
 from scan.models import PeerMonitor
 from scan.peers import (
@@ -16,7 +16,7 @@ from scan.peers import (
     is_good_version,
 )
 
-my_vcr = vcr.VCR(
+my_vcr = VCR(
     cassette_library_dir="scan/tests/fixtures/vcr/peers",
     record_mode="once",
     decode_compressed_response=True,
@@ -62,7 +62,7 @@ class PeersChartsViewTests(TestCase):
         self.assertEqual(response.context["states"][4], {"state": "forked", "cnt": 1})
         self.assertEqual(
             response.context["last_check"],
-            {"modified_at": datetime.datetime(2019, 7, 10, 16, 28, 42, 333593)},
+            {"modified_at": datetime(2019, 7, 10, 16, 28, 42, 333593)},
         )
 
 
@@ -105,7 +105,7 @@ class PeerDetailViewTests(TestCase):
                 "cumulative_difficulty": "64762191462137382682",
                 "downtime": 0,
                 "height": 641085,
-                "last_online_at": datetime.datetime(2019, 7, 10, 16, 28, 33, 628425),
+                "last_online_at": datetime(2019, 7, 10, 16, 28, 33, 628425),
                 "lifetime": 17,
                 "platform": "BURST-QKWB-QWSX-8K2F-3NQ9T",
                 "state": 1,
@@ -147,12 +147,16 @@ class GetIPByDomainTests(TestCase):
         self.assertEqual(get_ip_by_domain("1.0.0"), "1.0.0.0")
 
 
+@override_settings(MIN_PEER_VERSION="2.3.0")
 class IsGoodVersionTests(TestCase):
-    def test_ok(self):
+    def test_good(self):
         self.assertTrue(is_good_version("2.3.0"))
         self.assertTrue(is_good_version("2.3.1"))
         self.assertTrue(is_good_version("2.4.0"))
         self.assertTrue(is_good_version("v2.4.0"))
+        self.assertTrue(is_good_version("v3.1.0.dev"))
+
+    def test_not_good(self):
         self.assertFalse(is_good_version("2.2.0"))
 
     def test_wrong(self):
@@ -182,7 +186,7 @@ class ExplorePeerTests(TestCase):
                     "country_code": "FR",
                     "cumulative_difficulty": "64770577730996744870",
                     "height": 641103,
-                    "last_online_at": datetime.datetime(2019, 7, 10, 17, 47, 6, 963229),
+                    "last_online_at": datetime(2019, 7, 10, 17, 47, 6, 963229),
                     "platform": "BURST-BTKF-8WT9-L98N-98JH2",
                     "version": "v2.4.0",
                 }
@@ -210,7 +214,7 @@ class PeerSetStateTests(TestCase):
             "country_code": "FR",
             "cumulative_difficulty": "64770577730996744870",
             "height": 641103,
-            "last_online_at": datetime.datetime(2019, 7, 10, 17, 47, 6, 963229),
+            "last_online_at": datetime(2019, 7, 10, 17, 47, 6, 963229),
             "platform": "BURST-BTKF-8WT9-L98N-98JH2",
             "version": "v2.4.0",
         }
