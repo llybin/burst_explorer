@@ -229,10 +229,12 @@ def peer_cmd():
         with ThreadPoolExecutor(max_workers=20) as executor:
             executor.map(lambda address: explore_node(address, updates), addresses)
 
+    updates_with_data = tuple(filter(lambda x: x is not None, updates.values()))
+
     # if more than __% peers were gone offline in __min, probably network problem
-    if len(updates) < get_count_nodes_online() * 0.9:
+    if len(updates_with_data) < get_count_nodes_online() * 0.9:
         logger.warning(
-            "Peers update was rejected: %d - %d", len(updates), len(addresses)
+            "Peers update was rejected: %d - %d", len(updates_with_data), len(addresses)
         )
         capture_message("Peers update was rejected.")
         return
@@ -241,10 +243,7 @@ def peer_cmd():
     PeerMonitor.objects.update(state=PeerMonitor.State.UNREACHABLE)
 
     # calculate state and apply updates
-    for update in updates.values():
-        if not update:
-            continue
-
+    for update in updates_with_data:
         logger.debug("Update: %r", update)
 
         peer_obj = PeerMonitor.objects.filter(
