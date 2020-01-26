@@ -1,0 +1,34 @@
+[tool.poetry]
+name = "burst_explorer"
+version = "1.5.0"
+description = "BurstCoin Blockchain Explorer"
+authors = ["Lev Lybin <lev.lybin@gmail.com>"]
+license = "GPL-3.0"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+celery = {version = "^4.4.0", extras = ["redis"]}
+django = "^2.2.9"
+django-cache-memoize = "^0.1.6"
+django-cors-headers = "^3.2.1"
+django-redis = "^4.11.0"
+djangorestframework = "^3.11.0"
+jsonschema = "^3.2.0"
+mysqlclient = "^1.4.6"
+python-dotenv = "^0.10.5"
+python-redis-lock = {version = "^3.5.0", extras = ["django"]}
+requests = {version = "^2.22.0", extras = ["security"]}
+sentry-sdk = "^0.14.1"
+simplejson = "^3.17.0"
+whitenoise = "^5.0.1"
+
+[tool.poetry.dev-dependencies]
+coverage = "^5.0.3"
+django-debug-toolbar = "^2.1"
+freezegun = "^0.3.14"
+vcrpy = "^4.0.2"
+ipython = "^7.11.1"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
