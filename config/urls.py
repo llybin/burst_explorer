@@ -38,6 +38,7 @@ from scan.views.peers import (
     PeerMonitorListView,
     peers_charts_view,
 )
+from scan.views.pending_transactions import pending_transactions
 from scan.views.search import search_view
 from scan.views.transactions import TxDetailView, TxListView
 
@@ -46,6 +47,7 @@ urlpatterns = [
     path("blocks/", BlockListView.as_view(), name="blocks"),
     path("block/<str:height>", BlockDetailView.as_view(), name="block-detail"),
     path("mos/", MultiOutListView.as_view(), name="mos"),
+    path("txsPending/", pending_transactions, name="txs-pending"),
     path("txs/", TxListView.as_view(), name="txs"),
     path("tx/<str:id>", TxDetailView.as_view(), name="tx-detail"),
     path("accounts/", AccountsListView.as_view(), name="accounts"),

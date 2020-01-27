@@ -1,8 +1,20 @@
 {% load humanize %}
 {% load burst_tags %}
 
-<div class="table-responsive" style="position: relative;height: 205px;overflow: auto;display: block;">
+<div class="table-responsive">
   <table class="table table-hover small table-sm">
+  {% if show_head %}
+    <thead>
+      <tr>
+        <th scope="col">Timestamp</th>
+        <th scope="col">Type</th>
+        <th scope="col">From</th>
+        <th scope="col">To</th>
+        <th scope="col">Value</th>
+        <th scope="col">Txn Fee</th>
+      </tr>
+    </thead>
+  {% endif %}
     <tbody>
     {% for tx in txs_pending %}
       <tr>

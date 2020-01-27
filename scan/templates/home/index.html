@@ -78,15 +78,23 @@ Network Difficult: {% if blocks %}{%  with blocks|first as last_block %}{{ last_
       </div>
     </div>
   </div>
+
+  <div class="card-deck mb-3 text-center">
+    <div class="card mb-4 shadow-sm">
+      <div class="card-body">
+        By donating, you help the development of the explorer and cover maintenance costs:
+          <a href="{% url 'address-detail' 11834991772770337952 %}">BURST-D372-C2DU-HMKK-CQLHA</a> |
+          <a href="{% url 'asset-detail' 14686983107863035136 %}">BurstScan ❤️ Asset</a>
+      </div>
+    </div>
+  </div>
 {% endif %}
 
   <div class="card-deck mb-3 text-center">
     <div class="card mb-4 shadow-sm">
-      <div class="card-header">
-        <h5 class="my-0 font-weight-normal">Pending transactions</h5>
-      </div>
       <div class="card-body">
-        {% include "home/txs_pendings.html" %}
+        {% include "txs_pending/txs_pendings.html" %}
+        <a class="btn btn-xs btn-block btn-outline-primary" href="{% url 'txs-pending' %}">View all pending transactions</a>
       </div>
     </div>
   </div>

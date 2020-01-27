@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% load humanize %}
+
+{% block title %} - Pending transactions{% endblock %}
+
+{% block content %}
+
+  <h5 class="p-2">Pending transactions</h5>
+
+  <div class="card-deck mb-3">
+    <div class="card mb-4 shadow-sm">
+      <div class="card-body">
+        <div class="d-flex flex-column flex-md-row align-items-center">
+          <small class="mb-2 mr-md-auto text-muted">
+            A total of {{ txs_pending|length|intcomma }} pending transactions found
+          </small>
+        </div>
+        {% include "txs_pending/txs_pendings.html" with show_head=True %}
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

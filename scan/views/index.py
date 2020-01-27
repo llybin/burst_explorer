@@ -19,6 +19,6 @@ def index(request):
     for b in blocks:
         fill_data_block(b)
 
-    context = {"txs": txs, "blocks": blocks, "txs_pending": get_pending_txs()}
+    context = {"txs": txs, "blocks": blocks, "txs_pending": get_pending_txs()[:5]}
 
     return render(request, "home/index.html", context)
