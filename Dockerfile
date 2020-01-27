@@ -31,9 +31,6 @@ ENV APP_ENV=${APP_ENV} \
 RUN apk update \
     && apk upgrade \
     && apk add --no-cache \
-    bash \
-    pcre \
-    libxml2 \
     mariadb-connector-c \
     tini \
     # https://pkgs.alpinelinux.org/packages?name=dockerize&branch=edge currently in testing
@@ -60,11 +57,7 @@ RUN set -ex \
     mariadb-dev \
     libc-dev \
     musl-dev \
-    pcre-dev \
-    zlib-dev \
-    jpeg-dev \
     libffi-dev \
-    libxml2-dev \
     linux-headers \
     && pip install "poetry==$POETRY_VERSION" \
     && pip install "gunicorn==$GUNICORN_VERSION" \
