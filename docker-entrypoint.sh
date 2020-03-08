@@ -5,28 +5,28 @@ set -o nounset
 
 cmd="$*"
 
-if [ -n "$DB_DEFAULT_HOST" ]; then
+if test "${DB_DEFAULT_ENGINE#*sqlite}" = "$DB_DEFAULT_ENGINE"; then
     mysql_1_ready() {
         dockerize -wait "tcp://$DB_DEFAULT_HOST:$DB_DEFAULT_PORT" -timeout 5s
     }
 
     until mysql_1_ready; do
-        echo >&2 'Mysql defaul is unavailable - sleeping'
+        echo >&2 'DB default is unavailable - sleeping'
     done
 
-    echo >&2 'Mysql default is up - continuing...'
+    echo >&2 'DB default is up - continuing...'
 fi
 
-if [ -n "$DB_JAVA_WALLET_HOST" ]; then
+if test "${DB_JAVA_WALLET_ENGINE#*sqlite}" = "$DB_JAVA_WALLET_ENGINE"; then
     mysql_2_ready() {
         dockerize -wait "tcp://$DB_JAVA_WALLET_HOST:$DB_JAVA_WALLET_PORT" -timeout 5s
     }
 
     until mysql_2_ready; do
-        echo >&2 'Mysql wallet is unavailable - sleeping'
+        echo >&2 'DB wallet is unavailable - sleeping'
     done
 
-    echo >&2 'Mysql wallet is up - continuing...'
+    echo >&2 'DB wallet is up - continuing...'
 fi
 
 # Evaluating passed command (do not touch):

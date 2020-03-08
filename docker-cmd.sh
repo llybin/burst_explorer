@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 
 set -o errexit
+set -o nounset
 
 if [ "$DJANGO_COLLECTSTATIC" = "on" ]; then
     echo "Collect static files"
@@ -18,7 +19,7 @@ if [ "$START_SERVER" = "on" ]; then
     if [ "$APP_ENV" = "development" ]; then
         python manage.py runserver 0.0.0.0:5000
     elif [ "$APP_ENV" = "production" ]; then
-        /usr/local/bin/supervisord -c supervisord.conf
+        /usr/local/bin/supervisord -c /supervisord.conf
     else
         echo "Unknown APP_ENV: $APP_ENV"
         echo "Application will not start."
