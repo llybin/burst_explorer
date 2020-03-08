@@ -9,7 +9,7 @@ ARG DJANGO_COLLECTSTATIC=off
 ARG DJANGO_MIGRATE=off
 ARG START_SERVER=off
 
-EXPOSE 5000 9001
+EXPOSE 5000/tcp 9001/tcp
 
 ENV APP_ENV=${APP_ENV} \
 	DJANGO_COLLECTSTATIC=${DJANGO_COLLECTSTATIC} \
@@ -68,7 +68,7 @@ RUN set -ex \
 	&& pip install "gunicorn==$GUNICORN_VERSION" \
 	&& pip install "supervisor==$SUPERVISOR_VERSION" \
 	&& poetry config virtualenvs.create false \
-	&& poetry install $(test "$APP_ENV" = production && echo "--no-dev") --no-interaction --no-ansi \
+	&& poetry install $(test "$APP_ENV" = "production" && echo "--no-dev") --no-interaction --no-ansi \
 	&& apt-mark auto '.*' > /dev/null \
 	&& apt-mark manual $savedAptMark \
 	&& find /usr/local -type f -executable -not \( -name '*tkinter*' \) -exec ldd '{}' ';' \
