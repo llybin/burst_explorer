@@ -36,8 +36,8 @@ class MultiOut(Model):
     created_at = DateTimeField(auto_now_add=True)
 
     class Meta:
-        index_together = ["height", "tx_timestamp"]
-        unique_together = ["tx_id", "recipient_id"]
+        index_together = (("height", "tx_timestamp"),)
+        unique_together = (("tx_id", "recipient_id"),)
 
 
 class PeerMonitor(Model):
@@ -68,7 +68,6 @@ class PeerMonitor(Model):
     state = PositiveSmallIntegerField(choices=STATE_CHOICES, db_index=True)
     downtime = PositiveIntegerField(default=0, blank=True)
     lifetime = PositiveIntegerField(default=0, blank=True)
-    # computed, optimization
     availability = FloatField(default=0, blank=True)
 
     last_online_at = DateTimeField()
