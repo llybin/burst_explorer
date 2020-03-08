@@ -42,12 +42,6 @@ RUN apk update \
 WORKDIR /pysetup
 COPY ./poetry.lock ./pyproject.toml /pysetup/
 
-# This is a special case. We need to run this script as an entry point:
-COPY ./docker-entrypoint.sh /docker-entrypoint.sh
-COPY ./docker-cmd.sh /docker-cmd.sh
-RUN chmod +x "/docker-entrypoint.sh" \
-    && chmod +x "/docker-cmd.sh"
-
 # Building system and app dependencies
 RUN set -ex \
     && apk update \
@@ -73,6 +67,12 @@ RUN set -ex \
     )" \
     && apk add --virtual .python-rundeps $runDeps \
     && apk del .build-deps
+
+# This is a special case. We need to run this script as an entry point:
+COPY ./docker-entrypoint.sh /docker-entrypoint.sh
+COPY ./docker-cmd.sh /docker-cmd.sh
+RUN chmod +x "/docker-entrypoint.sh" \
+    && chmod +x "/docker-cmd.sh"
 
 WORKDIR /app
 COPY . .
