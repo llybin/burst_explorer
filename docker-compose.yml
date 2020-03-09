@@ -4,7 +4,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: service
     stdin_open: true
     tty: true
     ports:
@@ -20,4 +19,5 @@ services:
       - .env
   redis:
     image: redis:5.0.7
-    container_name: redis
+    ports:
+      - "56379:6379"
