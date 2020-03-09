@@ -47,7 +47,9 @@ COPY ./docker-cmd.sh /docker-cmd.sh
 RUN chmod +x "/docker-entrypoint.sh" \
 	&& chmod +x "/docker-cmd.sh"
 
+# Copy to cache them in docker layer
 COPY ./supervisord.conf /supervisord.conf
+COPY ./gunicorn.conf.py /gunicorn.conf.py
 
 # Copy only requirements, to cache them in docker layer
 WORKDIR /pysetup

@@ -6,11 +6,11 @@ set -o nounset
 cmd="$*"
 
 if test "${DB_DEFAULT_ENGINE#*sqlite}" = "$DB_DEFAULT_ENGINE"; then
-	mysql_1_ready() {
-		dockerize -wait "tcp://$DB_DEFAULT_HOST:$DB_DEFAULT_PORT" -timeout 5s
+	db_1_ready() {
+		dockerize -wait "tcp://$DB_DEFAULT_HOST:$DB_DEFAULT_PORT"
 	}
 
-	until mysql_1_ready; do
+	until db_1_ready; do
 		echo >&2 'DB default is unavailable - sleeping'
 	done
 
@@ -18,11 +18,11 @@ if test "${DB_DEFAULT_ENGINE#*sqlite}" = "$DB_DEFAULT_ENGINE"; then
 fi
 
 if test "${DB_JAVA_WALLET_ENGINE#*sqlite}" = "$DB_JAVA_WALLET_ENGINE"; then
-	mysql_2_ready() {
-		dockerize -wait "tcp://$DB_JAVA_WALLET_HOST:$DB_JAVA_WALLET_PORT" -timeout 5s
+	db_2_ready() {
+		dockerize -wait "tcp://$DB_JAVA_WALLET_HOST:$DB_JAVA_WALLET_PORT"
 	}
 
-	until mysql_2_ready; do
+	until db_2_ready; do
 		echo >&2 'DB wallet is unavailable - sleeping'
 	done
 
