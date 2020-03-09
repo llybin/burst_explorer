@@ -29,6 +29,17 @@ if test "${DB_JAVA_WALLET_ENGINE#*sqlite}" = "$DB_JAVA_WALLET_ENGINE"; then
 	echo >&2 'DB wallet is up - continuing...'
 fi
 
+redis_ready() {
+	dockerize -wait "tcp://$CACHE_DEFAULT_HOST:$CACHE_DEFAULT_PORT"
+}
+
+until redis_ready; do
+	echo >&2 'REDIS is unavailable - sleeping'
+done
+
+echo >&2 'REDIS is up - continuing...'
+
+
 # Evaluating passed command (do not touch):
 # shellcheck disable=SC2086
 exec $cmd

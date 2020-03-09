@@ -4,14 +4,20 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: service
     stdin_open: true
     tty: true
     ports:
       - "5000:5000"
     volumes:
       - .:/app
+    depends_on:
+      - redis
     environment:
       DJANGO_MIGRATE: "on"
       START_SERVER: "on"
     env_file:
       - .env
+  redis:
+    image: redis:5.0.7
+    container_name: redis

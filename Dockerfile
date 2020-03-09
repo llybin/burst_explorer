@@ -89,5 +89,7 @@ USER app
 COPY --chown=app:app . /app
 WORKDIR /app
 
+VOLUME ["/app/static", "/app/db"]
+
 ENTRYPOINT ["/usr/bin/tini", "--", "/docker-entrypoint.sh"]
 CMD ["/docker-cmd.sh"]
