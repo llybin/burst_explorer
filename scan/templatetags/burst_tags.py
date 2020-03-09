@@ -1,4 +1,5 @@
-from datetime import timedelta
+from datetime import datetime, timedelta
+from math import ceil
 
 from django import template
 
@@ -118,3 +119,32 @@ def rank_row(context: dict, number: int) -> int:
         start = context["paginator"].per_page * (context["page_obj"].number - 1)
 
     return number + start
+
+
+@register.filter
+def tx_deadline(value):
+    return value["timestamp"] + timedelta(minutes=value["deadline"]) - datetime.now()
+
+
+@register.filter()
+def smooth_timedelta(timedelta_obj):
+    secs = timedelta_obj.total_seconds()
+    time_str = ""
+    if secs > 86400:  # 60sec * 60min * 24hrs
+        days = secs // 86400
+        time_str += f"{int(days)} d"
+        secs = secs - days * 86400
+
+    if secs > 3600:
+        hours = secs // 3600
+        time_str += f" {int(hours)} h"
+        secs = secs - hours * 3600
+
+    if secs > 60:
+        minutes = ceil(secs / 60)
+        time_str += f" {int(minutes)} min"
+
+    if not time_str:
+        time_str = f"{int(secs)} seconds"
+
+    return time_str

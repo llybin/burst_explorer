@@ -8,6 +8,18 @@
 
   <h5 class="p-2">Pending transactions</h5>
 
+  {% if not test_net %}
+  <div class="card-deck mb-0 text-center">
+    <div class="card mb-4 shadow-sm">
+      <div class="card-body">
+        By donating, you help the development of the explorer and cover maintenance costs:
+          <a href="{% url 'address-detail' 11834991772770337952 %}">BURST-D372-C2DU-HMKK-CQLHA</a> |
+          <a href="{% url 'asset-detail' 14686983107863035136 %}">BurstScan ❤️ Asset</a>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
   <div class="card-deck mb-3">
     <div class="card mb-4 shadow-sm">
       <div class="card-body">

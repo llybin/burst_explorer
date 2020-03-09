@@ -12,6 +12,7 @@
         <th scope="col">To</th>
         <th scope="col">Value</th>
         <th scope="col">Txn Fee</th>
+        <th scope="col">Deadline</th>
       </tr>
     </thead>
   {% endif %}
@@ -52,6 +53,9 @@
         </td>
         <td class="text-nowrap" title="Amount">{{ tx.amountNQT|burst_amount|rounding:4|intcomma }} Burst</td>
         <td class="text-nowrap" title="Fee">{{ tx.feeNQT|burst_amount|rounding:4|intcomma }} Burst</td>
+        {% if show_head %}
+        <td class="text-nowrap" title="Deadline">{{ tx|tx_deadline|smooth_timedelta }}</td>
+        {% endif %}
       </tr>
     {% empty %}
       <div class="text-secondary" style="display: flex;flex-direction: column;justify-content: center;height: 90%;">
