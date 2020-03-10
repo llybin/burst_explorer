@@ -15,6 +15,7 @@ django-redis = "4.11.0"
 djangorestframework = "3.11.0"
 jsonschema = "3.2.0"
 mysqlclient = "1.4.6"
+pycoingecko = "1.2.0"
 python-dotenv = "0.12.0"
 python-redis-lock = {version = "3.5.0", extras = ["django"]}
 requests = {version = "2.23.0", extras = ["security"]}
@@ -28,10 +29,6 @@ django-debug-toolbar = "2.2"
 freezegun = "0.3.15"
 vcrpy = "4.0.2"
 ipython = "^7.11.1"
-
-[build-system]
-requires = ["poetry>=0.12"]
-build-backend = "poetry.masonry.api"
 
 [tool.isort]
 line_length = 88
@@ -78,3 +75,8 @@ exclude = '''
   | java_wallet/migrations/0001_initial.py
 )
 '''
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
+

@@ -1,9 +1,7 @@
 from datetime import datetime
 
-import requests
 from django.conf import settings
 from django.db.models import Sum
-from requests import RequestException
 from sentry_sdk import capture_exception
 
 from burst.api.brs.v1 import BrsApi
@@ -11,6 +9,7 @@ from burst.constants import BLOCK_CHAIN_START_AT, TxSubtypePayment
 from cache_memoize import cache_memoize
 from java_wallet.fields import get_desc_tx_type
 from java_wallet.models import Account, Asset, Block, RewardRecipAssign, Transaction
+from pycoingecko import CoinGeckoAPI
 from scan.models import MultiOut
 
 
@@ -140,32 +139,38 @@ def get_pending_txs():
     return txs_pending
 
 
-@cache_memoize(1800)
+# @cache_memoize(1800)
 def get_exchange_info() -> dict:
+    result = {
+        "price_usd": 0,
+        "price_btc": 0,
+        "24h_volume_usd": 0,
+        "market_cap_usd": 0,
+        "percent_change_24h": 0,
+    }
+
     if settings.TEST_NET:
-        return {
-            "price_usd": 0,
-            "24h_volume_usd": 0,
-            "market_cap_usd": 0,
-            "percent_change_24h": 0,
-        }
+        return result
+
+    cg = CoinGeckoAPI()
 
     try:
-        response = requests.get(
-            "https://api.coinmarketcap.com/v1/ticker/burst/", timeout=1
-        )
-        response.raise_for_status()
-        data = response.json()[0]
-        data["price_usd"] = float(data["price_usd"])
-        data["24h_volume_usd"] = float(data["24h_volume_usd"])
-        data["market_cap_usd"] = float(data["market_cap_usd"])
-        data["percent_change_24h"] = float(data["percent_change_24h"])
-        return data
-    except (RequestException, ValueError, IndexError) as e:
-        capture_exception(e)
-        return {
-            "price_usd": 0,
-            "24h_volume_usd": 0,
-            "market_cap_usd": 0,
-            "percent_change_24h": 0,
+        data = cg.get_price(
+            ids="burst",
+            vs_currencies=["usd", "btc"],
+            include_market_cap="true",
+            include_24hr_vol="true",
+            include_24hr_change="true",
+            include_last_updated_at="true",
+        )["burst"]
+        result = {
+            "price_usd": data["usd"],
+            "price_btc": f'{data["btc"]:.8f}',
+            "24h_volume_usd": data["usd_24h_vol"],
+            "market_cap_usd": data["usd_market_cap"],
+            "percent_change_24h": data["usd_24h_change"],
         }
+    except Exception as e:
+        capture_exception(e)
+
+    return result

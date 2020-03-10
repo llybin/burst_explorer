@@ -23,8 +23,8 @@ category = "main"
 description = "ASGI specs, helper code, and adapters"
 name = "asgiref"
 optional = false
-python-versions = "*"
-version = "3.2.3"
+python-versions = ">=3.5"
+version = "3.2.4"
 
 [package.extras]
 tests = ["pytest (>=4.3.0,<4.4.0)", "pytest-asyncio (>=0.10.0,<0.11.0)"]
@@ -449,6 +449,17 @@ version = "0.6.0"
 
 [[package]]
 category = "main"
+description = "Python wrapper around the CoinGecko API"
+name = "pycoingecko"
+optional = false
+python-versions = "*"
+version = "1.2.0"
+
+[package.dependencies]
+requests = "*"
+
+[[package]]
+category = "main"
 description = "C parser in Python"
 name = "pycparser"
 optional = false
@@ -728,7 +739,7 @@ idna = ">=2.0"
 multidict = ">=4.0"
 
 [metadata]
-content-hash = "f214dc7fed7fe2bd50f395ce0124bc64bb2b94c2ce39ef85010bbdcb04e6ad15"
+content-hash = "105078a76ed35e4bd3f590708d841c1de620280ec5f61dc3a6bbe1a96462833f"
 python-versions = "^3.8"
 
 [metadata.files]
@@ -741,8 +752,8 @@ appnope = [
     {file = "appnope-0.1.0.tar.gz", hash = "sha256:8b995ffe925347a2138d7ac0fe77155e4311a0ea6d6da4f5128fe4b3cbe5ed71"},
 ]
 asgiref = [
-    {file = "asgiref-3.2.3-py2.py3-none-any.whl", hash = "sha256:ea448f92fc35a0ef4b1508f53a04c4670255a3f33d22a81c8fc9c872036adbe5"},
-    {file = "asgiref-3.2.3.tar.gz", hash = "sha256:7e06d934a7718bf3975acbf87780ba678957b87c7adc056f13b6215d610695a0"},
+    {file = "asgiref-3.2.4-py2.py3-none-any.whl", hash = "sha256:5e60ea919b37e5b9d8896d802c0dbbe41b16ea6719e5695a43496ef43e5b19ac"},
+    {file = "asgiref-3.2.4.tar.gz", hash = "sha256:f07043512078c76bb28a62fd1e327876599062b5f0aea60ed1d9cabc42e95fe2"},
 ]
 attrs = [
     {file = "attrs-19.3.0-py2.py3-none-any.whl", hash = "sha256:08a96c641c3a74e44eb59afb61a24f2cb9f4d7188748e76ba4bb5edfa3cb7d1c"},
@@ -958,6 +969,10 @@ prompt-toolkit = [
 ptyprocess = [
     {file = "ptyprocess-0.6.0-py2.py3-none-any.whl", hash = "sha256:d7cc528d76e76342423ca640335bd3633420dc1366f258cb31d05e865ef5ca1f"},
     {file = "ptyprocess-0.6.0.tar.gz", hash = "sha256:923f299cc5ad920c68f2bc0bc98b75b9f838b93b599941a6b63ddbc2476394c0"},
+]
+pycoingecko = [
+    {file = "pycoingecko-1.2.0-py3-none-any.whl", hash = "sha256:e6e1b90c1f41ac4235fdab1e68a353c02e9c3d4da44d5b110576e7b411d26768"},
+    {file = "pycoingecko-1.2.0.tar.gz", hash = "sha256:9e233d98819d3de38bc77db11cb0076cf4499ad971b7d16ded0d18e913f78137"},
 ]
 pycparser = [
     {file = "pycparser-2.20-py2.py3-none-any.whl", hash = "sha256:7582ad22678f0fcd81102833f60ef8d0e57288b6b5fb00323d101be910e35705"},
