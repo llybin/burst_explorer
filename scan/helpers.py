@@ -139,7 +139,7 @@ def get_pending_txs():
     return txs_pending
 
 
-# @cache_memoize(1800)
+@cache_memoize(1800)
 def get_exchange_info() -> dict:
     result = {
         "price_usd": 0,
