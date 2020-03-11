@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.decorators.cache import cache_page
 
-from scan.helpers import get_pending_txs
+from scan.helpers.pending_txs import get_pending_txs
 
 
 @cache_page(5)

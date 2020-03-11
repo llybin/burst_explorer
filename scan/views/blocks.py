@@ -2,7 +2,7 @@ from django.views.generic import ListView
 
 from java_wallet.models import Block
 from scan.caching_paginator import CachingPaginator
-from scan.helpers import (
+from scan.helpers.queries import (
     get_account_name,
     get_last_height,
     get_pool_id_for_block,

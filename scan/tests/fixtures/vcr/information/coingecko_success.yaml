@@ -1,0 +1,65 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.23.0
+    method: GET
+    uri: https://api.coingecko.com/api/v3/simple/price?include_market_cap=true&include_24hr_change=true&ids=burst&vs_currencies=usd,btc
+  response:
+    body:
+      string: '{"burst":{"usd":0.00533808,"usd_market_cap":11131908.013570584,"usd_24h_change":-4.392684830224021,"btc":6.847e-07,"btc_market_cap":1427.825391713576,"btc_24h_change":-1.5638812279453689}}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization
+      Access-Control-Allow-Methods:
+      - POST, PUT, DELETE, GET, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - link, per-page, total
+      Access-Control-Request-Method:
+      - '*'
+      Alternate-Protocol:
+      - 443:npn-spdy/2
+      CF-Cache-Status:
+      - MISS
+      CF-RAY:
+      - 572652c07c90839f-BKK
+      Cache-Control:
+      - max-age=60, public, must-revalidate, s-maxage=60
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 11 Mar 2020 15:31:36 GMT
+      ETag:
+      - W/"be9e4d243d8accd72f727f4caa0117ea"
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cfduid=d91fc1362569d90898a57d9b30bbf33a31583940695; expires=Fri, 10-Apr-20
+        15:31:35 GMT; path=/; domain=.coingecko.com; HttpOnly; SameSite=Lax
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding, Origin
+      X-Request-Id:
+      - a360d99c-c84d-496e-bf9b-6eb4661588fa
+      X-Runtime:
+      - '0.006494'
+      content-length:
+      - '188'
+    status:
+      code: 200
+      message: OK
+version: 1

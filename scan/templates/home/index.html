@@ -34,7 +34,7 @@ Network Difficult: {% if blocks %}{%  with blocks|first as last_block %}{{ last_
               <div class="text-left">
                 <h6 class="text-uppercase text-secondary mb-0">Burst price</h6>
                 <span class="text-info small">
-                  ${{ burst_info.exchange.price_usd|rounding:4|intcomma }} ({{ burst_info.exchange.percent_change_24h|stringformat:"+d" }}%) @ {{ burst_info.exchange.price_btc }} BTC
+                  ${{ burst_info.exchange.price_usd|rounding:4|intcomma }} ({{ burst_info.exchange.percent_change_24h|stringformat:"+d" }}%) @ {{ burst_info.exchange.price_btc|floatformat:-8 }} BTC
                 </span>
               </div>
             </div>

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.decorators.cache import cache_page
 
 from java_wallet.models import Block, Transaction
-from scan.helpers import get_pending_txs
+from scan.helpers.pending_txs import get_pending_txs
 from scan.views.blocks import fill_data_block
 from scan.views.transactions import fill_data_transaction
 

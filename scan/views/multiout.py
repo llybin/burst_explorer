@@ -2,7 +2,7 @@ from django.db.models import Q
 from django.views.generic import ListView
 
 from scan.caching_paginator import CachingPaginator
-from scan.helpers import get_account_name, get_multiouts_count
+from scan.helpers.queries import get_account_name, get_multiouts_count
 from scan.models import MultiOut
 
 

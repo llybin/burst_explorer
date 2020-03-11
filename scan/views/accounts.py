@@ -10,7 +10,7 @@ from java_wallet.models import (
     Transaction,
 )
 from scan.caching_paginator import CachingPaginator
-from scan.helpers import (
+from scan.helpers.queries import (
     get_account_name,
     get_all_burst_amount,
     get_asset_details,

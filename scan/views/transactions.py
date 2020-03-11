@@ -4,7 +4,7 @@ from django.views.generic import ListView
 from burst.libs.multiout import MultiOutPack
 from java_wallet.models import Transaction
 from scan.caching_paginator import CachingPaginator
-from scan.helpers import get_account_name, get_last_height, get_txs_count
+from scan.helpers.queries import get_account_name, get_last_height, get_txs_count
 from scan.models import MultiOut
 from scan.views.base import IntSlugDetailView
 

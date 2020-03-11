@@ -8,7 +8,7 @@ from burst.libs.reed_solomon import ReedSolomon
 from burst.libs.transactions import get_message
 from java_wallet.fields import get_desc_tx_type
 from java_wallet.models import Block, Transaction
-from scan.helpers import get_exchange_info
+from scan.helpers.exchange import get_cached_exchange_data
 
 register = template.Library()
 
@@ -35,8 +35,8 @@ def burst_amount(value: int) -> float:
 
 @register.filter
 def in_usd(value: float) -> float:
-    info = get_exchange_info()
-    return value * info["price_usd"]
+    data = get_cached_exchange_data()
+    return value * data.price_usd
 
 
 @register.filter

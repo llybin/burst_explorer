@@ -4,7 +4,7 @@ from django.views.generic import ListView
 
 from java_wallet.models import Asset, AssetTransfer, Trade
 from scan.caching_paginator import CachingPaginator
-from scan.helpers import get_account_name, get_asset_details
+from scan.helpers.queries import get_account_name, get_asset_details
 from scan.views.base import IntSlugDetailView
 
 

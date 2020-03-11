@@ -7,7 +7,7 @@ from django.db import connection, transaction
 from burst.constants import TxSubtypePayment, TxType
 from burst.libs.multiout import MultiOutPack
 from java_wallet.models import Block, Transaction
-from scan.decorators import lock_decorator
+from scan.helpers.decorators import lock_decorator
 from scan.models import MultiOut
 
 logger = logging.getLogger(__name__)

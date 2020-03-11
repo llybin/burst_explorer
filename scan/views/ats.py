@@ -2,7 +2,7 @@ from django.views.generic import ListView
 
 from java_wallet.models import At
 from scan.caching_paginator import CachingPaginator
-from scan.helpers import get_account_name
+from scan.helpers.queries import get_account_name
 from scan.views.base import IntSlugDetailView
 
 

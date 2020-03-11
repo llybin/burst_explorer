@@ -8,6 +8,7 @@ from functools import lru_cache
 from urllib.parse import urlparse
 
 import requests
+from cache_memoize import cache_memoize
 from django import forms
 from django.conf import settings
 from django.db import transaction
@@ -19,9 +20,8 @@ from sentry_sdk import capture_message
 
 from burst.api.brs.p2p import P2PApi
 from burst.api.exceptions import BurstException
-from cache_memoize import cache_memoize
 from java_wallet.models import Block
-from scan.decorators import lock_decorator
+from scan.helpers.decorators import lock_decorator
 from scan.models import PeerMonitor
 
 logger = logging.getLogger(__name__)

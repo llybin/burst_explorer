@@ -39,12 +39,14 @@ multi_line_output = 3
 not_skip = "__init__.py"
 filter_files = true
 known_third_party = [
-    "vcr",
+    "cache_memoize",
     "dotenv",
-    "sentry_sdk",
     "freezegun",
-    "simplejson",
+    "pycoingecko",
     "rest_framework",
+    "sentry_sdk",
+    "simplejson",
+    "vcr",
 ]
 known_django = "django"
 skip_glob = [
