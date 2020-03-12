@@ -23,7 +23,7 @@ def get_cached_exchange_data() -> ExchangeData:
     return ExchangeData(**data) if data else ExchangeData()
 
 
-def cache_exchange_data(data: ExchangeData):
+def set_cache_exchange_data(data: ExchangeData):
     cache.set(EXCHANGE_CACHE_KEY, data.__dict__, 3600)
 
 

@@ -80,12 +80,3 @@ def get_txs_total_count() -> int:
 @cache_memoize(3600)
 def get_multiouts_count() -> int:
     return MultiOut.objects.count()
-
-
-def get_last_height() -> int:
-    return (
-        Block.objects.using("java_wallet")
-        .order_by("-height")
-        .values_list("height", flat=True)
-        .first()
-    )

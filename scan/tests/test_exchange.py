@@ -7,9 +7,9 @@ from vcr import VCR
 from scan.helpers.exchange import (
     EXCHANGE_CACHE_KEY,
     ExchangeData,
-    cache_exchange_data,
     get_cached_exchange_data,
     get_exchange_data,
+    set_cache_exchange_data,
 )
 
 my_vcr = VCR(
@@ -48,5 +48,5 @@ class GetExchangeDataTest(TestCase):
     @my_vcr.use_cassette("coingecko_success.yaml")
     def test_get_saved(self):
         data = get_exchange_data()
-        cache_exchange_data(data)
+        set_cache_exchange_data(data)
         self.assertEqual(get_cached_exchange_data(), data)

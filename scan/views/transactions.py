@@ -3,7 +3,8 @@ from django.views.generic import ListView
 from burst.libs.multiout import MultiOutPack
 from java_wallet.models import Transaction
 from scan.caching_paginator import CachingPaginator
-from scan.helpers.queries import get_account_name, get_last_height, get_txs_total_count
+from scan.helpers.last_block import get_cached_last_height
+from scan.helpers.queries import get_account_name, get_txs_total_count
 from scan.models import MultiOut
 from scan.views.base import IntSlugDetailView
 from scan.views.filters.transactions import TxFilter
@@ -62,6 +63,6 @@ class TxDetailView(IntSlugDetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         obj = context[self.context_object_name]
-        obj.blocks_confirm = get_last_height() - obj.height
+        obj.blocks_confirm = get_cached_last_height() - obj.height
         fill_data_transaction(obj, list_page=False)
         return context
