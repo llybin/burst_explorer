@@ -73,7 +73,7 @@ def get_all_burst_amount() -> int:
 
 
 @cache_memoize(3600)
-def get_txs_count() -> int:
+def get_txs_total_count() -> int:
     return Transaction.objects.using("java_wallet").count()
 
 

@@ -42,7 +42,7 @@ AUTH_USER_MODEL = "cabinet.User"
 
 # Application definition
 
-INSTALLED_APPS = [
+DJANGO_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -50,16 +50,25 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.humanize",
+]
+
+THIRD_PARTY_APPS = [
     "corsheaders",
+    "django_filters",
     "rest_framework",
+]
+
+if DEBUG:
+    THIRD_PARTY_APPS += ["debug_toolbar"]
+
+LOCAL_APPS = [
     "api",
     "cabinet",
     "scan",
     "java_wallet",
 ]
 
-if DEBUG:
-    INSTALLED_APPS += ["debug_toolbar"]
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

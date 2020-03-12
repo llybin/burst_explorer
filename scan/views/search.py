@@ -14,6 +14,8 @@ SEARCH_BY = [
     ("Transaction", "id", "/tx/{}"),
 ]
 
+REED_SOLOMON_LENS = {17, 20, 26}
+
 
 @require_http_methods(["GET"])
 def search_view(request):
@@ -21,7 +23,10 @@ def search_view(request):
 
     redirect_url = None
 
-    if query.isdigit():
+    if not query:
+        redirect_url = None
+
+    elif query.isdigit():
         query = int(query)
 
         for x in SEARCH_BY:
@@ -36,7 +41,7 @@ def search_view(request):
                 redirect_url = x[2].format(query)
                 break
 
-    elif len(query) in {17, 20, 26}:
+    elif len(query) in REED_SOLOMON_LENS:
         try:
             numeric_id = ReedSolomon().decode(query)
             exists = (

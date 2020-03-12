@@ -35,9 +35,7 @@ class AccountsListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
         context["balance__sum"] = get_all_burst_amount()
-
         return context
 
 
@@ -51,7 +49,6 @@ class AddressDetailView(IntSlugDetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
         obj = context[self.context_object_name]
 
         # transactions
@@ -66,7 +63,6 @@ class AddressDetailView(IntSlugDetailView):
             fill_data_transaction(t, list_page=True)
 
         context["txs"] = txs
-
         context["txs_cnt"] = (
             Transaction.objects.using("java_wallet")
             .filter(Q(sender_id=obj.id) | Q(recipient_id=obj.id))
@@ -83,7 +79,6 @@ class AddressDetailView(IntSlugDetailView):
             fill_data_multiouts(t)
 
         context["mos"] = mos
-
         context["mos_cnt"] = MultiOut.objects.filter(
             Q(sender_id=obj.id) | Q(recipient_id=obj.id)
         ).count()
@@ -102,7 +97,6 @@ class AddressDetailView(IntSlugDetailView):
             )
 
         context["assets"] = assets
-
         context["assets_cnt"] = (
             AccountAsset.objects.using("java_wallet")
             .filter(account_id=obj.id, latest=True)
@@ -122,7 +116,6 @@ class AddressDetailView(IntSlugDetailView):
             fill_data_asset_transfer(transfer)
 
         context["assets_transfers"] = assets_transfers
-
         context["assets_transfers_cnt"] = (
             AssetTransfer.objects.using("java_wallet")
             .filter(Q(sender_id=obj.id) | Q(recipient_id=obj.id))
@@ -142,7 +135,6 @@ class AddressDetailView(IntSlugDetailView):
             fill_data_asset_trade(trade)
 
         context["assets_trades"] = assets_trades
-
         context["assets_trades_cnt"] = (
             Trade.objects.using("java_wallet")
             .filter(Q(buyer_id=obj.id) | Q(seller_id=obj.id))
@@ -171,7 +163,6 @@ class AddressDetailView(IntSlugDetailView):
                 block.pool_name = get_account_name(pool_id)
 
         context["mined_blocks"] = mined_blocks
-
         context["mined_blocks_cnt"] = (
             Block.objects.using("java_wallet").filter(generator_id=obj.id).count()
         )

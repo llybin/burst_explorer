@@ -9,12 +9,12 @@ from scan.helpers.queries import (
     get_txs_count_in_block,
 )
 from scan.views.base import IntSlugDetailView
+from scan.views.filters.blocks import BlockFilter
 
 
 def fill_data_block(obj):
     obj.txs_cnt = get_txs_count_in_block(obj.id)
     obj.generator_name = get_account_name(obj.generator_id)
-
     pool_id = get_pool_id_for_block(obj)
     if pool_id:
         obj.pool_id = pool_id
@@ -31,22 +31,14 @@ class BlockListView(ListView):
     ordering = "-height"
 
     def get_queryset(self):
-        qs = super().get_queryset()
-
-        if self.request.GET.get("m"):
-            qs = qs.filter(generator_id=self.request.GET.get("m"))
-
-        return qs
+        return BlockFilter(self.request.GET, queryset=super().get_queryset()).qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
+        context["last_height"] = get_last_height()
         obj = context[self.context_object_name]
-
         for b in obj:
             fill_data_block(b)
-
-        context["last_height"] = get_last_height()
 
         return context
 
@@ -61,9 +53,6 @@ class BlockDetailView(IntSlugDetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
         obj = context[self.context_object_name]
-
         fill_data_block(obj)
-
         return context

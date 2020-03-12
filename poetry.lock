@@ -238,6 +238,17 @@ sqlparse = ">=0.2.0"
 
 [[package]]
 category = "main"
+description = "Django-filter is a reusable Django application for allowing users to filter querysets dynamically."
+name = "django-filter"
+optional = false
+python-versions = ">=3.4"
+version = "2.2.0"
+
+[package.dependencies]
+Django = ">=1.11"
+
+[[package]]
+category = "main"
 description = "Full featured redis cache backend for Django."
 name = "django-redis"
 optional = false
@@ -739,7 +750,7 @@ idna = ">=2.0"
 multidict = ">=4.0"
 
 [metadata]
-content-hash = "105078a76ed35e4bd3f590708d841c1de620280ec5f61dc3a6bbe1a96462833f"
+content-hash = "729e3ac1f8329381a8d14a267436ad0419b9fcb2c56f87ca590a8fd9bae51904"
 python-versions = "^3.8"
 
 [metadata.files]
@@ -888,6 +899,10 @@ django-cors-headers = [
 django-debug-toolbar = [
     {file = "django-debug-toolbar-2.2.tar.gz", hash = "sha256:eabbefe89881bbe4ca7c980ff102e3c35c8e8ad6eb725041f538988f2f39a943"},
     {file = "django_debug_toolbar-2.2-py3-none-any.whl", hash = "sha256:ff94725e7aae74b133d0599b9bf89bd4eb8f5d2c964106e61d11750228c8774c"},
+]
+django-filter = [
+    {file = "django-filter-2.2.0.tar.gz", hash = "sha256:c3deb57f0dd7ff94d7dce52a047516822013e2b441bed472b722a317658cfd14"},
+    {file = "django_filter-2.2.0-py3-none-any.whl", hash = "sha256:558c727bce3ffa89c4a7a0b13bc8976745d63e5fd576b3a9a851650ef11c401b"},
 ]
 django-redis = [
     {file = "django-redis-4.11.0.tar.gz", hash = "sha256:a5b1e3ffd3198735e6c529d9bdf38ca3fcb3155515249b98dc4d966b8ddf9d2b"},

@@ -21,9 +21,7 @@ class AtListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
         obj = context[self.context_object_name]
-
         for t in obj:
             fill_data(t)
 
@@ -40,9 +38,6 @@ class AtDetailView(IntSlugDetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
         obj = context[self.context_object_name]
-
         fill_data(obj)
-
         return context

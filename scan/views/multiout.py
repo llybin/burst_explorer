@@ -1,9 +1,9 @@
-from django.db.models import Q
 from django.views.generic import ListView
 
 from scan.caching_paginator import CachingPaginator
 from scan.helpers.queries import get_account_name, get_multiouts_count
 from scan.models import MultiOut
+from scan.views.filters.multiout import MultiOutFilter
 
 
 def fill_data_multiouts(obj):
@@ -22,30 +22,18 @@ class MultiOutListView(ListView):
     ordering = ("-height", "-tx_timestamp")
 
     def get_queryset(self):
-        qs = super().get_queryset()
-
-        if self.request.GET.get("block"):
-            qs = qs.filter(height=self.request.GET.get("block"))
-
-        elif self.request.GET.get("a"):
-            qs = qs.filter(
-                Q(sender_id=self.request.GET.get("a"))
-                | Q(recipient_id=self.request.GET.get("a"))
-            )
-
-        else:
+        filter_set = MultiOutFilter(self.request.GET, queryset=super().get_queryset())
+        qs = filter_set.qs
+        if not filter_set.data:
             qs = qs[:100000]
 
         return qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
+        context["mos_cnt"] = get_multiouts_count()
         obj = context[self.context_object_name]
-
         for t in obj:
             fill_data_multiouts(t)
-
-        context["mos_cnt"] = get_multiouts_count()
 
         return context

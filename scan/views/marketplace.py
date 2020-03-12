@@ -5,6 +5,7 @@ from java_wallet.models import Goods, Purchase
 from scan.caching_paginator import CachingPaginator
 from scan.helpers.queries import get_account_name
 from scan.views.base import IntSlugDetailView
+from scan.views.filters.marketplace import MarketplaceFilter
 
 
 class MarketPlaceListView(ListView):
@@ -18,9 +19,7 @@ class MarketPlaceListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
         obj = context[self.context_object_name]
-
         for t in obj:
             t.seller_name = get_account_name(t.seller_id)
 
@@ -35,14 +34,14 @@ class MarketPlacePurchasesListView(ListView):
     paginator_class = CachingPaginator
     paginate_by = 25
     ordering = "-height"
+    filter_set = None
 
     def get_queryset(self):
-        qs = super().get_queryset()
-
-        if self.request.GET.get("g"):
-            qs = qs.filter(goods_id=self.request.GET.get("g"))
-            qs = qs[:100000]
-
+        self.filter_set = MarketplaceFilter(
+            self.request.GET, queryset=super().get_queryset()
+        )
+        if self.filter_set.is_valid() and self.filter_set.data:
+            qs = self.filter_set.qs[:100000]
         else:
             raise Http404()
 
@@ -50,18 +49,12 @@ class MarketPlacePurchasesListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
+        # total count
+        context["purchases_cnt"] = self.filter_set.qs.count()
         obj = context[self.context_object_name]
-
         for purchase in obj:
             purchase.seller_name = get_account_name(purchase.seller_id)
             purchase.buyer_name = get_account_name(purchase.buyer_id)
-
-        context["purchases_cnt"] = (
-            Purchase.objects.using("java_wallet")
-            .filter(goods_id=self.request.GET.get("g"))
-            .count()
-        )
 
         return context
 
@@ -76,11 +69,8 @@ class MarketPlaceDetailView(IntSlugDetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
         obj = context[self.context_object_name]
-
         obj.seller_name = get_account_name(obj.seller_id)
-
         purchases = (
             Purchase.objects.using("java_wallet")
             .using("java_wallet")
@@ -92,7 +82,6 @@ class MarketPlaceDetailView(IntSlugDetailView):
             purchase.buyer_name = get_account_name(purchase.buyer_id)
 
         context["purchases"] = purchases
-
         context["purchases_cnt"] = (
             Purchase.objects.using("java_wallet").filter(goods_id=obj.id).count()
         )
