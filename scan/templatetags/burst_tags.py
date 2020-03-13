@@ -4,28 +4,24 @@ from math import ceil
 from django import template
 
 from burst.constants import MAX_BASE_TARGET
+from burst.libs.functions import calc_block_reward
 from burst.libs.reed_solomon import ReedSolomon
 from burst.libs.transactions import get_message
 from java_wallet.fields import get_desc_tx_type
 from java_wallet.models import Block, Transaction
-from scan.helpers.exchange import get_cached_exchange_data
+from scan.caching_data.exchange import CachingExchangeData
 
 register = template.Library()
 
 
-def get_block_reward(block: Block) -> int:
-    month = int(block.height / 10800)
-    return int(pow(0.95, month) * 10000)
-
-
 @register.filter
 def block_reward(block: Block) -> int:
-    return get_block_reward(block)
+    return calc_block_reward(block.height)
 
 
 @register.filter
-def block_reward_fee(block: Block) -> float:
-    return get_block_reward(block) + block.total_fee / 10 ** 8
+def block_reward_with_fee(block: Block) -> float:
+    return calc_block_reward(block.height) + block.total_fee / 10 ** 8
 
 
 @register.filter
@@ -35,7 +31,7 @@ def burst_amount(value: int) -> float:
 
 @register.filter
 def in_usd(value: float) -> float:
-    data = get_cached_exchange_data()
+    data = CachingExchangeData().cached_data
     return value * data.price_usd
 
 

@@ -14,7 +14,11 @@
       <div class="card-body">
 
         <div class="d-flex flex-column flex-md-row align-items-center">
-          <small class="my-0 mr-md-auto text-muted">{{ paginator.count|intcomma }} accounts found</small>
+          <small class="my-0 mr-md-auto text-muted">
+            More than > {{ accounts_cnt|intcomma }} accounts found<br>
+            <small>(Showing the last 10,000 top accounts only)</small>
+          </small>
+
           {% include "paginator.html" %}
         </div>
 

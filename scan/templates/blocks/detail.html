@@ -83,7 +83,7 @@
             </tr>
             <tr>
               <th>Block Reward</th>
-              <td>{{ blk|block_reward_fee|intcomma }} Burst ({{ blk|block_reward }} + {{ blk.total_fee|burst_amount|intcomma }})</td>
+              <td>{{ blk|block_reward_with_fee|intcomma }} Burst ({{ blk|block_reward }} + {{ blk.total_fee|burst_amount|intcomma }})</td>
             </tr>
             <tr>
               <th>Size</th>

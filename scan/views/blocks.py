@@ -1,8 +1,8 @@
 from django.views.generic import ListView
 
 from java_wallet.models import Block
+from scan.caching_data.last_height import CachingLastHeight
 from scan.caching_paginator import CachingPaginator
-from scan.helpers.last_block import get_cached_last_height
 from scan.helpers.queries import (
     get_account_name,
     get_pool_id_for_block,
@@ -35,7 +35,7 @@ class BlockListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["last_height"] = get_cached_last_height()
+        context["last_height"] = CachingLastHeight().cached_data
         obj = context[self.context_object_name]
         for b in obj:
             fill_data_block(b)

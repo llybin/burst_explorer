@@ -23,7 +23,7 @@
             <span class="text-info">Solo Miner</span>
           {% endif %}
         </td>
-        <td class="text-nowrap">{{ block|block_reward_fee|rounding:5|intcomma }} Burst</td>
+        <td class="text-nowrap">{{ block|block_reward_with_fee|rounding:5|intcomma }} Burst</td>
       </tr>
     {% endfor %}
     </tbody>

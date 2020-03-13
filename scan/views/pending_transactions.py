@@ -1,10 +1,8 @@
 from django.shortcuts import render
-from django.views.decorators.cache import cache_page
 
-from scan.helpers.pending_txs import get_pending_txs
+from scan.caching_data.pending_txs import CachingPendingTxs
 
 
-@cache_page(5)
 def pending_transactions(request):
-    context = {"txs_pending": get_pending_txs()}
+    context = {"txs_pending": CachingPendingTxs().cached_data}
     return render(request, "txs_pending/list.html", context)

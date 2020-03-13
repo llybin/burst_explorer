@@ -9,10 +9,11 @@ from java_wallet.models import (
     Trade,
     Transaction,
 )
+from scan.caching_data.total_accounts_count import CachingTotalAccountsCount
+from scan.caching_data.total_burst_circulation import CachingTotalBurstCirculation
 from scan.caching_paginator import CachingPaginator
 from scan.helpers.queries import (
     get_account_name,
-    get_all_burst_amount,
     get_asset_details,
     get_pool_id_for_account,
     get_pool_id_for_block,
@@ -26,16 +27,23 @@ from scan.views.transactions import fill_data_transaction
 
 class AccountsListView(ListView):
     model = Account
-    queryset = Account.objects.using("java_wallet").filter(latest=True).all()
+    queryset = (
+        Account.objects.using("java_wallet").filter(latest=True).exclude(id=0).all()
+    )
     template_name = "accounts/list.html"
     context_object_name = "accounts"
     paginator_class = CachingPaginator
     paginate_by = 25
     ordering = "-balance"
 
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs[:10000]
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["balance__sum"] = get_all_burst_amount()
+        context["balance__sum"] = CachingTotalBurstCirculation().cached_data
+        context["accounts_cnt"] = CachingTotalAccountsCount().cached_data
         return context
 
 

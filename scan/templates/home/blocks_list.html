@@ -25,7 +25,7 @@
             0 txns
           {% endif %}
         </td>
-        <td class="text-nowrap" title="Block reward">{{ block|block_reward_fee|rounding:5|intcomma }} Burst</td>
+        <td class="text-nowrap" title="Block reward">{{ block|block_reward_with_fee|rounding:5|intcomma }} Burst</td>
       </tr>
     {% endfor %}
     </tbody>

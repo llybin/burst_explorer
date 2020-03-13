@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.decorators.cache import cache_page
 
 from java_wallet.models import Block, Transaction
-from scan.helpers.pending_txs import get_pending_txs
+from scan.caching_data.pending_txs import CachingPendingTxs
 from scan.views.blocks import fill_data_block
 from scan.views.transactions import fill_data_transaction
 
@@ -19,6 +19,10 @@ def index(request):
     for b in blocks:
         fill_data_block(b)
 
-    context = {"txs": txs, "blocks": blocks, "txs_pending": get_pending_txs()[:5]}
+    context = {
+        "txs": txs,
+        "blocks": blocks,
+        "txs_pending": CachingPendingTxs().cached_data[:5],
+    }
 
     return render(request, "home/index.html", context)

@@ -1,7 +1,8 @@
 from django.views.generic import ListView
 
+from scan.caching_data.total_multiout_count import CachingTotalMultioutCount
 from scan.caching_paginator import CachingPaginator
-from scan.helpers.queries import get_account_name, get_multiouts_count
+from scan.helpers.queries import get_account_name
 from scan.models import MultiOut
 from scan.views.filters.multiout import MultiOutFilter
 
@@ -31,7 +32,7 @@ class MultiOutListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["mos_cnt"] = get_multiouts_count()
+        context["mos_cnt"] = CachingTotalMultioutCount().cached_data
         obj = context[self.context_object_name]
         for t in obj:
             fill_data_multiouts(t)

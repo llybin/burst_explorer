@@ -59,7 +59,7 @@
                   {% endif %}
                 </td>
                 <td class="text-nowrap">{{ block.total_amount|burst_amount|rounding:5|intcomma }} Burst</td>
-                <td class="text-nowrap">{{ block|block_reward_fee|rounding:5|intcomma }} Burst</td>
+                <td class="text-nowrap">{{ block|block_reward_with_fee|rounding:5|intcomma }} Burst</td>
                 <td>{{ block.payload_length|filesizeformat }}</td>
                 <td class="text-nowrap">
                   {% include "account_link.html" with account_id=block.generator_id account_name=block.generator_name filtered_account=request.GET.m %}

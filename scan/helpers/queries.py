@@ -1,8 +1,6 @@
 from cache_memoize import cache_memoize
-from django.db.models import Sum
 
 from java_wallet.models import Account, Asset, Block, RewardRecipAssign, Transaction
-from scan.models import MultiOut
 
 
 @cache_memoize(86400)
@@ -60,23 +58,3 @@ def get_pool_id_for_account(address_id: int) -> int:
         .order_by("-height")
         .first()
     )
-
-
-@cache_memoize(86400)
-def get_all_burst_amount() -> int:
-    # TODO: formula?
-    return (
-        Account.objects.using("java_wallet")
-        .filter(latest=True)
-        .aggregate(Sum("balance"))["balance__sum"]
-    )
-
-
-@cache_memoize(3600)
-def get_txs_total_count() -> int:
-    return Transaction.objects.using("java_wallet").count()
-
-
-@cache_memoize(3600)
-def get_multiouts_count() -> int:
-    return MultiOut.objects.count()
