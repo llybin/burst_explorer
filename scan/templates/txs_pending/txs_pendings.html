@@ -2,11 +2,11 @@
 {% load burst_tags %}
 
 <div class="table-responsive">
-  <table class="table table-hover small table-sm">
+  <table class="table table-hover small table-sm align-items-left">
   {% if show_head %}
     <thead>
       <tr>
-        <th scope="col">Timestamp</th>
+        <th scope="col">Txn id</th>
         <th scope="col">Type</th>
         <th scope="col">From</th>
         <th scope="col">To</th>
@@ -19,7 +19,10 @@
     <tbody>
     {% for tx in txs_pending %}
       <tr>
-        <td class="text-nowrap">{{ tx.timestamp|naturaltime }}</td>
+        <td class="text-nowrap">
+          <a href="{% url 'tx-detail' tx.transaction %}">{{ tx.transaction|truncatechars:10 }}</a><br>
+          <span class="small">{{ tx.timestamp|naturaltime }}</span>
+        </td>
         <td>{{ tx.tx_name }}</td>
         <td class="text-nowrap">
           {% include "account_link.html" with account_id=tx.sender account_name=tx.sender_name %}

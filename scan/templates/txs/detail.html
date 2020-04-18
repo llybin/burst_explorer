@@ -31,8 +31,12 @@
             <tr>
               <th>Height</th>
               <td>
-                <a href="{% url 'block-detail' tx.block.height %}">{{ tx.block.height }}</a>
-                {% include "block_confirmation.html" with blocks_confirm=tx.blocks_confirm %}
+                {% if tx.height != 0 %}
+                  <a href="{% url 'block-detail' tx.block.height %}">{{ tx.block.height }}</a>
+                  {% include "block_confirmation.html" with blocks_confirm=tx.blocks_confirm %}
+                {% else %}
+                  Pending...
+                {% endif %}
               </td>
             </tr>
             <tr>
@@ -52,7 +56,22 @@
             <tr>
               <th>To</th>
               <td>
+                {% if tx.height != 0 %}
                 {% include "recipient_link.html" with account_id=tx.recipient_id account_name=tx.recipient_name oneline=True %}
+                {% else %}
+{#              refact it#}
+{% if tx.subtype == 1 %}
+  {% for r in tx.attachment.recipients %}
+    {{ r.0|num2rs }} - {{ r.1|burst_amount|rounding:5|intcomma }}<BR>
+  {% endfor %}
+{% elif tx.subtype == 2 %}
+  {% with tx.amount|div:tx.multiout as amount %}
+    {% for r in tx.attachment.recipients %}
+      {{ r|num2rs }} - {{ amount|burst_amount|rounding:5|intcomma }}<BR>
+    {% endfor %}
+  {% endwith %}
+{% endif %}
+                {% endif %}
               </td>
             </tr>
             <tr>
@@ -71,10 +90,12 @@
               <th>Deadline</th>
               <td>{{ tx.deadline }}</td>
             </tr>
+            {% if tx.height != 0 %}
             <tr class="collapse show_more_info">
               <th>Block Timestamp</th>
               <td>{{ tx.block_timestamp|naturaltime }} ({{ tx.block_timestamp|date:'Y-m-d H:i:s' }} UTC)</td>
             </tr>
+            {% endif %}
             <tr class="collapse show_more_info">
               <th>EC Block ID</th>
               <td>{{ tx.ec_block_id }}</td>
@@ -83,6 +104,7 @@
               <th>EC Block Height</th>
               <td>{{ tx.ec_block_height }}</td>
             </tr>
+            {% if tx.height != 0 %}
             <tr class="collapse show_more_info">
               <th>Has message</th>
               <td>{{ tx.has_message|yesno }}</td>
@@ -99,6 +121,7 @@
               <th>Has Encrypttoself Message</th>
               <td>{{ tx.has_encrypttoself_message|yesno }}</td>
             </tr>
+            {% endif %}
             <tr class="collapse show_more_info">
               <th>Sender Public Key</th>
               <td class="text-monospace" style="word-wrap: break-word; max-width: 250px">{{ tx.sender_public_key|bin2hex }}</td>
@@ -107,14 +130,17 @@
               <th>Signature</th>
               <td class="text-monospace" style="word-wrap: break-word; max-width: 250px">{{ tx.signature|bin2hex }}</td>
             </tr>
+            {% if tx.height != 0 %}
             <tr class="collapse show_more_info">
               <th class=>Referenced Transaction Fullhash</th>
               <td class="text-monospace" style="word-wrap: break-word; max-width: 250px">{{ tx.referenced_transaction_fullhash|bin2hex }}</td>
             </tr>
+            {% endif %}
             <tr class="collapse show_more_info">
               <th>Full Hash</th>
               <td class="text-monospace" style="word-wrap: break-word; max-width: 250px">{{ tx.full_hash|bin2hex }}</td>
             </tr>
+            {% if tx.height != 0 %}
             {% if tx.has_message %}
             <tr class="collapse show_more_info">
               <th>Message</th>
@@ -131,6 +157,7 @@
                 <label for="attachment"></label>
               </td>
             </tr>
+            {% endif %}
             </tbody>
           </table>
         </div>
@@ -139,5 +166,13 @@
       </div>
     </div>
   </div>
+
+  {% if tx.height == 0 %}
+  <script>
+    setTimeout(function(){
+       document.location.reload();
+    }, 10000);
+  {% endif %}
+  </script>
 
 {% endblock %}
