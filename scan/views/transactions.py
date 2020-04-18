@@ -81,7 +81,6 @@ class TxDetailView(IntSlugDetailView):
                 raise e
 
             tx = txs_pending[0]
-            print(tx)
             obj = Transaction(
                 id=int(tx["transaction"]),
                 deadline=tx["deadline"],

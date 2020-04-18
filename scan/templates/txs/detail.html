@@ -56,7 +56,7 @@
             <tr>
               <th>To</th>
               <td>
-                {% if tx.height != 0 %}
+                {% if not tx.multiout %}
                 {% include "recipient_link.html" with account_id=tx.recipient_id account_name=tx.recipient_name oneline=True %}
                 {% else %}
 {#              refact it#}
