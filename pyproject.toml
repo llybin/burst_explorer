@@ -7,8 +7,8 @@ license = "GPL-3.0"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-celery = {version = "4.4.1", extras = ["redis"]}
-django = "3.0.4"
+celery = {version = "4.4.2", extras = ["redis"]}
+django = "3.0.5"
 django-cache-memoize = "0.1.6"
 django-cors-headers = "3.2.1"
 django-filter = "2.2.0"
@@ -17,10 +17,10 @@ djangorestframework = "3.11.0"
 jsonschema = "3.2.0"
 mysqlclient = "1.4.6"
 pycoingecko = "1.2.0"
-python-dotenv = "0.12.0"
+python-dotenv = "0.13.0"
 python-redis-lock = {version = "3.5.0", extras = ["django"]}
 requests = {version = "2.23.0", extras = ["security"]}
-sentry-sdk = "0.14.2"
+sentry-sdk = "0.14.3"
 simplejson = "3.17.0"
 whitenoise = "5.0.1"
 
