@@ -1,0 +1,52 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.24.0
+    method: GET
+    uri: https://wallet.burstscan.net/burst?requestType=getUnconfirmedTransactions
+  response:
+    body:
+      string: '{"unconfirmedTransactions":[{"type":1,"subtype":0,"timestamp":191003840,"deadline":1440,"senderPublicKey":"96f108d2f1819bca8795af205dcb6940c063b755e6ac4bc0dedc6c2cb9b77722","recipient":"13736966403016142704","recipientRS":"BURST-3DVJ-77VN-ART4-D4WAX","amountNQT":"0","feeNQT":"735000","signature":"c073a17083be900513b549640964ebe98c8d444c71c9535cbc92a1352066630d82170eb19ebbefa6ff8ddf8909918ce069b6ebce2c014ae7eaae13d9d83680d0","signatureHash":"7e3c280abc9b1b888c5788e235c729c9e56b79b8c11d2b73160e7fbd4bbebdca","fullHash":"c1f92a93c09f0b43b6c2221fff2d8832fedf04ac8e4295c07f51959027159f9a","transaction":"4831130674736593345","attachment":{"version.EncryptedMessage":1,"encryptedMessage":{"data":"6bf09b3c9e5cf778bdb30a2a693dbd21188d4729fa3593799165653055df13b91af88f3fb00745157ecf91ae614aec0a","nonce":"2b79c8684e97775548715f41b574580f4a0710db4c02b8e1b930733a909ccc04","isText":true},"version.PublicKeyAnnouncement":1,"recipientPublicKey":"fca79015a1e13c0acf30c50cd459fde91c4f6d488e85ab7200f7df763580537b"},"sender":"16573785942476334213","senderRS":"BURST-NB67-J54C-PUKM-GCH2E","height":789964,"version":1,"ecBlockId":"17487685810446615830","ecBlockHeight":789953}],"requestProcessingTime":0}'
+    headers:
+      Access-Control-Allow-Headers:
+      - '*'
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS, HEAD
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache, no-store, must-revalidate, private
+      Connection:
+      - keep-alive
+      Content-Type:
+      - text/plain;charset=utf-8
+      Date:
+      - Sat, 29 Aug 2020 18:39:24 GMT
+      Expires:
+      - Thu, 01 Jan 1970 00:00:00 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - nginx/1.19.1
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

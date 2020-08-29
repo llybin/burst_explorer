@@ -1,0 +1,71 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.24.0
+    method: GET
+    uri: https://api.coingecko.com/api/v3/simple/price?include_market_cap=true&include_24hr_change=true&ids=burst&vs_currencies=usd,btc
+  response:
+    body:
+      string: '{"burst":{"usd":0.0041513,"usd_market_cap":8728175.378742721,"usd_24h_change":-2.1668517108488983,"btc":3.603e-07,"btc_market_cap":757.4517804393946,"btc_24h_change":-2.5242541519295063}}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization
+      Access-Control-Allow-Methods:
+      - POST, PUT, DELETE, GET, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - link, per-page, total
+      Access-Control-Request-Method:
+      - '*'
+      Age:
+      - '42'
+      Alternate-Protocol:
+      - 443:npn-spdy/2
+      CF-Cache-Status:
+      - HIT
+      CF-RAY:
+      - 5ca84eb77f1e10fc-BKK
+      Cache-Control:
+      - max-age=60, public, must-revalidate, s-maxage=60
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 29 Aug 2020 18:24:11 GMT
+      ETag:
+      - W/"5343ca380353ae727ecdd5d18ea2db21"
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cfduid=da2ea141b39ba2a5ac6cbf65330d5fea21598725451; expires=Mon, 28-Sep-20
+        18:24:11 GMT; path=/; domain=.coingecko.com; HttpOnly; SameSite=Lax
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding, Origin
+      X-Request-Id:
+      - 79be92d5-7fce-4cc2-a543-4a2540a6b579
+      X-Runtime:
+      - '0.005158'
+      alt-svc:
+      - h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400
+      cf-request-id:
+      - 04dd0f86ab000010fcc001e200000001
+      content-length:
+      - '187'
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -3,11 +3,6 @@
 set -o errexit
 set -o nounset
 
-if [ "$DJANGO_COLLECTSTATIC" = "on" ]; then
-	echo "Collect static files"
-	python manage.py collectstatic --no-input
-fi
-
 if [ "$DJANGO_MIGRATE" = "on" ]; then
 	echo "Apply database migrations"
 	python manage.py migrate java_wallet --database java_wallet --no-input

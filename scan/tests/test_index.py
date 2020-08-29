@@ -1,3 +1,4 @@
+import pytest
 from django.shortcuts import reverse
 from django.test import TestCase
 
@@ -5,6 +6,7 @@ from django.test import TestCase
 class IndexViewTests(TestCase):
     databases = {"default", "java_wallet"}
 
+    @pytest.mark.vcr
     def test_ok(self):
         response = self.client.get(reverse("index"))
         self.assertEqual(response.status_code, 200)

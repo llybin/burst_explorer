@@ -1,3 +1,4 @@
+import pytest
 from django.test import TestCase
 
 
@@ -8,6 +9,7 @@ class TxListViewTests(TestCase):
         response = self.client.get("/txs")
         self.assertEqual(response.status_code, 301)
 
+    @pytest.mark.vcr
     def test_ok(self):
         response = self.client.get("/txs/")
         self.assertEqual(response.status_code, 200)
@@ -19,6 +21,7 @@ class TxListViewTests(TestCase):
 class TxDetailViewTests(TestCase):
     databases = {"default", "java_wallet"}
 
+    @pytest.mark.vcr
     def test_404(self):
         response = self.client.get("/tx/abc")
         self.assertEqual(response.status_code, 404)

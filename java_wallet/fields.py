@@ -3,7 +3,7 @@ from ctypes import c_long, c_ulong
 from datetime import datetime
 
 from django.db.models import BigIntegerField, DateTimeField
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from burst.constants import BLOCK_CHAIN_START_AT
 from java_wallet.constants import TX_TYPES

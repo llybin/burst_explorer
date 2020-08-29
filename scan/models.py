@@ -8,7 +8,7 @@ from django.db.models import (
     PositiveIntegerField,
     PositiveSmallIntegerField,
 )
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from java_wallet.fields import PositiveBigIntegerField
 

@@ -1,10 +1,10 @@
 from datetime import datetime
 from unittest import mock
 
+import pytest
 from django.forms.models import model_to_dict
 from django.test import TestCase, override_settings
 from freezegun import freeze_time
-from vcr import VCR
 
 from scan.models import PeerMonitor
 from scan.peers import (
@@ -14,12 +14,6 @@ from scan.peers import (
     get_nodes_list,
     get_state,
     is_good_version,
-)
-
-my_vcr = VCR(
-    cassette_library_dir="scan/tests/fixtures/vcr/peers",
-    record_mode="once",
-    decode_compressed_response=True,
 )
 
 
@@ -165,23 +159,23 @@ class IsGoodVersionTests(TestCase):
 
 
 class GetCountryByIPTests(TestCase):
-    @my_vcr.use_cassette("geoplugin_success.yaml")
+    @pytest.mark.vcr
     def test_ok(self):
         self.assertEqual(get_country_by_ip("8.8.8.8", _refresh=True), "US")
 
 
 class ExplorePeerTests(TestCase):
     @freeze_time("2019-07-10 17:47:6.963229", tz_offset=0)
-    @my_vcr.use_cassette("explore_peer_success.yaml")
+    @pytest.mark.vcr
     def test_ok(self):
         updates = {}
         with mock.patch("scan.peers.get_country_by_ip", return_value="FR"):
-            explore_peer("wallet.burst.devtrue.net", updates)
+            explore_peer("wallet.burstscan.net", updates)
         self.assertDictEqual(
             updates,
             {
-                "wallet.burst.devtrue.net": {
-                    "announced_address": "wallet.burst.devtrue.net",
+                "wallet.burstscan.net": {
+                    "announced_address": "wallet.burstscan.net",
                     "application": "BRS",
                     "country_code": "FR",
                     "cumulative_difficulty": "64770577730996744870",
@@ -193,23 +187,23 @@ class ExplorePeerTests(TestCase):
             },
         )
 
-    @my_vcr.use_cassette("explore_peer_old_version.yaml")
+    @pytest.mark.vcr
     def test_old_version(self):
         updates = {}
-        explore_peer("wallet.burst.devtrue.net", updates)
-        self.assertEqual(updates, {"wallet.burst.devtrue.net": None})
+        explore_peer("wallet.burstscan.net", updates)
+        self.assertEqual(updates, {"wallet.burstscan.net": None})
 
-    @my_vcr.use_cassette("explore_peer_error.yaml")
+    @pytest.mark.vcr
     def test_error(self):
         updates = {}
-        explore_peer("wallet.burst.devtrue.net", updates)
-        self.assertEqual(updates, {"wallet.burst.devtrue.net": None})
+        explore_peer("wallet.burstscan.net", updates)
+        self.assertEqual(updates, {"wallet.burstscan.net": None})
 
 
 class PeerSetStateTests(TestCase):
     def test_online_ok(self):
         update = {
-            "announced_address": "wallet.burst.devtrue.net",
+            "announced_address": "wallet.burstscan.net",
             "application": "BRS",
             "country_code": "FR",
             "cumulative_difficulty": "64770577730996744870",
@@ -305,7 +299,7 @@ class GetNodeListTests(TestCase):
 
     def test_ok(self):
         peers = get_nodes_list()
-        self.assertEqual(len(peers), 12)
+        self.assertEqual(len(peers), 11)
         self.assertEqual(
             peers[0],
             PeerMonitor.objects.filter(state=PeerMonitor.State.UNREACHABLE)

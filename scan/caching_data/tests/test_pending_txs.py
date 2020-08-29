@@ -1,20 +1,12 @@
-from unittest import TestCase
-
-from vcr import VCR
+import pytest
 
 from scan.caching_data.pending_txs import CachingPendingTxs
 
-my_vcr = VCR(
-    cassette_library_dir="scan/caching_data/tests/fixtures/vcr/pending_txs",
-    record_mode="once",
-    decode_compressed_response=True,
-)
 
-
-class GetPendingTxs(TestCase):
-    @my_vcr.use_cassette("pending_txs_success.yaml")
-    def test_ok(self):
-        txs = CachingPendingTxs().cached_data
-        self.assertEqual(len(txs), 15)
-        self.assertEqual(txs[14]["multiout"], 2)
-        self.assertEqual(txs[0]["multiout"], 6)
+@pytest.mark.django_db
+@pytest.mark.vcr
+def test_caching_data():
+    txs = CachingPendingTxs().cached_data
+    assert len(txs) == 15
+    assert txs[14]["multiout"] == 2
+    assert txs[0]["multiout"] == 6

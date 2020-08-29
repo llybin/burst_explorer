@@ -15,10 +15,10 @@ interactions:
       User-Agent:
       - BRS/2.4.0
     method: POST
-    uri: http://wallet.burst.devtrue.net:8123/burst
+    uri: http://wallet.burstscan.net:8123/burst
   response:
     body:
-      string: '{"announcedAddress":"wallet.burst.devtrue.net","application":"BRS","version":"2.2.0","platform":"BURST-BTKF-8WT9-L98N-98JH2","shareAddress":true}'
+      string: '{"announcedAddress":"wallet.burstscan.net","application":"BRS","version":"2.2.0","platform":"BURST-BTKF-8WT9-L98N-98JH2","shareAddress":true}'
     headers:
       Content-Type:
       - text/plain;charset=utf-8

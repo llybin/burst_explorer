@@ -13,7 +13,7 @@ my_vcr = VCR(
 )
 
 
-class TestQuery(QueryBase):
+class QueryTest(QueryBase):
     _request_type = "Test"
     _http_method = "GET"
 
@@ -37,27 +37,27 @@ class BrsApiTest(TestCase):
 
     def test_request_get_fail_network(self):
         with self.assertRaises(APIException):
-            BrsApi("http://127.0.0.2:1234")._request(TestQuery())
+            BrsApi("http://127.0.0.2:1234")._request(QueryTest())
 
     @my_vcr.use_cassette("test_query_malformed_json.yaml")
     def test_request_get_malformed_json(self):
         with self.assertRaises(APIException):
-            BrsApi("https://wallet.burst.devtrue.net")._request(TestQuery())
+            BrsApi("https://wallet.burstscan.net")._request(QueryTest())
 
     @my_vcr.use_cassette("test_query_malformed_data.yaml")
     def test_request_get_malformed_data(self):
-        class Temp(TestQuery):
+        class Temp(QueryTest):
             _response_json_schema = {"type": "array", "items": {"type": "string"}}
 
         with self.assertRaises(APIException):
-            BrsApi("https://wallet.burst.devtrue.net")._request(Temp())
+            BrsApi("https://wallet.burstscan.net")._request(Temp())
 
 
 class GetPeersTest(TestCase):
     @my_vcr.use_cassette("get_peers.yaml")
     def test_ok(self):
         self.assertListEqual(
-            BrsApi("https://wallet.burst.devtrue.net").get_peers(),
+            BrsApi("https://wallet.burstscan.net").get_peers(),
             ["68.65.35.34", "[2a01:4f8:bc:aa1:0:0:0:b67c]"],
         )
 
@@ -66,7 +66,7 @@ class GetPeerTest(TestCase):
     @my_vcr.use_cassette("get_peer_offline.yaml")
     def test_offline(self):
         self.assertDictEqual(
-            BrsApi("https://wallet.burst.devtrue.net").get_peer("68.65.35.34"),
+            BrsApi("https://wallet.burstscan.net").get_peer("68.65.35.34"),
             {
                 "state": 0,
                 "announcedAddress": "68.65.35.34",
@@ -85,7 +85,7 @@ class GetPeerTest(TestCase):
     @my_vcr.use_cassette("get_peer_online.yaml")
     def test_online(self):
         self.assertDictEqual(
-            BrsApi("https://wallet.burst.devtrue.net").get_peer("178.48.21.145"),
+            BrsApi("https://wallet.burstscan.net").get_peer("178.48.21.145"),
             {
                 "state": 0,
                 "announcedAddress": "178.48.21.145",
@@ -104,7 +104,7 @@ class GetPeerTest(TestCase):
     @my_vcr.use_cassette("get_peer_error.yaml")
     def test_error(self):
         with self.assertRaises(APIException) as em:
-            BrsApi("https://wallet.burst.devtrue.net").get_peer("178.48.21.1451")
+            BrsApi("https://wallet.burstscan.net").get_peer("178.48.21.1451")
 
         self.assertEqual(
             str(em.exception),
@@ -116,7 +116,7 @@ class GetBlockChainStatusTest(TestCase):
     @my_vcr.use_cassette("get_block_chain_status.yaml")
     def test_ok(self):
         self.assertDictEqual(
-            BrsApi("https://wallet.burst.devtrue.net").get_block_chain_status(),
+            BrsApi("https://wallet.burstscan.net").get_block_chain_status(),
             {
                 "application": "BRS",
                 "version": "v2.3.0",
@@ -136,7 +136,7 @@ class GetMiningInfoTest(TestCase):
     @my_vcr.use_cassette("get_mining_info.yaml")
     def test_ok(self):
         self.assertDictEqual(
-            BrsApi("https://wallet.burst.devtrue.net").get_mining_info(),
+            BrsApi("https://wallet.burstscan.net").get_mining_info(),
             {
                 "height": "628451",
                 "generationSignature": "f25a6d8b694382fddfef15057e969cd3db6dee8c982f392a7ca4785f0507f9cb",
@@ -150,7 +150,7 @@ class GetStateTest(TestCase):
     @my_vcr.use_cassette("get_state.yaml")
     def test_ok(self):
         self.assertDictEqual(
-            BrsApi("https://wallet.burst.devtrue.net").get_state(),
+            BrsApi("https://wallet.burstscan.net").get_state(),
             {
                 "application": "BRS",
                 "version": "v2.3.0",
@@ -186,7 +186,7 @@ class GetUnconfirmedTransactionsTest(TestCase):
     @my_vcr.use_cassette("get_unconfirmed_transactions_multiout.yaml")
     def test_multiout(self):
         self.assertListEqual(
-            BrsApi("https://wallet.burst.devtrue.net").get_unconfirmed_transactions(),
+            BrsApi("https://wallet.burstscan.net").get_unconfirmed_transactions(),
             [
                 {
                     "type": 0,
@@ -225,7 +225,7 @@ class GetUnconfirmedTransactionsTest(TestCase):
     @my_vcr.use_cassette("get_unconfirmed_transactions_single.yaml")
     def test_single(self):
         self.assertListEqual(
-            BrsApi("https://wallet.burst.devtrue.net").get_unconfirmed_transactions(),
+            BrsApi("https://wallet.burstscan.net").get_unconfirmed_transactions(),
             [
                 {
                     "type": 0,
@@ -254,7 +254,7 @@ class GetUnconfirmedTransactionsTest(TestCase):
     @my_vcr.use_cassette("get_unconfirmed_transactions_multiout_same.yaml")
     def test_multiout_same(self):
         self.assertListEqual(
-            BrsApi("https://wallet.burst.devtrue.net").get_unconfirmed_transactions(),
+            BrsApi("https://wallet.burstscan.net").get_unconfirmed_transactions(),
             [
                 {
                     "type": 0,

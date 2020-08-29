@@ -1,0 +1,121 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.24.0
+    method: GET
+    uri: https://wallet.burstscan.net/burst?requestType=getUnconfirmedTransactions
+  response:
+    body:
+      string: '{"unconfirmedTransactions":[],"requestProcessingTime":0}'
+    headers:
+      Access-Control-Allow-Headers:
+      - '*'
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS, HEAD
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache, no-store, must-revalidate, private
+      Connection:
+      - keep-alive
+      Content-Type:
+      - text/plain;charset=utf-8
+      Date:
+      - Sat, 29 Aug 2020 18:39:20 GMT
+      Expires:
+      - Thu, 01 Jan 1970 00:00:00 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - nginx/1.19.1
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.24.0
+    method: GET
+    uri: https://api.coingecko.com/api/v3/simple/price?include_market_cap=true&include_24hr_change=true&ids=burst&vs_currencies=usd,btc
+  response:
+    body:
+      string: '{"burst":{"usd":0.00415069,"usd_market_cap":8739379.20890017,"usd_24h_change":9.008927273704623,"btc":3.603e-07,"btc_market_cap":758.3334772362065,"btc_24h_change":8.807075018521083}}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization
+      Access-Control-Allow-Methods:
+      - POST, PUT, DELETE, GET, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - link, per-page, total
+      Access-Control-Request-Method:
+      - '*'
+      Age:
+      - '2'
+      Alternate-Protocol:
+      - 443:npn-spdy/2
+      CF-Cache-Status:
+      - HIT
+      CF-RAY:
+      - 5ca864eb9f3d10d2-BKK
+      Cache-Control:
+      - max-age=60, public, must-revalidate, s-maxage=60
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 29 Aug 2020 18:39:20 GMT
+      ETag:
+      - W/"8c1fcd7494a37de5a288783fa2858a5b"
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cfduid=dc0aaa7061a1144dbafe9bf138a7cf0ae1598726360; expires=Mon, 28-Sep-20
+        18:39:20 GMT; path=/; domain=.coingecko.com; HttpOnly; SameSite=Lax
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding, Origin
+      X-Request-Id:
+      - 809c14c3-57f6-47a7-8881-829358b1f6d3
+      X-Runtime:
+      - '0.004488'
+      alt-svc:
+      - h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400
+      cf-request-id:
+      - 04dd1d673b000010d2b23cf200000001
+      content-length:
+      - '183'
+    status:
+      code: 200
+      message: OK
+version: 1

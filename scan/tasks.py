@@ -14,7 +14,7 @@ def setup_periodic_tasks(sender, **kwargs):
     if not settings.TEST_NET:
         sender.add_periodic_task(60, update_cache_exchange_data)
 
-    sender.add_periodic_task(5, update_cache_pending_txs)
+    sender.add_periodic_task(10, update_cache_pending_txs)
 
     sender.add_periodic_task(3000, update_cache_total_txs_count)
     update_cache_total_txs_count.apply_async(countdown=15)
@@ -34,7 +34,7 @@ def update_cache_exchange_data():
     CachingExchangeData().update_live_data()
 
 
-@celery_app.task(time_limit=5)
+@celery_app.task(time_limit=10)
 def update_cache_pending_txs():
     CachingPendingTxs().update_live_data()
 

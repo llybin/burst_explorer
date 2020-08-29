@@ -10,29 +10,29 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
+import logging
 import os
 
 import simplejson as json
 import urllib3
-from dotenv import load_dotenv
 
-load_dotenv()
 urllib3.disable_warnings()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = os.environ.get(
+    "SECRET_KEY", "l42wty32hl$*6=lsy33%0%)cps87@@!vfns!ucu-#*%$x_@min"
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG") == "True"
+DEBUG = os.environ.get("DEBUG", "off") == "on"
 
-INTERNAL_IPS = os.getenv("DEBUG_TOOLBAR_INTERNAL_IPS")
+INTERNAL_IPS = json.loads(os.environ.get("DEBUG_TOOLBAR_INTERNAL_IPS", "[]"))
 
 ALLOWED_HOSTS = ["*"]
 
@@ -112,20 +112,20 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": os.getenv("DB_DEFAULT_ENGINE"),
-        "NAME": os.getenv("DB_DEFAULT_NAME"),
-        "HOST": os.getenv("DB_DEFAULT_HOST"),
-        "USER": os.getenv("DB_DEFAULT_USER"),
-        "PASSWORD": os.getenv("DB_DEFAULT_PASSWORD"),
-        "OPTIONS": json.loads(os.getenv("DB_DEFAULT_OPTIONS")),
+        "ENGINE": os.environ.get("DB_DEFAULT_ENGINE"),
+        "NAME": os.environ.get("DB_DEFAULT_NAME"),
+        "HOST": os.environ.get("DB_DEFAULT_HOST"),
+        "USER": os.environ.get("DB_DEFAULT_USER"),
+        "PASSWORD": os.environ.get("DB_DEFAULT_PASSWORD"),
+        "OPTIONS": json.loads(os.environ.get("DB_DEFAULT_OPTIONS", "{}")),
     },
     "java_wallet": {
-        "ENGINE": os.getenv("DB_JAVA_WALLET_ENGINE"),
-        "NAME": os.getenv("DB_JAVA_WALLET_NAME"),
-        "HOST": os.getenv("DB_JAVA_WALLET_HOST"),
-        "USER": os.getenv("DB_JAVA_WALLET_USER"),
-        "PASSWORD": os.getenv("DB_JAVA_WALLET_PASSWORD"),
-        "OPTIONS": json.loads(os.getenv("DB_JAVA_WALLET_OPTIONS")),
+        "ENGINE": os.environ.get("DB_JAVA_WALLET_ENGINE"),
+        "NAME": os.environ.get("DB_JAVA_WALLET_NAME"),
+        "HOST": os.environ.get("DB_JAVA_WALLET_HOST"),
+        "USER": os.environ.get("DB_JAVA_WALLET_USER"),
+        "PASSWORD": os.environ.get("DB_JAVA_WALLET_PASSWORD"),
+        "OPTIONS": json.loads(os.environ.get("DB_JAVA_WALLET_OPTIONS", "{}")),
     },
 }
 
@@ -168,9 +168,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 CACHES = {
     "default": {
         "BACKEND": "redis_lock.django_cache.RedisCache",
-        "LOCATION": f'redis://{os.getenv("CACHE_DEFAULT_HOST")}:'
-        f'{os.getenv("CACHE_DEFAULT_PORT")}/'
-        f'{os.getenv("CACHE_DEFAULT_DB")}',
+        "LOCATION": f'redis://{os.environ.get("CACHE_DEFAULT_HOST")}:'
+        f'{os.environ.get("CACHE_DEFAULT_PORT")}/'
+        f'{os.environ.get("CACHE_DEFAULT_DB")}',
         "TIMEOUT": None,
         "OPTIONS": {"CLIENT_CLASS": "django_redis.client.DefaultClient"},
     }
@@ -217,9 +217,9 @@ LOGGING = {
 # Celery
 
 CELERY_BROKER_URL = (
-    f'redis://{os.getenv("CELERY_BROKER_HOST")}:'
-    f'{os.getenv("CELERY_BROKER_PORT")}/'
-    f'{os.getenv("CELERY_BROKER_DB")}'
+    f'redis://{os.environ.get("CELERY_BROKER_HOST")}:'
+    f'{os.environ.get("CELERY_BROKER_PORT")}/'
+    f'{os.environ.get("CELERY_BROKER_DB")}'
 )
 CELERY_RESULT_BACKEND = None
 CELERY_ACCEPT_CONTENT = ["json"]
@@ -229,35 +229,41 @@ CELERYD_TASK_TIME_LIMIT = 600
 
 # Sentry
 
-SENTRY_DSN = os.getenv("SENTRY_DSN")
+SENTRY_DSN = os.environ.get("SENTRY_DSN")
 
 if SENTRY_DSN:
     from sentry_sdk import init
     from sentry_sdk.integrations.celery import CeleryIntegration
     from sentry_sdk.integrations.django import DjangoIntegration
+    from sentry_sdk.integrations.logging import LoggingIntegration
     from sentry_sdk.integrations.redis import RedisIntegration
 
     init(
         dsn=SENTRY_DSN,
-        integrations=[DjangoIntegration(), CeleryIntegration(), RedisIntegration()],
+        integrations=[
+            DjangoIntegration(),
+            CeleryIntegration(),
+            LoggingIntegration(event_level=logging.WARNING),
+            RedisIntegration(),
+        ],
     )
 
 # UA-XXXXXXXXX-X
-GOOGLE_TRACKING_ID = os.getenv("GOOGLE_TRACKING_ID")
+GOOGLE_TRACKING_ID = os.environ.get("GOOGLE_TRACKING_ID")
 
-DEFAULT_P2P_PORT = int(os.getenv("DEFAULT_P2P_PORT", 8123))
-DEFAULT_API_V1_PORT = int(os.getenv("DEFAULT_API_V1_PORT", 8125))
+DEFAULT_P2P_PORT = int(os.environ.get("DEFAULT_P2P_PORT", 8123))
+DEFAULT_API_V1_PORT = int(os.environ.get("DEFAULT_API_V1_PORT", 8125))
 
-BRS_P2P_VERSION = "2.4.0"
-MIN_PEER_VERSION = "2.3.0"
+BRS_P2P_VERSION = "2.5.0"
+MIN_PEER_VERSION = "2.4.0"
 
-BRS_NODE = os.getenv("BRS_NODE")
+BRS_NODE = os.environ.get("BRS_NODE")
 
-WALLET_URL = os.getenv("WALLET_URL")
+WALLET_URL = os.environ.get("WALLET_URL")
 
-BRS_BOOTSTRAP_PEERS = json.loads(os.getenv("BRS_BOOTSTRAP_PEERS"))
+BRS_BOOTSTRAP_PEERS = json.loads(os.environ.get("BRS_BOOTSTRAP_PEERS", "[]"))
 
 # for fork solving
 AGGR_STORE_BLOCK_SIGNATURE = 3600 * 24 * 7
 
-TEST_NET = os.getenv("TEST_NET")
+TEST_NET = os.environ.get("TEST_NET")

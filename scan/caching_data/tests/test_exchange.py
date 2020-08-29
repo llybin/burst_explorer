@@ -1,19 +1,13 @@
 from unittest.case import TestCase
 
+import pytest
 from django.test import override_settings
-from vcr import VCR
 
 from scan.caching_data.exchange import CachingExchangeData, ExchangeData
 
-my_vcr = VCR(
-    cassette_library_dir="scan/caching_data/tests/fixtures/vcr/exchange",
-    record_mode="once",
-    decode_compressed_response=True,
-)
-
 
 class ExchangeAPITest(TestCase):
-    @my_vcr.use_cassette("coingecko_success.yaml")
+    @pytest.mark.vcr("coingecko_success.yaml")
     def test_get_exchange_data(self):
         data = CachingExchangeData().live_data
         self.assertEqual(
@@ -31,7 +25,7 @@ class GetExchangeDataTest(TestCase):
     def setUp(self) -> None:
         CachingExchangeData().clear_cached_data()
 
-    @my_vcr.use_cassette("coingecko_success.yaml")
+    @pytest.mark.vcr("coingecko_success.yaml")
     def test_live_if_empty(self):
         self.assertEqual(
             CachingExchangeData().cached_data,
@@ -47,7 +41,7 @@ class GetExchangeDataTest(TestCase):
     def test_test_net(self):
         self.assertEqual(CachingExchangeData().cached_data, ExchangeData())
 
-    @my_vcr.use_cassette("coingecko_success.yaml")
+    @pytest.mark.vcr("coingecko_success.yaml")
     def test_get_saved(self):
         data = CachingExchangeData()._get_live_data()
         CachingExchangeData().update_data(data)

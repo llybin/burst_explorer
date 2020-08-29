@@ -21,7 +21,7 @@ class BrsApiBase:
     _session = None
 
     def __init__(self, node_address: str) -> None:
-        """ Constructor
+        """Constructor
         :param node_address: domain or ip address
         """
         if not node_address.startswith("http"):
@@ -79,8 +79,7 @@ class BrsApiBase:
 
 
 class BrsApi(BrsApiBase):
-    """ The BrsApi class provides convenient access to Brs API.
-    """
+    """The BrsApi class provides convenient access to Brs API."""
 
     def get_peers(self) -> list:
         return self._request(queries.GetPeers())["peers"]

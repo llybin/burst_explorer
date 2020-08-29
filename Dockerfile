@@ -1,18 +1,16 @@
-FROM python:3.8.2-slim-buster
+FROM python:3.8.5-slim-buster
 
 LABEL maintainer="Lev Lybin <lev.lybin@gmail.com>"
 
 ARG UID=1000
 ARG GID=1000
 ARG APP_ENV=development
-ARG DJANGO_COLLECTSTATIC=off
 ARG DJANGO_MIGRATE=off
 ARG START_SERVER=off
 
 EXPOSE 5000/tcp 9001/tcp
 
 ENV APP_ENV=${APP_ENV} \
-	DJANGO_COLLECTSTATIC=${DJANGO_COLLECTSTATIC} \
 	DJANGO_MIGRATE=${DJANGO_MIGRATE} \
 	START_SERVER=${START_SERVER} \
 	# https://docs.python.org/3.8/using/cmdline.html
@@ -26,11 +24,7 @@ ENV APP_ENV=${APP_ENV} \
 	# https://github.com/jwilder/dockerize
 	DOCKERIZE_VERSION=v0.6.1 \
 	# https://github.com/python-poetry/poetry
-	POETRY_VERSION=1.0.5 \
-	# https://github.com/benoitc/gunicorn
-	GUNICORN_VERSION=20.0.4 \
-	# https://github.com/Supervisor/supervisor
-	SUPERVISOR_VERSION=4.1.0
+	POETRY_VERSION=1.0.10
 
 # Create user and group for running app
 RUN groupadd -r -g $GID app && useradd --no-log-init -r -u $UID -g app app
@@ -67,10 +61,8 @@ RUN set -ex \
 	&& tar -C /usr/local/bin -xzvf "dockerize-linux-amd64-${DOCKERIZE_VERSION}.tar.gz" \
 	&& rm "dockerize-linux-amd64-${DOCKERIZE_VERSION}.tar.gz" \
 	&& pip install "poetry==$POETRY_VERSION" \
-	&& pip install "gunicorn==$GUNICORN_VERSION" \
-	&& pip install "supervisor==$SUPERVISOR_VERSION" \
 	&& poetry config virtualenvs.create false \
-	&& poetry install $(test "$APP_ENV" = "production" && echo "--no-dev") --no-interaction --no-ansi \
+	&& poetry install --no-interaction --no-ansi \
 	&& apt-mark auto '.*' > /dev/null \
 	&& apt-mark manual $savedAptMark \
 	&& find /usr/local -type f -executable -not \( -name '*tkinter*' \) -exec ldd '{}' ';' \
@@ -88,6 +80,8 @@ RUN set -ex \
 USER app
 COPY --chown=app:app . /app
 WORKDIR /app
+
+RUN python manage.py collectstatic --no-input
 
 VOLUME ["/app/static", "/app/db"]
 

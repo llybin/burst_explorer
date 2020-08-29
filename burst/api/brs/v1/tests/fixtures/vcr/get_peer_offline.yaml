@@ -11,7 +11,7 @@ interactions:
       User-Agent:
       - python-requests/2.22.0
     method: GET
-    uri: https://wallet.burst.devtrue.net:8125/burst?requestType=getPeer&peer=68.65.35.34
+    uri: https://wallet.burstscan.net:8125/burst?requestType=getPeer&peer=68.65.35.34
   response:
     body:
       string: '{"state":0,"announcedAddress":"68.65.35.34","shareAddress":true,"downloadedVolume":0,"uploadedVolume":0,"application":null,"version":"v0.0.0","platform":null,"blacklisted":false,"lastUpdated":0,"requestProcessingTime":0}'

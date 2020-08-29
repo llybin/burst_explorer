@@ -12,20 +12,20 @@ class QueryBaseTest(TestCase):
         )
 
 
-class TestQuery(QueryBase):
+class QueryTest(QueryBase):
     _request_type = "Test"
     _http_method = "GET"
 
 
 class TestQueryTest(TestCase):
     def test_repr(self):
-        self.assertEqual(str(TestQuery()), "Test")
+        self.assertEqual(str(QueryTest()), "Test")
 
     def test_request_type(self):
-        self.assertEqual(TestQuery().request_type, "Test")
+        self.assertEqual(QueryTest().request_type, "Test")
 
     def test_params_validated(self):
-        class Temp(TestQuery):
+        class Temp(QueryTest):
             _required_params = {"test"}
 
         with self.assertRaises(ClientException) as em:
@@ -36,23 +36,23 @@ class TestQueryTest(TestCase):
 
 class TestQueryValidateParamsTest(TestCase):
     def test_empty_all(self):
-        TestQuery()
+        QueryTest()
 
     def test_required_ok(self):
-        class Temp(TestQuery):
+        class Temp(QueryTest):
             _required_params = {"test"}
 
         Temp({"test": "a"})
 
     def test_required_optional_ok(self):
-        class Temp(TestQuery):
+        class Temp(QueryTest):
             _required_params = {"test"}
             _optional_params = {"b"}
 
         Temp({"test": "a", "b": "c"})
 
     def test_required_omitted(self):
-        class Temp(TestQuery):
+        class Temp(QueryTest):
             _required_params = {"test"}
 
         with self.assertRaises(ClientException) as em:
@@ -62,12 +62,12 @@ class TestQueryValidateParamsTest(TestCase):
 
     def test_unknown_params_empty_required_optional(self):
         with self.assertRaises(ClientException) as em:
-            TestQuery({"test": "a"})
+            QueryTest({"test": "a"})
 
         self.assertEqual(str(em.exception), "Unknown params: {'test'}")
 
     def test_unknown_params_empty_optional(self):
-        class Temp(TestQuery):
+        class Temp(QueryTest):
             _required_params = {"test"}
 
         with self.assertRaises(ClientException) as em:
@@ -76,7 +76,7 @@ class TestQueryValidateParamsTest(TestCase):
         self.assertEqual(str(em.exception), "Unknown params: {'b'}")
 
     def test_unknown_params(self):
-        class Temp(TestQuery):
+        class Temp(QueryTest):
             _required_params = {"test"}
             _optional_params = {"q"}
 
@@ -88,16 +88,16 @@ class TestQueryValidateParamsTest(TestCase):
 
 class TestQueryValidateResponseTest(TestCase):
     def test_empty_schema(self):
-        self.assertTrue(TestQuery().validate_response({"a": "b"}))
+        self.assertTrue(QueryTest().validate_response({"a": "b"}))
 
     def test_ok(self):
-        class Temp(TestQuery):
+        class Temp(QueryTest):
             _response_json_schema = {"type": "array", "items": {"type": "string"}}
 
         self.assertTrue(Temp().validate_response(["a", "b"]))
 
     def test_fail(self):
-        class Temp(TestQuery):
+        class Temp(QueryTest):
             _response_json_schema = {"type": "array", "items": {"type": "string"}}
 
         with self.assertRaises(APIException) as em:

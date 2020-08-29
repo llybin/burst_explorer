@@ -11,7 +11,7 @@ interactions:
       User-Agent:
       - python-requests/2.22.0
     method: GET
-    uri: https://wallet.burst.devtrue.net:8125/burst?requestType=getBlockchainStatus
+    uri: https://wallet.burstscan.net:8125/burst?requestType=getBlockchainStatus
   response:
     body:
       string: '{"application":"BRS","version":"v2.3.0","time":151999882,"lastBlock":"3461701356085316422","cumulativeDifficulty":"60714757902044174379","numberOfBlocks":628451,"lastBlockchainFeeder":"75.100.126.227","lastBlockchainFeederHeight":628450,"isScanning":false,"requestProcessingTime":0}'

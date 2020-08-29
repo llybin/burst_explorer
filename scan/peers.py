@@ -16,7 +16,6 @@ from django.db.models import DurationField, ExpressionWrapper, F
 from django.db.models.functions import Now
 from django.utils import timezone
 from requests.exceptions import RequestException
-from sentry_sdk import capture_message
 
 from burst.api.brs.p2p import P2PApi
 from burst.api.exceptions import BurstException
@@ -236,7 +235,6 @@ def peer_cmd():
         logger.warning(
             "Peers update was rejected: %d - %d", len(updates_with_data), len(addresses)
         )
-        capture_message("Peers update was rejected.")
         return
 
     # set all peers unreachable, if will no update - peer will be unreachable

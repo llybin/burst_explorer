@@ -15,7 +15,7 @@ interactions:
       User-Agent:
       - BRS/2.4.0
     method: POST
-    uri: http://wallet.burst.devtrue.net:8123/burst
+    uri: http://wallet.burstscan.net:8123/burst
   response:
     body:
       string: '{"error": "bla"}'

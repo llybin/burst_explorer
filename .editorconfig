@@ -15,7 +15,7 @@ charset = utf-8
 max_line_length = 119
 
 # Use 2 spaces for frontend files
-[{*.html,*.vue,*.js,*css}]
+[{*.html,*.svelte,*.js,*.css}]
 indent_size = 2
 
 [{*.yml,*.yaml}]

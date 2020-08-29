@@ -11,7 +11,7 @@ interactions:
       User-Agent:
       - python-requests/2.22.0
     method: GET
-    uri: https://wallet.burst.devtrue.net:8125/burst?requestType=getState
+    uri: https://wallet.burstscan.net:8125/burst?requestType=getState
   response:
     body:
       string: '{"application":"BRS","version":"v2.3.0","time":152000464,"lastBlock":"3461701356085316422","cumulativeDifficulty":"60714757902044174379","totalEffectiveBalanceNXT":2094200481,"numberOfBlocks":628451,"numberOfTransactions":8075239,"numberOfAccounts":707241,"numberOfAssets":400,"numberOfOrders":2994,"numberOfAskOrders":2657,"numberOfBidOrders":337,"numberOfTrades":111241,"numberOfTransfers":119844,"numberOfAliases":57700,"numberOfPeers":611,"numberOfUnlockedAccounts":0,"lastBlockchainFeeder":"84.10.50.53","lastBlockchainFeederHeight":628450,"isScanning":false,"availableProcessors":2,"maxMemory":524288000,"totalMemory":188743680,"freeMemory":78025328,"requestProcessingTime":9608}'

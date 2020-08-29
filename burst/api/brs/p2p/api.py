@@ -8,8 +8,7 @@ from burst.api.brs.v1.api import BrsApiBase
 
 
 class P2PApi(BrsApiBase):
-    """ The P2PApi class provides convenient access to P2P API.
-    """
+    """The P2PApi class provides convenient access to P2P API."""
 
     headers = {"User-Agent": f"BRS/{settings.BRS_P2P_VERSION}"}
 

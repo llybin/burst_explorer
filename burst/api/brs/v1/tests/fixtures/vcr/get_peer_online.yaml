@@ -11,7 +11,7 @@ interactions:
       User-Agent:
       - python-requests/2.22.0
     method: GET
-    uri: https://wallet.burst.devtrue.net:8125/burst?requestType=getPeer&peer=178.48.21.145
+    uri: https://wallet.burstscan.net:8125/burst?requestType=getPeer&peer=178.48.21.145
   response:
     body:
       string: '{"state":0,"announcedAddress":"178.48.21.145","shareAddress":true,"downloadedVolume":134948,"uploadedVolume":117110,"application":"BRS","version":"v2.3.0","platform":"Q-H2","blacklisted":false,"lastUpdated":151846101,"requestProcessingTime":0}'
