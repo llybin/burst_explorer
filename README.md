@@ -6,6 +6,8 @@
 [![GPLv3](https://img.shields.io/badge/license-GPLv3-blue.svg)](LICENSE)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
+[Screenshots](https://github.com/llybin/burst_explorer/tree/master/RIP)
+
 ## How to run
 
 `cp .env.default .env`
